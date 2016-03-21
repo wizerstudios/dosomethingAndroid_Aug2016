@@ -48,6 +48,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 // Splash Screen
+// Madhan
 public class SplashActivity extends AppCompatActivity {
 
 
