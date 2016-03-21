@@ -1,0 +1,363 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@color/background_color"
+    tools:context="com.dosomething.android.Fragments.FragmentSettings">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <LinearLayout
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/settings_page_textview_title_notification"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/profile_page_textview_title_notification"
+                        android:textColor="@color/text_grey"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/settings_page_textview_notification_message"
+                                android:layout_width="match_parent"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:paddingLeft="8dp"
+                                android:text="@string/profile_page_textview_notification_message"
+                                android:textColor="@color/text_grey"
+                                android:textSize="12sp" />
+
+                            <LinearLayout
+                                android:id="@+id/profilepage_layout_notifiacation_messages"
+                                android:layout_width="match_parent"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:gravity="center">
+
+                                <CheckBox
+                                    android:id="@+id/settings_checkbox_notifiacation_messages"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="40dp"
+                                    android:button="@drawable/custom_switch"
+                                    android:checked="true" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/settings_page_textview_notification_match"
+                                android:layout_width="match_parent"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:paddingLeft="8dp"
+                                android:text="@string/profile_page_textview_notification_match"
+                                android:textColor="@color/text_grey"
+                                android:textSize="12sp" />
+
+                            <LinearLayout
+                                android:id="@+id/profilepage_layout_notifiacation_match"
+                                android:layout_width="match_parent"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:gravity="center">
+
+                                <CheckBox
+                                    android:id="@+id/settings_checkbox_notifiacation_match"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="40dp"
+                                    android:button="@drawable/custom_switch"
+                                    android:checked="true" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/settings_page_textview_notification_sound"
+                                android:layout_width="match_parent"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:paddingLeft="8dp"
+                                android:text="@string/profile_page_textview_notification_sound"
+                                android:textColor="@color/text_grey"
+                                android:textSize="12sp" />
+
+                            <LinearLayout
+                                android:id="@+id/profilepage_layout_notifiacation_sound"
+                                android:layout_width="match_parent"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:gravity="center">
+
+                                <CheckBox
+                                    android:id="@+id/settings_checkbox_notifiacation_sound"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="40dp"
+                                    android:button="@drawable/custom_switch"
+                                    android:checked="true" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/settings_page_textview_notification_vibration"
+                                android:layout_width="match_parent"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:paddingLeft="8dp"
+                                android:text="@string/profile_page_textview_notification_vibration"
+                                android:textColor="@color/text_grey"
+                                android:textSize="12sp" />
+
+                            <LinearLayout
+                                android:id="@+id/profilepage_layout_notifiacation_vibration"
+                                android:layout_width="match_parent"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:gravity="center">
+
+                                <CheckBox
+                                    android:id="@+id/settings_checkbox_notifiacation_vibration"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="40dp"
+                                    android:button="@drawable/custom_switch"
+                                    android:checked="true" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/settings_page_button_terms"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/button_color"
+                            android:text="@string/profile_page_button_terms"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                        <View
+                            android:layout_width="5dp"
+                            android:layout_height="match_parent" />
+
+                        <Button
+                            android:id="@+id/settings_page_button_policy"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/button_color"
+                            android:text="@string/profile_page_button_policy"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/profile_page_textview_logout_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="@string/profile_page_textview_Logout"
+                        android:textColor="@color/text_red"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativelayout_alertdialog_logout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#99ffffff"
+                android:visibility="gone">
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/linearlayout_alertdialog"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/fragment_settings_textview_logout"
+                        android:layout_width="250dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:background="@color/red"
+                        android:gravity="center"
+                        android:text="ARE YOU SURE YOU WANT \nTO LOGOUT?"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:layout_width="250dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/alert_textview_logout_yes"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@android:color/white"
+                            android:gravity="center"
+                            android:text="YES"
+                            android:textColor="@color/red" />
+
+                        <TextView
+                            android:id="@+id/alert_textview_logout_no"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@android:color/darker_gray"
+                            android:gravity="center"
+                            android:text="NO"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativelayout_alertdialog_deleteaccount"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#99ffffff"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/fragment_settings_textview_delete"
+                        android:layout_width="250dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:background="@color/red"
+                        android:gravity="center"
+                        android:text="ARE YOU SURE YOU WANT \nTO DELETE ACCOUNT?"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:layout_width="250dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/alert_textview_deleteaccount_yes"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@android:color/white"
+                            android:gravity="center"
+                            android:text="YES"
+                            android:textColor="@color/red" />
+
+                        <TextView
+                            android:id="@+id/alert_textview_deleteaccount_no"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@android:color/darker_gray"
+                            android:gravity="center"
+                            android:text="NO"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/profile_page_textview_deleteaccount_button"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                android:background="@color/button_color"
+                android:gravity="center"
+                android:text="@string/profile_page_textview_deleteaccount"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</FrameLayout>

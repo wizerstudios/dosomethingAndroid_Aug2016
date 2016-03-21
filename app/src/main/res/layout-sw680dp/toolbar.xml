@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbar_home"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/red"
+    android:gravity="center"
+    android:minHeight="?attr/actionBarSize" >
+    <ImageView
+        android:id="@+id/activity_dosomething_imageview_toolbar_sliding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action"
+        />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:layout_marginRight="40dp"
+        android:src="@drawable/logo"/>
+</android.support.v7.widget.Toolbar>

@@ -1,0 +1,489 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dosomething.android.Fragments.FragmentProfile">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/fragment_profile_page_textview_title_profile"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:gravity="center_vertical"
+            android:text="@string/profile_page_textview_title"
+            android:textColor="@color/text_grey"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+             <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/fragment_pager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="top|center" />
+
+            <LinearLayout
+                android:id="@+id/fragment_viewpager_dots"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:orientation="horizontal"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@android:color/background_light"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fragment_profile_page_textview_firstname"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:text="@string/profile_page_textview_firstname"
+                android:textColor="@color/text_grey"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/fragment_profile_page_edittext_firstname"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:hint="@string/profile_page_edittext_firstname"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="@color/text_grey"
+                android:textColorHint="@color/hint_color"
+                android:textSize="12sp"
+                android:editable="false"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/background_color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fragment_profile_page_textview_lastname"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:text="@string/profile_page_textview_lastname"
+                android:textColor="@color/text_grey"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/fragment_profile_page_edittext_lastname"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:hint="@string/profile_page_edittext_lastname"
+                android:editable="false"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="@color/text_grey"
+                android:textColorHint="@color/hint_color"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/background_color" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fragment_profile_page_textview_gender"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:text="Gender"
+                android:textColor="@color/text_grey"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/fragment_profile_page_edittext_gender"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:hint="Gender"
+                android:editable="false"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="@color/text_grey"
+                android:textColorHint="@color/hint_color"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:weightSum="7">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fragment_profile_page_textview_dateofbirth"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="2"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:text="@string/profile_page_textview_dateofbirth"
+                android:textColor="@color/text_grey"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/fragment_profile_page_textview_datepicker"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:text="@string/profile_page_textview_datepicker"
+                android:textColor="@color/text_grey"
+                android:textSize="12sp"
+                android:editable="false"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fragment_profile_page_textview_about_you"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="2"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:text="@string/profile_page_textview_about_you"
+                android:textColor="@color/text_grey"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/fragment_profile_page_edittext_about_you"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:hint="@string/profile_page_edittext_about_you"
+                android:maxLines="3"
+                android:paddingLeft="8dp"
+                android:textColor="@color/hint_color"
+                android:textColorHint="@color/hint_color"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/fragment_profile_page_textview_hobbies"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:text="@string/profile_page_textview_hobbies"
+            android:textColor="@color/text_grey"
+            android:textSize="12sp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ProgressBar
+            android:layout_centerInParent="true"
+            android:id="@+id/fragment_profile_page_progressbar_hobbies"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:src="@drawable/loading"
+            />
+        <FrameLayout
+            android:id="@+id/fragment_profile_page_linearlayout_hobbies"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/fragment_profile_page_imageview_hobbies"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/pluis_icon"
+                android:visibility="gone" />
+
+            <com.dosomething.android.CommonClasses.ExpandableHeightGridView
+                android:id="@+id/fragment_profile_page_gridview_hobbies"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:horizontalSpacing="2dp"
+                android:numColumns="5"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="20dp"/>
+
+        </FrameLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/fragment_profile_page_textview_title_account"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:text="@string/profile_page_textview_title_account"
+        android:textColor="@color/text_grey"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:id="@+id/dosomething_account_login_via_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fragment_profile_page_textview_email"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="2"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:text="@string/profile_page_textview_email"
+                android:textColor="@color/text_grey"
+                android:textSize="12sp" />
+
+            <EditText
+                android:editable="false"
+                android:id="@+id/fragment_profile_page_edittext_email"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:hint="@string/profile_page_edittext_email"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="@color/text_grey"
+                android:textColorHint="@color/hint_color"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fragment_profile_page_textview_password"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="2"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:text="@string/profile_page_textview_current_password"
+                android:textColor="@color/text_grey"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/fragment_profile_page_edittext_password"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:hint="@string/profile_page_edittext_password"
+                android:inputType="textPassword"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="@color/hint_color"
+                android:textColorHint="@color/hint_color"
+                android:textSize="12sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fragment_profile_page_textview_new_password"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="2"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:text="@string/profile_page_textview_password"
+                android:textColor="@color/text_grey"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/fragment_profile_page_edittext_new_password"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:hint="@string/profile_page_edittext_current_password"
+                android:inputType="textPassword"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="@color/hint_color"
+                android:textColorHint="@color/hint_color"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fragment_profile_page_textview_confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="2"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:text="@string/profile_page_textview_password_confirmation"
+                android:textColor="@color/text_grey"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/fragment_profile_page_edittext_confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:hint="@string/profile_page_edittext_password_confirmation"
+                android:inputType="textPassword"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="@color/hint_color"
+                android:textColorHint="@color/hint_color"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+<LinearLayout
+    android:layout_marginTop="10dp"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/dosomething_login_via_imageview"
+        android:src="@drawable/via_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/dosomething_login_via_textview"
+        android:layout_marginLeft="10dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You are connect via DoSomething Account"/>
+
+</LinearLayout>
+
+</LinearLayout>
+    </LinearLayout>
+    </ScrollView>
+</FrameLayout>

@@ -1,0 +1,122 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="10">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.v4.view.ViewPager
+                            android:id="@+id/pager1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:id="@+id/linearlayoutsplit_dots"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/pager1"
+                            android:layout_centerInParent="true"
+                            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                            android:orientation="horizontal"></LinearLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="9">
+
+                    <Button
+                        android:id="@+id/activitymain_button_createaccount"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/white"
+                        android:text="@string/dosomething_splashactivity_string_createanaccount"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/holo_red_light"
+                        android:textSize="14sp" />
+
+                    <Button
+                        android:id="@+id/activitymain_button_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/holo_red_light"
+                        android:text="@string/dosomething_splashactivity_string_signin"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imageview_walkthrough_account_create"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/walkthrough_splash" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/layout_walkthrough_account_create"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+
+                <TextView
+                    android:id="@+id/walkthrough_account_create_TextView"
+                    android:background="@drawable/walkthrough_border"
+                    android:layout_width="250dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:text="Click here to create a new account \n and start doing something"
+                    android:layout_above="@+id/walkthrough_account_create_imageView"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="67dp" />
+
+            <ImageView
+                android:id="@+id/walkthrough_account_create_imageView"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="71dp"
+                android:layout_marginStart="71dp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

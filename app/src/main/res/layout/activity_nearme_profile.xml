@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_something_doSomething_profile"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_margin="10dp"
+    android:orientation="vertical">
+<LinearLayout
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/activity_dosomething_imageview_nearme_textview_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:text="20km"/>
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/activity_dosomething_imageview_nearme_imageview_online"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/chaton"/>
+</LinearLayout>
+    <RelativeLayout
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:layout_centerInParent="true"
+            android:id="@+id/fragment_profile_page_progressbar_hobbies"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:src="@drawable/loader"
+
+            />
+        <FrameLayout
+            android:id="@+id/activity_dosomething_layout_nearme_chong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/activity_dosomething_imageview_nearme_chong"
+                android:layout_width="98dp"
+                android:layout_height="98dp"
+                />
+        </FrameLayout>
+        <TextView
+            android:id="@+id/activity_dosomething_imageview_nearme_textview_now"
+            android:text="NOW"
+            android:gravity="center"
+            android:layout_width="58dp"
+            android:textSize="8sp"
+            android:textColor="@color/red"
+            android:layout_height="20dp"
+            android:background="@android:color/white"
+            android:layout_alignBottom="@+id/activity_dosomething_layout_nearme_chong"
+            android:layout_centerHorizontal="true"
+            />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/activity_dosomething_textview_nearme_name"
+        android:gravity="center"
+        android:text="Michelle Chong"
+        android:textSize="10sp"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp" />
+   <LinearLayout
+       android:background="@android:color/white"
+       android:orientation="vertical"
+       android:id="@+id/activity_dosomething_nearme_ralativelayout"
+       android:gravity="top|center"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+       <TextView
+           android:id="@+id/activity_dosomething_nearme_textview_request"
+           android:padding="3dp"
+           android:textSize="8sp"
+           android:gravity="center"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="Request Sent!"/>
+       <LinearLayout
+           android:padding="3dp"
+           android:orientation="horizontal"
+           android:layout_width="match_parent"
+           android:layout_height="40dp">
+           <ImageView
+               android:layout_weight="1"
+               android:id="@+id/nearby_dosomething_image1"
+               android:src="@drawable/button_load"
+               android:layout_gravity="center"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+           <ImageView
+               android:src="@drawable/button_load"
+               android:layout_weight="1"
+               android:id="@+id/nearby_dosomething_image2"
+               android:layout_gravity="center"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+           <ImageView
+               android:src="@drawable/button_load"
+               android:layout_weight="1"
+               android:id="@+id/nearby_dosomething_image3"
+               android:layout_gravity="center"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+       </LinearLayout>
+   </LinearLayout>
+
+
+</LinearLayout>

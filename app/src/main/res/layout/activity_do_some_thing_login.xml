@@ -1,0 +1,169 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/lite_white"
+    tools:context=".Login">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/login_textview_relativelayout_facebook"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/login_textview_login_facebookone"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:textAllCaps="false"
+            android:gravity="center"
+            android:textSize="13sp"
+            android:layout_marginLeft="32dp"
+            android:textColor="@color/facebook_blue"
+            android:background="@color/white"
+            android:layout_alignParentTop="true"
+            android:text="@string/login_textview_login_facebookone"/>
+        <TextView
+            android:id="@+id/login_textview_login_facebooktwo"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:textAllCaps="false"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:paddingLeft="2dp"
+            android:paddingBottom="2dp"
+            android:textColor="@color/facebook_blue"
+            android:background="@color/white"
+            android:layout_toEndOf="@+id/login_textview_login_facebookone"
+            android:text="@string/login_textview_login_facebooktwo"/>
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/login_textview_login_email"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="left|center"
+        android:textSize="13sp"
+        android:background="@color/lite_white"
+        android:textColor="@color/red"
+        android:paddingLeft="32dp"
+        android:textAllCaps="false"
+        android:text="@string/login_textview_login_email"/>
+
+    <EditText
+        android:id="@+id/login_edittext_email"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:paddingLeft="32dp"
+        android:singleLine="true"
+        android:textSize="13sp"
+        android:textColorHint="@color/hint_color"
+        android:textColor="@color/hint_color"
+        android:inputType="textEmailAddress"
+        android:background="@color/lite_white"
+        android:hint="@string/login_edittext_email"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:background="@color/white"/>
+    <EditText
+        android:id="@+id/login_edittext_password"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:paddingLeft="32dp"
+        android:singleLine="true"
+        android:inputType="textPassword"
+        android:textColorHint="@color/hint_color"
+        android:textSize="13sp"
+        android:textColor="@color/hint_color"
+        android:background="@color/lite_white"
+        android:hint="@string/login_edittext_password"/>
+
+    <Button
+        android:id="@+id/login_button_login_signin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:textSize="13sp"
+        android:background="@color/red"
+        android:textColor="@color/white"
+        android:text="@string/login_button_login_signin"/>
+    <Button
+        android:id="@+id/login_button_login_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:background="@color/black"
+        android:text="@string/login_button_login_back"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="@color/lite_black">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/login_textview_forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:gravity="center"
+                android:textSize="13sp"
+                android:paddingLeft="16dp"
+                android:textColor="@color/white"
+                android:background="@color/lite_black"
+                android:text="@string/login_textview_forgot_password"/>
+
+            <TextView
+                android:id="@+id/login_textview_create_account"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:gravity="center"
+                android:textSize="13sp"
+                android:layout_alignParentRight="true"
+                android:paddingRight="16dp"
+                android:textColor="@color/white"
+                android:background="@color/lite_black"
+                android:text="@string/login_textview_create_account"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+    </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:indeterminateOnly="false"
+            android:indeterminate="true"
+            />
+    </RelativeLayout>
+
+</RelativeLayout>

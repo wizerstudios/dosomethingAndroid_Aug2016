@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="3dp"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true">
+
+        <LinearLayout
+           android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:id="@+id/activity_dosomething_chatperson"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/cardview_click"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/activity_dosomething_chatperson_appIcon"
+                android:layout_width="70dp"
+                android:layout_height="70dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_weight="1"
+                        android:id="@+id/activity_dosomething_chatperson_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Gal Gadot"
+                        android:textSize="16sp"
+                        android:gravity="start"
+                        android:textColor="@color/red"/>
+                    <TextView
+                        android:gravity="bottom"
+                        android:layout_weight="1"
+                        android:id="@+id/activity_dosomething_chatperson_message"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="message"
+                        android:maxLines="1"
+                        android:textSize="14sp"
+                        android:textColor="@color/hint_color"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_weight="4"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                        <LinearLayout
+                            android:padding="8dp"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <TextView
+                                android:layout_weight="1"
+                                android:id="@+id/activity_dosomething_chatperson_time"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="end"
+                                android:text="17:37"
+                                android:textSize="14sp"
+                                android:gravity="end"
+                                android:textColor="@color/hint_color"/>
+                            <TextView
+                                android:layout_gravity="end"
+                                android:id="@+id/activity_dosomething_meassge_count"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:textColor="@color/white"
+                                android:gravity="center"
+                                android:background="@drawable/count_bg"/>
+                        </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp">
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/activity_dosomething_chatperson_Tectview_blockanddelete"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/activity_dosomething_chatperson_Tectview_block"
+                    android:textColor="@color/white"
+                    android:background="@android:color/darker_gray"
+                    android:gravity="center"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:text="Block"/>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:id="@+id/activity_dosomething_chatperson_Tectview_delete"
+                    android:textColor="@color/white"
+                    android:background="@android:color/holo_red_light"
+                    android:gravity="center"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:text="Delete"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

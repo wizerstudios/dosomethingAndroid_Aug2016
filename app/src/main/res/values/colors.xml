@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="nearmebackground">#E0E0E0</color>
+    <color name="transparent">#99ffffff</color>
+    <color name="lite_green">#3AD531</color>
+    <color name="ultra_dark">#29303F</color>
+    <color name="dark">#696E79</color>
+    <color name="ultra_dark_overlay">#0D29303F</color>
+    <color name="walkthorugh_bg">#3bc5ff</color>
+
+</resources>

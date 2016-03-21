@@ -1,0 +1,427 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/status_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/nearmebackground"
+    tools:context="com.dosomething.android.Fragments.DoSomethingNearMe">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/dosmething_homescreenlayout_staus_gridview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_weight="8"
+                android:gravity="center">
+
+                <GridView
+                    android:id="@+id/activity_dosomething_status_grid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:numColumns="3"
+                    android:verticalSpacing="@dimen/activity_vertical_margin">
+
+                </GridView>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/status_textview_letsDoSomething"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="bottom"
+                android:background="#E54052"
+                android:gravity="center"
+                android:text="@string/letsdosomething"
+                android:textColor="@android:color/white"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativelayout_alertdialog"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.7"
+                android:background="@color/white">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/status_textview_availablenow"
+                    android:layout_width="238dp"
+                    android:layout_height="95dp"
+                    android:layout_gravity="center"
+                    android:background="@color/red"
+                    android:gravity="center"
+                    android:text="AVAILABLE NOW?"
+                    android:textColor="@color/white"
+                    android:textSize="14dp" />
+
+                <LinearLayout
+                    android:layout_width="238dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/status_textview_accept_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/white"
+                        android:gravity="center"
+                        android:text="YES"
+                        android:textColor="@color/red" />
+
+                    <TextView
+                        android:id="@+id/status_textview_unaccept_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/darker_gray"
+                        android:gravity="center"
+                        android:text="NO"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativelayout_alertdialog_only_three"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#99ffffff">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/status_textview_onlythree"
+                    android:layout_width="238dp"
+                    android:layout_height="95dp"
+                    android:layout_gravity="center"
+                    android:background="@color/red"
+                    android:gravity="center"
+                    android:text="ONLY 3 ACTIVITES                                   CAN BE SELECTED"
+                    android:textColor="@color/white"
+                    android:textSize="14dp" />
+
+
+                <TextView
+                    android:id="@+id/status_textview_accept_dismiss"
+                    android:layout_width="238dp"
+                    android:layout_height="48dp"
+                    android:background="@android:color/white"
+                    android:gravity="center"
+                    android:text="OKAY"
+                    android:textColor="@color/red" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativelayout_alertdialog_activity_results"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="8"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <GridView
+                        android:visibility="visible"
+                        android:id="@+id/dosomething_activity_status_gridview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:columnWidth="@dimen/tab_max_width"
+                        android:gravity="center"
+                        android:numColumns="3"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="3dp"
+                        android:visibility="visible">
+
+                        <LinearLayout
+                            android:id="@+id/status_dosomething_layout1"
+                            android:visibility="gone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/status_dosomething_image1"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_gravity="center"/>
+
+                            <TextView
+                                android:id="@+id/status_dosomething_text1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="CYCLING"
+                                android:textSize="18sp"
+                                android:textColor="@color/red" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:visibility="gone"
+android:id="@+id/status_dosomething_layout2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/status_dosomething_image2"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_gravity="center"/>
+
+                            <TextView
+                                android:id="@+id/status_dosomething_text2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="CYCLING"
+                                android:textSize="18sp"
+
+                                android:textColor="@color/red" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/status_dosomething_layout3"
+                            android:visibility="gone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/status_dosomething_image3"
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_gravity="center"/>
+
+                            <TextView
+                                android:id="@+id/status_dosomething_text3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="CYCLING"
+                                android:textSize="18sp"
+                                android:textColor="@color/red" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                    <!--<LinearLayout-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:gravity="center"-->
+                    <!--android:orientation="vertical">-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/status_information_activity_time"-->
+                    <!--android:layout_width="250dp"-->
+                    <!--android:layout_height="80dp"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:background="@color/red"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="Available Since \n 15 Min ago?"-->
+                    <!--android:textColor="@color/white"-->
+                    <!--/>-->
+
+                    <!--<LinearLayout-->
+                    <!--android:layout_width="250dp"-->
+                    <!--android:layout_height="48dp"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:orientation="horizontal">-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/status_information_activity_now"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@color/hint_color"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="Now !"-->
+                    <!--android:textColor="@color/white" />-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/status_information_activity_Anytime"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@android:color/darker_gray"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="Any Time!"-->
+                    <!--android:textColor="@color/white" />-->
+                    <!--</LinearLayout>-->
+
+                    <!--</LinearLayout>-->
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/status_information_activity_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:text="Last Selected: \n15 Min ago?"
+                    android:textColor="@color/red" />
+
+                <TextView
+                    android:id="@+id/status_activity_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="bottom"
+                    android:background="@color/red"
+                    android:gravity="center"
+                    android:text="Cancel All Activites ?"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+
+
+
+        <RelativeLayout
+            android:background="@color/lite_whitetrans"
+            android:visibility="gone"
+            android:id="@+id/relativelayout_progressImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/status_progress_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:indeterminateOnly="false"
+                android:indeterminate="true"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/layout_walkthrough_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:background="@drawable/walkthrough_home"
+                android:id="@+id/image_walkthrough_account_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/layout_walkthrough_activity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:background="@drawable/walkthrough_activity"
+                android:id="@+id/image_walkthrough_account_activity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:background="@drawable/walkthrough_home"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/walkthrough_account_create_TextView"
+                android:background="@drawable/walkthrough_border"
+                android:layout_width="250dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:layout_centerInParent="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="50dp"
+                android:text="Insert your email and password \nto 'Create your Account"/>
+
+            <ImageView
+                android:id="@+id/walkthrough_account_create_imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/tuto_points"/>
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+    <!-- TODO: Update blank fragment layout -->
+
+</FrameLayout>

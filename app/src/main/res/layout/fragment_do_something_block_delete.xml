@@ -1,0 +1,43 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dosomething.android.Fragments.DoSomethingBlockDelete">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:background="#99ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/activity_dosomething_chatblock"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@android:color/darker_gray"
+            android:gravity="center"
+            android:text="Block"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/activity_dosomething_chatdelete"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@android:color/holo_red_light"
+            android:gravity="center"
+            android:text="Delete"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/activity_dosomething_chatcancel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:text="Cancel"
+            android:textColor="@color/hint_color" />
+    </LinearLayout>
+
+</FrameLayout>

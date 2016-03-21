@@ -1,0 +1,39 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#99ffffff"
+    tools:context="com.dosomething.android.Fragments.AlertdialogFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:id="@+id/linearlayout_alertdialog_only_three"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99ffffff"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/status_textview_onlythree"
+            android:layout_width="238dp"
+            android:layout_height="95dp"
+            android:layout_gravity="center"
+            android:background="@color/red"
+            android:gravity="center"
+            android:text="ONLY 3 ACTIVITES                                   CAN BE SELECTED"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+
+
+
+            <TextView
+                android:id="@+id/status_textview_accept_dismiss"
+                android:layout_width="238dp"
+                android:layout_height="48dp"
+                android:gravity="center"
+                android:text="OKAY"
+                android:background="@android:color/white"
+                android:textColor="@color/red" />
+    </LinearLayout>
+
+</FrameLayout>

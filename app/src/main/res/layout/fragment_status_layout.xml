@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/activity_dosomething_status_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.dosomething.android.CommonClasses.GridViewItem
+            android:id="@+id/activity_dosomething_status_imageview"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:background="@drawable/button_load"/>
+
+        <TextView
+            android:id="@+id/activity_dosomething_status_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/status_TextView_running"
+            android:textAllCaps="true"
+            android:textColor="@color/hint_color"
+            android:textSize="10sp" />
+    </LinearLayout>
+</LinearLayout>

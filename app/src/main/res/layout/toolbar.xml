@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/red">
+
+    <ImageView
+        android:layout_centerInParent="true"
+        android:id="@+id/title_text"
+        android:layout_width="230dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="50dp"
+        android:src="@drawable/logo"/>
+
+
+    <LinearLayout
+        android:id="@+id/activity_dosomething_imageview_toolbar_sliding"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true" >
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/activity_dosomething_imageview_filter_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/filter_icon" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/activity_dosomething_textview_toolbar_search"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="@color/red"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="Apply"/>
+
+    <TextView
+        android:id="@+id/activity_dosomething_textview_toolbar_save"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="@color/red"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="Save"/>
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/activity_dosomething_imageview_filter_icon"
+        android:layout_centerInParent="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/filter_icon"/>
+</RelativeLayout>

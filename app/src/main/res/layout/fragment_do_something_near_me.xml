@@ -1,0 +1,243 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/nearmebackground"
+    tools:context="com.dosomething.android.Fragments.DoSomethingNearMe">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:id="@+id/dosomething_nearme_gridview_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/activity_dosomething_nearme_view_top"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/lite_green"
+            android:visibility="gone" />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/nearme_profile_refreshlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/activity_dosomething_nearme"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
+        <View
+            android:id="@+id/activity_dosomething_nearme_view_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_gravity="bottom"
+            android:background="@color/lite_green"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/pull_to_refresh_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+
+        android:progressDrawable="@drawable/loading"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/dosomething_nearme_matched_profile_popup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/dosomething_nearme_matched_profile_popup_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <ProgressBar
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:src="@drawable/loading" />
+
+                    <FrameLayout
+                        android:id="@+id/activity_dosomething_layout_nearme_chong"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+
+                        <ImageView
+                            android:background="@drawable/dosomething_border"
+                            android:id="@+id/dosomething_nearme_matched_profile_userImage"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:minHeight="120dp"
+                            android:minWidth="120dp"
+                            android:src="@drawable/profile_noimg" />
+
+
+                    </FrameLayout>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_marginLeft="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <ProgressBar
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:src="@drawable/loading" />
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+
+                        <ImageView
+                            android:background="@drawable/dosomething_border"
+                            android:id="@+id/dosomething_nearme_matched_profile_near_userImage"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:minHeight="120dp"
+                            android:minWidth="120dp"
+                            android:src="@drawable/profile_noimg" />
+                    </FrameLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/dosomething_nearme_matched_profile_name_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="You and Gal Gadot are a match\n Start Chatting to"
+                android:textColor="@color/text_red" />
+
+            <TextView
+                android:id="@+id/dosomething_nearme_matched_profile_chat_dosomething_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:background="@color/red"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="Do Something"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:background="@color/lite_whitetrans"
+        android:id="@+id/relativelayout_nearme_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/nearme_progress_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:indeterminate="true"
+            android:indeterminateOnly="false"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/activity_dosomething_nearme_textview_nouser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:background="@color/lite_whitetrans"
+        android:id="@+id/relativelayout_nearme_retry"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/nearme_retry_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:indeterminate="true"
+            android:indeterminateOnly="false"
+            android:visibility="visible"
+            android:src="@drawable/button_load"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/layout_walkthrough_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:scaleType="centerCrop"
+            android:src="@drawable/walkthrough_nearme"
+            android:id="@+id/image_walkthrough_account_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/layout_walkthrough_match"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:scaleType="centerCrop"
+            android:src="@drawable/walkthrough_match"
+            android:id="@+id/image_walkthrough_account_match"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+</FrameLayout>

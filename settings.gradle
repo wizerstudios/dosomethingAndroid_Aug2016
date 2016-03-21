@@ -1,0 +1,2 @@
+include ':facebook', ':library', ':app'
+include ':library'
