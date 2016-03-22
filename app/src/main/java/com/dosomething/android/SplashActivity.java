@@ -1151,7 +1151,7 @@ RelativeLayout layout_walkthrough_account_create;
         {
             layout_walkthrough_account_create.setVisibility(View.VISIBLE);
             blink_time = new Timer();
-            blink_time.schedule(new Blink_progress(), 0, 1350);
+            blink_time.schedule(new Blink_progress(), 0, 340);
             splashAnimation.start();
             sharedPrefrences.setWalkThrough_Splash(context, "true");
 

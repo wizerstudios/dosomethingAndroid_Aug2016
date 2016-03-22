@@ -259,6 +259,8 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
     Handler handler = new Handler();
     Timer timer = new Timer();
     private AnimationDrawable splashAnimation;
+    private AnimationDrawable splashAnimation_walkthroughsave;
+    private AnimationDrawable splashAnimation_walkthroughprofile;
     private ImageView kbv;
     RelativeLayout image_relative;
     private Dialog dialog;
@@ -276,6 +278,8 @@ RelativeLayout layout_walkthrough_profilesave;
     ImageView walkthrough_profilesave_ImageView;
     TextView walkthrough_account_create_TextView;
     TextView walkthrough_profilesave_TextView;
+    private Timer blink_time;
+    private Timer blink_time_save;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1764,7 +1768,10 @@ RelativeLayout layout_walkthrough_profilesave;
 
         profile_page_gridview_hobbies = (ExpandableHeightGridView) findViewById(R.id.profile_page_gridview_hobbies);
         profile_page_password_layout = (LinearLayout) findViewById(R.id.profile_page_password_layout);
-
+        walkthrough_profile_imageView.setBackgroundResource(R.drawable.blink_icon);
+        walkthrough_profilesave_ImageView.setBackgroundResource(R.drawable.blink_icon);
+        splashAnimation_walkthroughprofile = (AnimationDrawable) walkthrough_profile_imageView.getBackground();
+        splashAnimation_walkthroughsave = (AnimationDrawable) walkthrough_profilesave_ImageView.getBackground();
 
         /*dosomething_account_confirmation_alert = (RelativeLayout) findViewById(R.id.dosomething_account_confirmation_alert);
         dosomething_account_confirmation_create = (TextView) findViewById(R.id.dosomething_account_confirmation_create);
@@ -2458,6 +2465,9 @@ RelativeLayout layout_walkthrough_profilesave;
         if(sharedPrefrences.getWalkThroughprofile(context).equals("false"))
         {
             layout_walkthrough_profile.setVisibility(View.VISIBLE);
+            blink_time = new Timer();
+            blink_time.schedule(new Blink_progress(), 0, 340);
+            splashAnimation_walkthroughprofile.start();
             sharedPrefrences.setWalkThroughProfile(context,"true");
 
         }else
@@ -2465,6 +2475,9 @@ RelativeLayout layout_walkthrough_profilesave;
             if(sharedPrefrences.getWalkThroughProfilesave(context).equals("false"))
             {
                 layout_walkthrough_profilesave.setVisibility(View.VISIBLE);
+                blink_time_save = new Timer();
+                blink_time_save.schedule(new Blink_progress_save(), 0, 340);
+                splashAnimation_walkthroughsave.start();
                 sharedPrefrences.setWalkThroughProfilesave(context,"true");
             }
         }
@@ -2484,6 +2497,15 @@ RelativeLayout layout_walkthrough_profilesave;
         walkthrough_profilesave_ImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                layout_walkthrough_profilesave.setVisibility(View.GONE);
+                if (blink_time_save != null) {
+
+                    blink_time_save.cancel();
+
+
+                    blink_time_save = null;
+
+                }
                 layout_walkthrough_profilesave.setVisibility(View.GONE);
                 sharedPrefrences.setWalkThroughProfilesave(context,"true");
                 if (profile_page_edittext_firstname.getText().length() == 0) {
@@ -2602,6 +2624,15 @@ RelativeLayout layout_walkthrough_profilesave;
         walkthrough_profile_imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (blink_time != null) {
+
+                    blink_time.cancel();
+
+
+                    blink_time = null;
+
+                }
+                splashAnimation_walkthroughprofile.stop();
                 layout_walkthrough_profile.setVisibility(View.GONE);
                 sharedPrefrences.setWalkThroughProfile(context,"true");
                 if (profile_page_edittext_firstname.getText().length() == 0) {
@@ -3049,5 +3080,55 @@ RelativeLayout layout_walkthrough_profilesave;
 
         }
 
+    }
+
+    private class Blink_progress extends TimerTask {
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+
+                public void run() {
+
+                    try {
+                        if (splashAnimation_walkthroughprofile.isRunning()) {
+                            splashAnimation_walkthroughprofile.stop();
+                        } else {
+                            splashAnimation_walkthroughprofile.start();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // TODO Auto-generated catch block
+                    }
+
+
+                }
+
+            });
+        }
+    }
+
+    private class Blink_progress_save extends TimerTask {
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+
+                public void run() {
+
+                    try {
+                        if (splashAnimation_walkthroughsave.isRunning()) {
+                            splashAnimation_walkthroughsave.stop();
+                        } else {
+                            splashAnimation_walkthroughsave.start();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // TODO Auto-generated catch block
+                    }
+
+
+                }
+
+            });
+        }
     }
 }

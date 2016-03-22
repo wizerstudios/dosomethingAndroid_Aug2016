@@ -361,16 +361,30 @@ android:id="@+id/status_dosomething_layout2"
                 />
         </RelativeLayout>
         <RelativeLayout
+            android:background="@drawable/walkthrough_home"
             android:visibility="gone"
-            android:id="@+id/layout_walkthrough_profile"
+            android:id="@+id/layout_walkthrough_home"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/textview_walkthrough_home"
+                android:background="@drawable/walkthrough_border"
+                android:layout_width="250dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:text="Hit 'Let's Do Something' \nto get things started "
+                android:layout_above="@+id/imageview_walkthrough_home"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="70dp" />
 
             <ImageView
-                android:background="@drawable/walkthrough_home"
-                android:id="@+id/image_walkthrough_account_profile"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:id="@+id/imageview_walkthrough_home"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerInParent="true"
+                android:layout_alignParentBottom="true"/>
         </RelativeLayout>
         <RelativeLayout
             android:visibility="gone"

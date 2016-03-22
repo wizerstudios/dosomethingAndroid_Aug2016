@@ -282,11 +282,16 @@ public class FragmentStatus extends Fragment {
     Handler handler = new Handler();
     Timer timer = new Timer();
     private AnimationDrawable splashAnimation;
+    private AnimationDrawable splashAnimation_activity;
     private ImageView kbv;
     RelativeLayout relativelayout_progressImage;
     RelativeLayout layout_walkthrough_profile;
     RelativeLayout layout_walkthrough_activity;
     private Activity_Dosomething_Adapter activity_dosomething_adapter;
+    private RelativeLayout layout_walkthrough_home;
+    private ImageView imageview_walkthrough_home;
+    private TextView textview_walkthrough_home;
+    private Timer blink_time;
 
 
     /**
@@ -472,9 +477,12 @@ public class FragmentStatus extends Fragment {
         kbv = (ImageView) view.findViewById(R.id.status_progress_image);
         kbv.setBackgroundResource(R.drawable.progress_drawable);
         splashAnimation = (AnimationDrawable) kbv.getBackground();
-        layout_walkthrough_profile = (RelativeLayout) view.findViewById(R.id.layout_walkthrough_profile);
+        layout_walkthrough_home = (RelativeLayout) view.findViewById(R.id.layout_walkthrough_home);
+        imageview_walkthrough_home=(ImageView)view.findViewById(R.id.imageview_walkthrough_home);
+        textview_walkthrough_home=(TextView)view.findViewById(R.id.textview_walkthrough_home);
         layout_walkthrough_activity = (RelativeLayout) view.findViewById(R.id.layout_walkthrough_activity);
-
+        imageview_walkthrough_home.setBackgroundResource(R.drawable.blink_icon);
+        splashAnimation_activity = (AnimationDrawable) imageview_walkthrough_home.getBackground();
         text_font_typeface();
         dbAdapter.open();
         final int countStatus = dbAdapter.getStatusCount();
@@ -492,6 +500,7 @@ public class FragmentStatus extends Fragment {
                 @Override
                 public void onClick(View v) {
                     layout_walkthrough_activity.setVisibility(View.GONE);
+
                     sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
 
                 }
@@ -607,10 +616,19 @@ public class FragmentStatus extends Fragment {
             }
         }
 
-        layout_walkthrough_profile.setOnClickListener(new View.OnClickListener() {
+        layout_walkthrough_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                layout_walkthrough_profile.setVisibility(View.GONE);
+                layout_walkthrough_home.setVisibility(View.GONE);
+                if (blink_time != null) {
+
+                    blink_time.cancel();
+
+
+                    blink_time = null;
+
+                }
+                splashAnimation_activity.stop();
                 sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
             }
         });
@@ -1206,6 +1224,38 @@ public class FragmentStatus extends Fragment {
 //        });
 
 
+
+        imageview_walkthrough_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (NetworkCheck.isNetworkAvailable(getActivity()) || NetworkCheck.isWifiAvailable(getActivity())) {
+                    layout_walkthrough_home.setVisibility(View.GONE);
+                    if (blink_time != null) {
+
+                        blink_time.cancel();
+
+
+                        blink_time = null;
+
+                    }
+                    splashAnimation_activity.stop();
+                    sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
+
+                    if (count <= 3 && count != 0) {
+
+                        fadeIn_alertdialog();
+
+                    } else {
+
+
+                        fadeIn_onlythree();
+
+                    }
+
+                }
+            }
+        });
+
         status_textview_letsDoSomething.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -1239,6 +1289,33 @@ public class FragmentStatus extends Fragment {
     }
 
 
+
+    class Blink_progress extends TimerTask{
+
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+
+                public void run() {
+
+                    try {
+                        if (splashAnimation_activity.isRunning()) {
+                            splashAnimation_activity.stop();
+                        } else {
+                            splashAnimation_activity.start();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // TODO Auto-generated catch block
+                    }
+
+
+                }
+
+            });
+        }
+    }
+
     private void text_font_typeface() {
 
         patron_bold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Patron-Bold.ttf");
@@ -1256,6 +1333,7 @@ public class FragmentStatus extends Fragment {
         status_dosomething_text1.setTypeface(patron_bold);
         status_dosomething_text2.setTypeface(patron_bold);
         status_dosomething_text3.setTypeface(patron_bold);
+        textview_walkthrough_home.setTypeface(patron_regular);
 //        status_TextView_running.setTypeface(patron_bold);
 
 //        status_TextView_beach.setTypeface(patron_bold);
@@ -1886,7 +1964,10 @@ public class FragmentStatus extends Fragment {
                         if (allowClick) {
 
                             if (sharedPrefrences.getWalkThroughHomescreen(getActivity()).equals("false")) {
-                                layout_walkthrough_profile.setVisibility(View.VISIBLE);
+                                layout_walkthrough_home.setVisibility(View.VISIBLE);
+                                blink_time = new Timer();
+                                blink_time.schedule(new Blink_progress(), 0, 340);
+                                splashAnimation_activity.start();
                                 sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
 
                             }
@@ -4057,6 +4138,7 @@ public class FragmentStatus extends Fragment {
                             } else {
                                 if (sharedPrefrences.getWalkThroughActivity(getActivity()).equals("false")) {
                                     layout_walkthrough_activity.setVisibility(View.VISIBLE);
+
                                     sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
                                 }
 

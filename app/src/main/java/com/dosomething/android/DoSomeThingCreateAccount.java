@@ -150,6 +150,7 @@ public class DoSomeThingCreateAccount extends Activity {
     RelativeLayout layout_walkthrough_account_create;
     ImageView walkthrough_account_create_imageView;
     TextView walkthrough_account_create_TextView;
+    private Timer blink_time;
 //
 
     @Override
@@ -239,10 +240,14 @@ public class DoSomeThingCreateAccount extends Activity {
         progress_bar.setCancelable(false);
 // Assign font typeface
         text_font_typeface();
-
+        walkthrough_account_create_imageView.setBackgroundResource(R.drawable.blink_icon);
+        splashAnimation = (AnimationDrawable) walkthrough_account_create_imageView.getBackground();
 
         if (sharedPreferences.getWalkThroughCreate(context).equals("false")) {
             layout_walkthrough_account_create.setVisibility(View.VISIBLE);
+            blink_time = new Timer();
+            blink_time.schedule(new Blink_progress(), 0, 340);
+            splashAnimation.start();
             sharedPreferences.setWalkThroughCreate(context, "true");
         }
 
@@ -252,6 +257,15 @@ public class DoSomeThingCreateAccount extends Activity {
             public void onClick(View v) {
                 layout_walkthrough_account_create.setVisibility(View.GONE);
                 sharedPreferences.setWalkThroughCreate(context, "true");
+                if (blink_time != null) {
+
+                    blink_time.cancel();
+
+
+                    blink_time = null;
+
+                }
+                splashAnimation.stop();
                 if (create_account_edittext_email.getText().toString().equals("")) {
 
 
@@ -371,6 +385,15 @@ public class DoSomeThingCreateAccount extends Activity {
             public void onClick(View v) {
                 layout_walkthrough_account_create.setVisibility(View.GONE);
                 sharedPreferences.setWalkThroughCreate(context, "true");
+                if (blink_time != null) {
+
+                    blink_time.cancel();
+
+
+                    blink_time = null;
+
+                }
+                splashAnimation.stop();
 
 
             }
@@ -580,6 +603,36 @@ public class DoSomeThingCreateAccount extends Activity {
 
         }
     }
+
+
+
+    class Blink_progress extends TimerTask{
+
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+
+                public void run() {
+
+                    try {
+                        if (splashAnimation.isRunning()) {
+                            splashAnimation.stop();
+                        } else {
+                            splashAnimation.start();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // TODO Auto-generated catch block
+                    }
+
+
+                }
+
+            });
+        }
+    }
+
+
 
     private void onFblogin() {
 

@@ -734,11 +734,10 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="18dp"
                 android:id="@+id/walkthrough_profile_imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/tuto_points" />
+                android:layout_alignParentRight="true"/>
             <TextView
                 android:id="@+id/walkthrough_account_create_TextView"
                 android:background="@drawable/walkthrough_border"
@@ -765,13 +764,12 @@
         android:src="@drawable/walkthrough_profilesave"/>
     <ImageView
         android:id="@+id/walkthrough_profilesave_ImageView"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="18dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/tuto_points" />
+        android:layout_alignParentRight="true"/>
 
     <TextView
         android:id="@+id/walkthrough_profilesave_TextView"

@@ -141,6 +141,8 @@ ImageView image_walkthrough_chat;
     private String datetime;
     private String datetime_device;
     private LinearLayoutManager layoutManager;
+    private AnimationDrawable splashAnimation_chat;
+    private Timer blink_time;
 
     /**
      * Use this factory method to create a new instance of
@@ -207,7 +209,12 @@ ImageView image_walkthrough_chat;
         activity_dosomething_chatcancel = (TextView) view.findViewById(R.id.activity_dosomething_chatcancel);
         dosomething_fragment_chat_messages_textview = (TextView) view.findViewById(R.id.dosomething_fragment_chat_messages_textview);
         activity_dosomething_chatbox_messagesent_button = (ImageView) view.findViewById(R.id.activity_dosomething_chatbox_messagesent_button);
+
+        image_walkthrough_chat.setBackgroundResource(R.drawable.blink_icon);
+        splashAnimation_chat = (AnimationDrawable) image_walkthrough_chat.getBackground();
+
         text_font_typeface();
+
 
 
 //        if (sharedPrefrences.getFriendFirstName(getActivity()).equals("Support")) {
@@ -220,12 +227,24 @@ ImageView image_walkthrough_chat;
 if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
 {
     layout_walkthrough_profile.setVisibility(View.VISIBLE);
+    blink_time = new Timer();
+    blink_time.schedule(new Blink_progress(), 0, 340);
+    splashAnimation_chat.start();
     sharedPrefrences.setWalkThroughchat(getActivity(),"true");
 }
         layout_walkthrough_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 layout_walkthrough_profile.setVisibility(View.GONE);
+                if (blink_time != null) {
+
+                    blink_time.cancel();
+
+
+                    blink_time = null;
+
+                }
+                splashAnimation_chat.stop();
                 sharedPrefrences.setWalkThroughchat(getActivity(),"true");
             }
         });
@@ -372,6 +391,35 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
             }
         });
         return view;
+    }
+
+
+
+
+    class Blink_progress extends TimerTask{
+
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+
+                public void run() {
+
+                    try {
+                        if (splashAnimation_chat.isRunning()) {
+                            splashAnimation_chat.stop();
+                        } else {
+                            splashAnimation_chat.start();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // TODO Auto-generated catch block
+                    }
+
+
+                }
+
+            });
+        }
     }
 
     public void fadeIn_menu() {

@@ -263,13 +263,11 @@
         android:layout_height="match_parent">
         <ImageView
             android:id="@+id/image_walkthrough_chat"
-            android:layout_marginBottom="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/tuto_points"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignLeft="@+id/textView"
-            android:layout_alignStart="@+id/textView" />
+            android:layout_alignLeft="@+id/textView_walkthrough_chat"
+            android:layout_alignStart="@+id/textView_walkthrough_chat" />
         <TextView
             android:background="@drawable/walkthrough_border"
             android:layout_width="210dp"
@@ -278,7 +276,7 @@
             android:gravity="center"
             android:textColor="@color/white"
             android:text="Do send them a message and\nLet's Do Something"
-            android:id="@+id/textView"
+            android:id="@+id/textView_walkthrough_chat"
             android:layout_marginBottom="138dp"
             android:layout_above="@+id/image_walkthrough_chat"
             android:layout_centerHorizontal="true" />

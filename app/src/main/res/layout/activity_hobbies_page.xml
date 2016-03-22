@@ -203,13 +203,12 @@
 
                 <ImageView
                     android:id="@+id/walkthrough_hobbies_ImageView"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginRight="18dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:src="@drawable/tuto_points" />
+                    android:layout_alignParentRight="true"/>
                 <TextView
                     android:id="@+id/walkthrough_hobbies_TextView"
                     android:layout_marginTop="16dp"

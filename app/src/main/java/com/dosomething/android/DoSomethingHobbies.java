@@ -118,6 +118,7 @@ public class DoSomethingHobbies extends AppCompatActivity {
     Handler handler = new Handler();
     Timer timer = new Timer();
     private AnimationDrawable splashAnimation;
+    private AnimationDrawable splashAnimation_walkthrough_hobbies;
     private ImageView kbv;
     private Dialog progress_bar;
     private ImageView progress_bar_imageview;
@@ -125,6 +126,8 @@ public class DoSomethingHobbies extends AppCompatActivity {
     RelativeLayout layout_walkthrough_profile;
     ImageView walkthrough_hobbies_ImageView;
 TextView walkthrough_hobbies_TextView;
+    private Timer blink_time;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,6 +183,9 @@ TextView walkthrough_hobbies_TextView;
         hobbies_page_gridview_hobbies_arts = (ExpandableHeightGridView) findViewById(R.id.hobbies_page_gridview_hobbies_arts);
         hobbies_page_gridview_hobbies_food = (ExpandableHeightGridView) findViewById(R.id.hobbies_page_gridview_hobbies_food);
         hobbies_page_gridview_hobbies_pets = (ExpandableHeightGridView) findViewById(R.id.hobbies_page_gridview_hobbies_pets);
+
+        walkthrough_hobbies_ImageView.setBackgroundResource(R.drawable.blink_icon);
+        splashAnimation_walkthrough_hobbies = (AnimationDrawable) walkthrough_hobbies_ImageView.getBackground();
         pd = new TransparentProgressDialog(context, getResources().getDrawable(R.drawable.loading));
 
         hobbies_page_gridview_hobbies_recreation = (ExpandableHeightGridView) findViewById(R.id.hobbies_page_gridview_hobbies_recreation);
@@ -208,6 +214,9 @@ TextView walkthrough_hobbies_TextView;
 
         if (sharedPrefrences.getWalkThroughhobbies(context).equals("false")) {
             layout_walkthrough_profile.setVisibility(View.VISIBLE);
+            blink_time = new Timer();
+            blink_time.schedule(new Blink_progress(), 0, 340);
+            splashAnimation_walkthrough_hobbies.start();
             sharedPrefrences.setWalkThroughHobbies(context,"true");
         }
         layout_walkthrough_profile.setOnClickListener(new View.OnClickListener() {
@@ -221,6 +230,7 @@ TextView walkthrough_hobbies_TextView;
         walkthrough_hobbies_ImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 layout_walkthrough_profile.setVisibility(View.GONE);
                 sharedPrefrences.setWalkThroughHobbies(context,"true");
                 bundle_list.clear();
@@ -252,7 +262,15 @@ TextView walkthrough_hobbies_TextView;
                         bundle_list.add(((MyApplication) getApplication()).getRecreation_hobbies().get(i).getImage_id_recreation());
                     }
                 }
+                if (blink_time != null) {
 
+                    blink_time.cancel();
+
+
+                    blink_time = null;
+
+                }
+                splashAnimation_walkthrough_hobbies.stop();
 
 //                bundle_list.addAll(hobbies_list_arts);
 //                bundle_list.addAll(hobbies_list_food);
@@ -1920,6 +1938,32 @@ TextView walkthrough_hobbies_TextView;
         }
     }
 
+
+    class Blink_progress extends TimerTask{
+
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+
+                public void run() {
+
+                    try {
+                        if (splashAnimation_walkthrough_hobbies.isRunning()) {
+                            splashAnimation_walkthrough_hobbies.stop();
+                        } else {
+                            splashAnimation_walkthrough_hobbies.start();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // TODO Auto-generated catch block
+                    }
+
+
+                }
+
+            });
+        }
+    }
 
     class AutoSlider extends TimerTask {
 
