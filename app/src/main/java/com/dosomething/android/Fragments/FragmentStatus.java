@@ -282,16 +282,21 @@ public class FragmentStatus extends Fragment {
     Handler handler = new Handler();
     Timer timer = new Timer();
     private AnimationDrawable splashAnimation;
-    private AnimationDrawable splashAnimation_activity;
+    private AnimationDrawable splashAnimation_home,splashAnimation_activity1,splashAnimation_activity2,splashAnimation_activity3;
     private ImageView kbv;
     RelativeLayout relativelayout_progressImage;
     RelativeLayout layout_walkthrough_profile;
     RelativeLayout layout_walkthrough_activity;
+    LinearLayout imagelayout_walkthrough_activity;
+    ImageView image1_walkthrough_activity;
+    ImageView image2_walkthrough_activity;
+    ImageView image3_walkthrough_activity;
     private Activity_Dosomething_Adapter activity_dosomething_adapter;
     private RelativeLayout layout_walkthrough_home;
     private ImageView imageview_walkthrough_home;
     private TextView textview_walkthrough_home;
-    private Timer blink_time;
+    private Timer blink_time,activity_blink1,activity_blink2,activity_blink3;
+    private TextView walkthrough_activity_TextView;
 
 
     /**
@@ -481,8 +486,21 @@ public class FragmentStatus extends Fragment {
         imageview_walkthrough_home=(ImageView)view.findViewById(R.id.imageview_walkthrough_home);
         textview_walkthrough_home=(TextView)view.findViewById(R.id.textview_walkthrough_home);
         layout_walkthrough_activity = (RelativeLayout) view.findViewById(R.id.layout_walkthrough_activity);
+        image1_walkthrough_activity=(ImageView)view.findViewById(R.id.image1_walkthrough_activity);
+        image2_walkthrough_activity=(ImageView)view.findViewById(R.id.image2_walkthrough_activity);
+        image3_walkthrough_activity=(ImageView)view.findViewById(R.id.image3_walkthrough_activity);
+        walkthrough_activity_TextView=(TextView)view.findViewById(R.id.walkthrough_activity_TextView);
+
+
+        image1_walkthrough_activity.setBackgroundResource(R.drawable.blink_icon);
+        image2_walkthrough_activity.setBackgroundResource(R.drawable.blink_icon);
+        image3_walkthrough_activity.setBackgroundResource(R.drawable.blink_icon);
+        splashAnimation_activity1 = (AnimationDrawable) image1_walkthrough_activity.getBackground();
+        splashAnimation_activity2 = (AnimationDrawable) image2_walkthrough_activity.getBackground();
+        splashAnimation_activity3 = (AnimationDrawable) image3_walkthrough_activity.getBackground();
         imageview_walkthrough_home.setBackgroundResource(R.drawable.blink_icon);
-        splashAnimation_activity = (AnimationDrawable) imageview_walkthrough_home.getBackground();
+        splashAnimation_home = (AnimationDrawable) imageview_walkthrough_home.getBackground();
+
         text_font_typeface();
         dbAdapter.open();
         final int countStatus = dbAdapter.getStatusCount();
@@ -496,16 +514,42 @@ public class FragmentStatus extends Fragment {
 
 
 
-            layout_walkthrough_activity.setOnClickListener(new View.OnClickListener() {
+            /*layout_walkthrough_activity.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     layout_walkthrough_activity.setVisibility(View.GONE);
+                    if (activity_blink1 != null) {
 
+                        activity_blink1.cancel();
+
+
+                        activity_blink1 = null;
+
+                    }
+                    splashAnimation_activity1.stop();
+                    if (activity_blink2 != null) {
+
+                        activity_blink2.cancel();
+
+
+                        activity_blink2 = null;
+
+                    }
+                    splashAnimation_activity2.stop();
+                    if (activity_blink3 != null) {
+
+                        activity_blink3.cancel();
+
+
+                        activity_blink3 = null;
+
+                    }
+                    splashAnimation_activity3.stop();
                     sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
 
                 }
             });
-
+*/
             if (countStatus == 12) {
 
                 dbAdapter.open();
@@ -628,7 +672,7 @@ public class FragmentStatus extends Fragment {
                     blink_time = null;
 
                 }
-                splashAnimation_activity.stop();
+                splashAnimation_home.stop();
                 sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
             }
         });
@@ -1238,7 +1282,7 @@ public class FragmentStatus extends Fragment {
                         blink_time = null;
 
                     }
-                    splashAnimation_activity.stop();
+                    splashAnimation_home.stop();
                     sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
 
                     if (count <= 3 && count != 0) {
@@ -1299,10 +1343,86 @@ public class FragmentStatus extends Fragment {
                 public void run() {
 
                     try {
-                        if (splashAnimation_activity.isRunning()) {
-                            splashAnimation_activity.stop();
+                        if (splashAnimation_home.isRunning()) {
+                            splashAnimation_home.stop();
                         } else {
-                            splashAnimation_activity.start();
+                            splashAnimation_home.start();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // TODO Auto-generated catch block
+                    }
+
+
+                }
+
+            });
+        }
+    }
+
+    class Activity_Blink1 extends TimerTask{
+
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+
+                public void run() {
+
+                    try {
+                        if (splashAnimation_activity1.isRunning()) {
+                            splashAnimation_activity1.stop();
+                        } else {
+                            splashAnimation_activity1.start();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // TODO Auto-generated catch block
+                    }
+
+
+                }
+
+            });
+        }
+    }
+    class Activity_Blink2 extends TimerTask{
+
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+
+                public void run() {
+
+                    try {
+                        if (splashAnimation_activity2.isRunning()) {
+                            splashAnimation_activity2.stop();
+                        } else {
+                            splashAnimation_activity2.start();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // TODO Auto-generated catch block
+                    }
+
+
+                }
+
+            });
+        }
+    }
+    class Activity_Blink3 extends TimerTask{
+
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+
+                public void run() {
+
+                    try {
+                        if (splashAnimation_activity3.isRunning()) {
+                            splashAnimation_activity3.stop();
+                        } else {
+                            splashAnimation_activity3.start();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1334,6 +1454,7 @@ public class FragmentStatus extends Fragment {
         status_dosomething_text2.setTypeface(patron_bold);
         status_dosomething_text3.setTypeface(patron_bold);
         textview_walkthrough_home.setTypeface(patron_regular);
+        walkthrough_activity_TextView.setTypeface(patron_regular);
 //        status_TextView_running.setTypeface(patron_bold);
 
 //        status_TextView_beach.setTypeface(patron_bold);
@@ -1963,14 +2084,8 @@ public class FragmentStatus extends Fragment {
 
                         if (allowClick) {
 
-                            if (sharedPrefrences.getWalkThroughHomescreen(getActivity()).equals("false")) {
-                                layout_walkthrough_home.setVisibility(View.VISIBLE);
-                                blink_time = new Timer();
-                                blink_time.schedule(new Blink_progress(), 0, 340);
-                                splashAnimation_activity.start();
-                                sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
 
-                            }
+
 
                             MediaPlayer mp = MediaPlayer.create(getActivity(), R.raw.click_one);
 
@@ -2008,6 +2123,64 @@ public class FragmentStatus extends Fragment {
                                                 count++;
 
                                                 Log.d("counnnntttttttttttttt", String.valueOf(count));
+
+                                                if(count>=1)
+                                                {
+                                                    image1_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink1 != null) {
+
+                                                        activity_blink1.cancel();
+
+
+                                                        activity_blink1 = null;
+
+                                                    }
+                                                    splashAnimation_activity1.stop();
+                                                }
+
+
+                                                if(count>=2)
+                                                {
+                                                    image2_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink2 != null) {
+
+                                                        activity_blink2.cancel();
+
+
+                                                        activity_blink2 = null;
+
+                                                    }
+                                                    splashAnimation_activity2.stop();
+                                                }
+
+
+                                                if(count>=3)
+                                                {
+
+
+                                                    layout_walkthrough_activity.setVisibility(View.GONE);
+                                                    image3_walkthrough_activity.setVisibility(View.GONE);
+                                                    sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
+                                                    if (activity_blink3 != null) {
+
+                                                        activity_blink3.cancel();
+
+
+                                                        activity_blink3 = null;
+
+                                                    }
+                                                    splashAnimation_activity3.stop();
+
+
+                                                    if (sharedPrefrences.getWalkThroughHomescreen(getActivity()).equals("false")) {
+                                                        layout_walkthrough_home.setVisibility(View.VISIBLE);
+                                                        blink_time = new Timer();
+                                                        blink_time.schedule(new Blink_progress(), 0, 340);
+                                                        splashAnimation_home.start();
+                                                        sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
+
+                                                    }
+                                                }
 
 
                                                 aQuery.id(holder.activity_dosomething_status_imageview).image(img_list.get(position).getImag_Active(), true, true, 0, 0, new BitmapAjaxCallback() {
@@ -2159,6 +2332,64 @@ public class FragmentStatus extends Fragment {
                                                 Log.d("counnnntttttttttttttt", String.valueOf(count));
 
 
+                                                if(count>=1)
+                                                {
+                                                    image1_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink1 != null) {
+
+                                                        activity_blink1.cancel();
+
+
+                                                        activity_blink1 = null;
+
+                                                    }
+                                                    splashAnimation_activity1.stop();
+                                                }
+
+
+                                                if(count>=2)
+                                                {
+                                                    image2_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink2 != null) {
+
+                                                        activity_blink2.cancel();
+
+
+                                                        activity_blink2 = null;
+
+                                                    }
+                                                    splashAnimation_activity2.stop();
+                                                }
+
+
+                                                if(count>=3)
+                                                {
+
+
+                                                    layout_walkthrough_activity.setVisibility(View.GONE);
+                                                    image3_walkthrough_activity.setVisibility(View.GONE);
+                                                    sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
+                                                    if (activity_blink3 != null) {
+
+                                                        activity_blink3.cancel();
+
+
+                                                        activity_blink3 = null;
+
+                                                    }
+                                                    splashAnimation_activity3.stop();
+
+
+                                                    if (sharedPrefrences.getWalkThroughHomescreen(getActivity()).equals("false")) {
+                                                        layout_walkthrough_home.setVisibility(View.VISIBLE);
+                                                        blink_time = new Timer();
+                                                        blink_time.schedule(new Blink_progress(), 0, 340);
+                                                        splashAnimation_home.start();
+                                                        sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
+
+                                                    }
+                                                }
+
                                                 BitmapAjaxCallback.setCacheLimit(50);
 
 
@@ -2218,7 +2449,7 @@ public class FragmentStatus extends Fragment {
 
                                         count--;
 
-                                        Log.d("counnnntttttttttttttt", img_list.get(position).getImage_name());
+                                        Log.d("counnnntttttttttttttt",String.valueOf(count));
 
 
                                         holder.activity_dosomething_status_textview.setText(img_list.get(position).getImage_name());
@@ -2310,6 +2541,64 @@ public class FragmentStatus extends Fragment {
                                                 count++;
 
                                                 Log.d("counnnntttttttttttttt", String.valueOf(count));
+
+                                                if(count>=1)
+                                                {
+                                                    image1_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink1 != null) {
+
+                                                        activity_blink1.cancel();
+
+
+                                                        activity_blink1 = null;
+
+                                                    }
+                                                    splashAnimation_activity1.stop();
+                                                }
+
+
+                                                if(count>=2)
+                                                {
+                                                    image2_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink2 != null) {
+
+                                                        activity_blink2.cancel();
+
+
+                                                        activity_blink2 = null;
+
+                                                    }
+                                                    splashAnimation_activity2.stop();
+                                                }
+
+
+                                                if(count>=3)
+                                                {
+
+
+                                                    layout_walkthrough_activity.setVisibility(View.GONE);
+                                                    image3_walkthrough_activity.setVisibility(View.GONE);
+                                                    sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
+                                                    if (activity_blink3 != null) {
+
+                                                        activity_blink3.cancel();
+
+
+                                                        activity_blink3 = null;
+
+                                                    }
+                                                    splashAnimation_activity3.stop();
+
+
+                                                    if (sharedPrefrences.getWalkThroughHomescreen(getActivity()).equals("false")) {
+                                                        layout_walkthrough_home.setVisibility(View.VISIBLE);
+                                                        blink_time = new Timer();
+                                                        blink_time.schedule(new Blink_progress(), 0, 340);
+                                                        splashAnimation_home.start();
+                                                        sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
+
+                                                    }
+                                                }
 
 
                                                 aQuery.id(holder.activity_dosomething_status_imageview).image(img_list.get(position).getImag_Active(), true, true, 0, 0, new BitmapAjaxCallback() {
@@ -2458,6 +2747,64 @@ public class FragmentStatus extends Fragment {
                                                 count++;
 
                                                 Log.d("counnnntttttttttttttt", String.valueOf(count));
+
+                                                if(count>=1)
+                                                {
+                                                    image1_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink1 != null) {
+
+                                                        activity_blink1.cancel();
+
+
+                                                        activity_blink1 = null;
+
+                                                    }
+                                                    splashAnimation_activity1.stop();
+                                                }
+
+
+                                                if(count>=2)
+                                                {
+                                                    image2_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink2 != null) {
+
+                                                        activity_blink2.cancel();
+
+
+                                                        activity_blink2 = null;
+
+                                                    }
+                                                    splashAnimation_activity2.stop();
+                                                }
+
+
+                                                if(count>=3)
+                                                {
+
+
+                                                    layout_walkthrough_activity.setVisibility(View.GONE);
+                                                    image3_walkthrough_activity.setVisibility(View.GONE);
+                                                    sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
+                                                    if (activity_blink3 != null) {
+
+                                                        activity_blink3.cancel();
+
+
+                                                        activity_blink3 = null;
+
+                                                    }
+                                                    splashAnimation_activity3.stop();
+
+
+                                                    if (sharedPrefrences.getWalkThroughHomescreen(getActivity()).equals("false")) {
+                                                        layout_walkthrough_home.setVisibility(View.VISIBLE);
+                                                        blink_time = new Timer();
+                                                        blink_time.schedule(new Blink_progress(), 0, 340);
+                                                        splashAnimation_home.start();
+                                                        sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
+
+                                                    }
+                                                }
 
 
                                                 aQuery.id(holder.activity_dosomething_status_imageview).image(img_list.get(position).getImag_Active(), true, true, 0, 0, new BitmapAjaxCallback() {
@@ -2609,6 +2956,64 @@ public class FragmentStatus extends Fragment {
                                                 Log.d("counnnntttttttttttttt", String.valueOf(count));
 
 
+                                                if(count>=1)
+                                                {
+                                                    image1_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink1 != null) {
+
+                                                        activity_blink1.cancel();
+
+
+                                                        activity_blink1 = null;
+
+                                                    }
+                                                    splashAnimation_activity1.stop();
+                                                }
+
+
+                                                if(count>=2)
+                                                {
+                                                    image2_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink2 != null) {
+
+                                                        activity_blink2.cancel();
+
+
+                                                        activity_blink2 = null;
+
+                                                    }
+                                                    splashAnimation_activity2.stop();
+                                                }
+
+
+                                                if(count>=3)
+                                                {
+
+
+                                                    layout_walkthrough_activity.setVisibility(View.GONE);
+                                                    image3_walkthrough_activity.setVisibility(View.GONE);
+                                                    sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
+                                                    if (activity_blink3 != null) {
+
+                                                        activity_blink3.cancel();
+
+
+                                                        activity_blink3 = null;
+
+                                                    }
+                                                    splashAnimation_activity3.stop();
+
+
+                                                    if (sharedPrefrences.getWalkThroughHomescreen(getActivity()).equals("false")) {
+                                                        layout_walkthrough_home.setVisibility(View.VISIBLE);
+                                                        blink_time = new Timer();
+                                                        blink_time.schedule(new Blink_progress(), 0, 340);
+                                                        splashAnimation_home.start();
+                                                        sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
+
+                                                    }
+                                                }
+
                                                 aQuery.id(holder.activity_dosomething_status_imageview).image(img_list.get(position).getImag_Active(), true, true, 0, 0, new BitmapAjaxCallback() {
 
                                                     @Override
@@ -2756,6 +3161,64 @@ public class FragmentStatus extends Fragment {
                                                 count++;
 
                                                 Log.d("counnnntttttttttttttt", String.valueOf(count));
+
+                                                if(count>=1)
+                                                {
+                                                    image1_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink1 != null) {
+
+                                                        activity_blink1.cancel();
+
+
+                                                        activity_blink1 = null;
+
+                                                    }
+                                                    splashAnimation_activity1.stop();
+                                                }
+
+
+                                                if(count>=2)
+                                                {
+                                                    image2_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink2 != null) {
+
+                                                        activity_blink2.cancel();
+
+
+                                                        activity_blink2 = null;
+
+                                                    }
+                                                    splashAnimation_activity2.stop();
+                                                }
+
+
+                                                if(count>=3)
+                                                {
+
+
+                                                    layout_walkthrough_activity.setVisibility(View.GONE);
+                                                    image3_walkthrough_activity.setVisibility(View.GONE);
+                                                    sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
+                                                    if (activity_blink3 != null) {
+
+                                                        activity_blink3.cancel();
+
+
+                                                        activity_blink3 = null;
+
+                                                    }
+                                                    splashAnimation_activity3.stop();
+
+
+                                                    if (sharedPrefrences.getWalkThroughHomescreen(getActivity()).equals("false")) {
+                                                        layout_walkthrough_home.setVisibility(View.VISIBLE);
+                                                        blink_time = new Timer();
+                                                        blink_time.schedule(new Blink_progress(), 0, 340);
+                                                        splashAnimation_home.start();
+                                                        sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
+
+                                                    }
+                                                }
 
 
                                                 aQuery.id(holder.activity_dosomething_status_imageview).image(img_list.get(position).getImag_Active(), true, true, 0, 0, new BitmapAjaxCallback() {
@@ -2906,6 +3369,65 @@ public class FragmentStatus extends Fragment {
                                                 Log.d("counnnntttttttttttttt", String.valueOf(count));
 
 
+                                                if(count>=1)
+                                                {
+                                                    image1_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink1 != null) {
+
+                                                        activity_blink1.cancel();
+
+
+                                                        activity_blink1 = null;
+
+                                                    }
+                                                    splashAnimation_activity1.stop();
+                                                }
+
+
+                                                if(count>=2)
+                                                {
+                                                    image2_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink2 != null) {
+
+                                                        activity_blink2.cancel();
+
+
+                                                        activity_blink2 = null;
+
+                                                    }
+                                                    splashAnimation_activity2.stop();
+                                                }
+
+
+                                                if(count>=3)
+                                                {
+
+
+                                                    layout_walkthrough_activity.setVisibility(View.GONE);
+                                                    image3_walkthrough_activity.setVisibility(View.GONE);
+                                                    sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
+                                                    if (activity_blink3 != null) {
+
+                                                        activity_blink3.cancel();
+
+
+                                                        activity_blink3 = null;
+
+                                                    }
+                                                    splashAnimation_activity3.stop();
+
+
+                                                    if (sharedPrefrences.getWalkThroughHomescreen(getActivity()).equals("false")) {
+                                                        layout_walkthrough_home.setVisibility(View.VISIBLE);
+                                                        blink_time = new Timer();
+                                                        blink_time.schedule(new Blink_progress(), 0, 340);
+                                                        splashAnimation_home.start();
+                                                        sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
+
+                                                    }
+                                                }
+
+
                                                 aQuery.id(holder.activity_dosomething_status_imageview).image(img_list.get(position).getImag_Active(), true, true, 0, 0, new BitmapAjaxCallback() {
 
                                                     @Override
@@ -3051,6 +3573,64 @@ public class FragmentStatus extends Fragment {
 
                                                 Log.d("counnnntttttttttttttt", String.valueOf(count));
 
+                                                if(count>=1)
+                                                {
+                                                    image1_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink1 != null) {
+
+                                                        activity_blink1.cancel();
+
+
+                                                        activity_blink1 = null;
+
+                                                    }
+                                                    splashAnimation_activity1.stop();
+                                                }
+
+
+                                                if(count>=2)
+                                                {
+                                                    image2_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink2 != null) {
+
+                                                        activity_blink2.cancel();
+
+
+                                                        activity_blink2 = null;
+
+                                                    }
+                                                    splashAnimation_activity2.stop();
+                                                }
+
+
+                                                if(count>=3)
+                                                {
+
+
+                                                    layout_walkthrough_activity.setVisibility(View.GONE);
+                                                    image3_walkthrough_activity.setVisibility(View.GONE);
+                                                    sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
+                                                    if (activity_blink3 != null) {
+
+                                                        activity_blink3.cancel();
+
+
+                                                        activity_blink3 = null;
+
+                                                    }
+                                                    splashAnimation_activity3.stop();
+
+
+                                                    if (sharedPrefrences.getWalkThroughHomescreen(getActivity()).equals("false")) {
+                                                        layout_walkthrough_home.setVisibility(View.VISIBLE);
+                                                        blink_time = new Timer();
+                                                        blink_time.schedule(new Blink_progress(), 0, 340);
+                                                        splashAnimation_home.start();
+                                                        sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
+
+                                                    }
+                                                }
+
 
                                                 aQuery.id(holder.activity_dosomething_status_imageview).image(img_list.get(position).getImag_Active(), true, true, 0, 0, new BitmapAjaxCallback() {
 
@@ -3190,6 +3770,63 @@ public class FragmentStatus extends Fragment {
 
                                                 Log.d("counnnntttttttttttttt", String.valueOf(count));
 
+                                                if(count>=1)
+                                                {
+                                                    image1_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink1 != null) {
+
+                                                        activity_blink1.cancel();
+
+
+                                                        activity_blink1 = null;
+
+                                                    }
+                                                    splashAnimation_activity1.stop();
+                                                }
+
+
+                                                if(count>=2)
+                                                {
+                                                    image2_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink2 != null) {
+
+                                                        activity_blink2.cancel();
+
+
+                                                        activity_blink2 = null;
+
+                                                    }
+                                                    splashAnimation_activity2.stop();
+                                                }
+
+
+                                                if(count>=3)
+                                                {
+
+
+                                                    layout_walkthrough_activity.setVisibility(View.GONE);
+                                                    image3_walkthrough_activity.setVisibility(View.GONE);
+                                                    sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
+                                                    if (activity_blink3 != null) {
+
+                                                        activity_blink3.cancel();
+
+
+                                                        activity_blink3 = null;
+
+                                                    }
+                                                    splashAnimation_activity3.stop();
+
+
+                                                    if (sharedPrefrences.getWalkThroughHomescreen(getActivity()).equals("false")) {
+                                                        layout_walkthrough_home.setVisibility(View.VISIBLE);
+                                                        blink_time = new Timer();
+                                                        blink_time.schedule(new Blink_progress(), 0, 340);
+                                                        splashAnimation_home.start();
+                                                        sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
+
+                                                    }
+                                                }
 
                                                 aQuery.id(holder.activity_dosomething_status_imageview).image(img_list.get(position).getImag_Active(), true, true, 0, 0, new BitmapAjaxCallback() {
 
@@ -3329,6 +3966,64 @@ public class FragmentStatus extends Fragment {
                                                 count++;
 
                                                 Log.d("counnnntttttttttttttt", String.valueOf(count));
+
+                                                if(count>=1)
+                                                {
+                                                    image1_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink1 != null) {
+
+                                                        activity_blink1.cancel();
+
+
+                                                        activity_blink1 = null;
+
+                                                    }
+                                                    splashAnimation_activity1.stop();
+                                                }
+
+
+                                                if(count>=2)
+                                                {
+                                                    image2_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink2 != null) {
+
+                                                        activity_blink2.cancel();
+
+
+                                                        activity_blink2 = null;
+
+                                                    }
+                                                    splashAnimation_activity2.stop();
+                                                }
+
+
+                                                if(count>=3)
+                                                {
+
+
+                                                    layout_walkthrough_activity.setVisibility(View.GONE);
+                                                    image3_walkthrough_activity.setVisibility(View.GONE);
+                                                    sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
+                                                    if (activity_blink3 != null) {
+
+                                                        activity_blink3.cancel();
+
+
+                                                        activity_blink3 = null;
+
+                                                    }
+                                                    splashAnimation_activity3.stop();
+
+
+                                                    if (sharedPrefrences.getWalkThroughHomescreen(getActivity()).equals("false")) {
+                                                        layout_walkthrough_home.setVisibility(View.VISIBLE);
+                                                        blink_time = new Timer();
+                                                        blink_time.schedule(new Blink_progress(), 0, 340);
+                                                        splashAnimation_home.start();
+                                                        sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
+
+                                                    }
+                                                }
 
 
                                                 aQuery.id(holder.activity_dosomething_status_imageview).image(img_list.get(position).getImag_Active(), true, true, 0, 0, new BitmapAjaxCallback() {
@@ -3473,6 +4168,64 @@ public class FragmentStatus extends Fragment {
 
                                                 Log.d("counnnntttttttttttttt", String.valueOf(count));
 
+                                                if(count>=1)
+                                                {
+                                                    image1_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink1 != null) {
+
+                                                        activity_blink1.cancel();
+
+
+                                                        activity_blink1 = null;
+
+                                                    }
+                                                    splashAnimation_activity1.stop();
+                                                }
+
+
+                                                if(count>=2)
+                                                {
+                                                    image2_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink2 != null) {
+
+                                                        activity_blink2.cancel();
+
+
+                                                        activity_blink2 = null;
+
+                                                    }
+                                                    splashAnimation_activity2.stop();
+                                                }
+
+
+                                                if(count>=3)
+                                                {
+
+
+                                                    layout_walkthrough_activity.setVisibility(View.GONE);
+                                                    image3_walkthrough_activity.setVisibility(View.GONE);
+                                                    sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
+                                                    if (activity_blink3 != null) {
+
+                                                        activity_blink3.cancel();
+
+
+                                                        activity_blink3 = null;
+
+                                                    }
+                                                    splashAnimation_activity3.stop();
+
+
+                                                    if (sharedPrefrences.getWalkThroughHomescreen(getActivity()).equals("false")) {
+                                                        layout_walkthrough_home.setVisibility(View.VISIBLE);
+                                                        blink_time = new Timer();
+                                                        blink_time.schedule(new Blink_progress(), 0, 340);
+                                                        splashAnimation_home.start();
+                                                        sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
+
+                                                    }
+                                                }
+
 
                                                 aQuery.id(holder.activity_dosomething_status_imageview).image(img_list.get(position).getImag_Active(), true, true, 0, 0, new BitmapAjaxCallback() {
 
@@ -3612,6 +4365,64 @@ public class FragmentStatus extends Fragment {
                                                 count++;
 
                                                 Log.d("counnnntttttttttttttt", String.valueOf(count));
+
+                                                if(count>=1)
+                                                {
+                                                    image1_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink1 != null) {
+
+                                                        activity_blink1.cancel();
+
+
+                                                        activity_blink1 = null;
+
+                                                    }
+                                                    splashAnimation_activity1.stop();
+                                                }
+
+
+                                                if(count>=2)
+                                                {
+                                                    image2_walkthrough_activity.setVisibility(View.GONE);
+                                                    if (activity_blink2 != null) {
+
+                                                        activity_blink2.cancel();
+
+
+                                                        activity_blink2 = null;
+
+                                                    }
+                                                    splashAnimation_activity2.stop();
+                                                }
+
+
+                                                if(count>=3)
+                                                {
+
+
+                                                    layout_walkthrough_activity.setVisibility(View.GONE);
+                                                    image3_walkthrough_activity.setVisibility(View.GONE);
+                                                    sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
+                                                    if (activity_blink3 != null) {
+
+                                                        activity_blink3.cancel();
+
+
+                                                        activity_blink3 = null;
+
+                                                    }
+                                                    splashAnimation_activity3.stop();
+
+
+                                                    if (sharedPrefrences.getWalkThroughHomescreen(getActivity()).equals("false")) {
+                                                        layout_walkthrough_home.setVisibility(View.VISIBLE);
+                                                        blink_time = new Timer();
+                                                        blink_time.schedule(new Blink_progress(), 0, 340);
+                                                        splashAnimation_home.start();
+                                                        sharedPrefrences.setWalkThroughHomescreen(getActivity(), "true");
+
+                                                    }
+                                                }
 
 
                                                 aQuery.id(holder.activity_dosomething_status_imageview).image(img_list.get(position).getImag_Active(), true, true, 0, 0, new BitmapAjaxCallback() {
@@ -3789,6 +4600,7 @@ public class FragmentStatus extends Fragment {
                             BitmapDrawable bd = new BitmapDrawable(bm);
 
                             iv.setBackgroundDrawable(bd);
+
 
                         }
 
@@ -4138,7 +4950,15 @@ public class FragmentStatus extends Fragment {
                             } else {
                                 if (sharedPrefrences.getWalkThroughActivity(getActivity()).equals("false")) {
                                     layout_walkthrough_activity.setVisibility(View.VISIBLE);
-
+                                    activity_blink1 = new Timer();
+                                    activity_blink1.schedule(new Activity_Blink1(), 0, 340);
+                                    splashAnimation_activity1.start();
+                                    activity_blink2 = new Timer();
+                                    activity_blink2.schedule(new Activity_Blink2(), 0, 340);
+                                    splashAnimation_activity2.start();
+                                    activity_blink3 = new Timer();
+                                    activity_blink3.schedule(new Activity_Blink3(), 0, 340);
+                                    splashAnimation_activity3.start();
                                     sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
                                 }
 

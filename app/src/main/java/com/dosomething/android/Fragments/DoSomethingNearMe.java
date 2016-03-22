@@ -164,6 +164,12 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
     Boolean isGridClick = false;
     RelativeLayout layout_walkthrough_profile;
     RelativeLayout layout_walkthrough_match;
+    ImageView imageview_walkthrough_match;
+    ImageView imageview_walkthrough_profile;
+    private AnimationDrawable splashAnimation_nearme,splashAnimation_match;
+    private Timer blink_time,blink_match;
+    private TextView text_walkthrough_profile;
+    private TextView textview_walkthrough_match;
 
     /**
      * Use this factory method to create a new instance of
@@ -207,9 +213,15 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
         relativelayout_nearme_retry = (RelativeLayout) view.findViewById(R.id.relativelayout_nearme_retry);
         layout_walkthrough_profile = (RelativeLayout) view.findViewById(R.id.layout_walkthrough_profile);
         layout_walkthrough_match = (RelativeLayout) view.findViewById(R.id.layout_walkthrough_match);
+        text_walkthrough_profile=(TextView)view.findViewById(R.id.text_walkthrough_profile);
+        textview_walkthrough_match=(TextView)view.findViewById(R.id.textview_walkthrough_match);
+        imageview_walkthrough_profile = (ImageView) view.findViewById(R.id.imageview_walkthrough_profile);
+        imageview_walkthrough_match = (ImageView) view.findViewById(R.id.imageview_walkthrough_match);
         nearme_retry_image = (ImageView) view.findViewById(R.id.nearme_retry_image);
-
-
+        imageview_walkthrough_profile.setBackgroundResource(R.drawable.blink_icon);
+        splashAnimation_nearme = (AnimationDrawable) imageview_walkthrough_profile.getBackground();
+        imageview_walkthrough_match.setBackgroundResource(R.drawable.blink_icon);
+        splashAnimation_match = (AnimationDrawable) imageview_walkthrough_match.getBackground();
         relativelayout_nearme_progress = (RelativeLayout) view.findViewById(R.id.relativelayout_nearme_progress);
 
         kbv = (ImageView) view.findViewById(R.id.nearme_progress_image);
@@ -245,13 +257,13 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
 
         try {
             if (getActivity() != null) {
-                layout_walkthrough_match.setOnClickListener(new View.OnClickListener() {
+               /* layout_walkthrough_match.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         layout_walkthrough_match.setVisibility(View.GONE);
                         sharedPreferences.setWalkThroughMatch(getActivity(), "true");
                     }
-                });
+                });*/
                 progress_bar = new Dialog(getActivity());
                 progress_bar.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 progress_bar.setContentView(R.layout.progress_bar);
@@ -544,6 +556,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
         dosomething_nearme_matched_profile_name_textview.setTypeface(patron_bold);
         activity_dosomething_nearme_textview_nouser.setTypeface(patron_bold);
         dosomething_nearme_matched_profile_chat_dosomething_textview.setTypeface(patron_bold);
+        text_walkthrough_profile.setTypeface(patron_regular);
 
 
     }
@@ -634,6 +647,9 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
 
                     if (sharedPreferences.getWalkThroughMatch(getActivity()).equals("false")) {
                         layout_walkthrough_match.setVisibility(View.VISIBLE);
+                        blink_match = new Timer();
+                        blink_match.schedule(new Blink_match(), 0, 340);
+                        splashAnimation_match.start();
                         sharedPreferences.setWalkThroughMatch(getActivity(), "true");
                     }
 
@@ -692,6 +708,17 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                         @Override
                         public void onClick(View v) {
                             isGridClick = true;
+                            layout_walkthrough_match.setVisibility(View.GONE);
+                            if (blink_match != null) {
+
+                                blink_match.cancel();
+
+
+                                blink_match = null;
+
+                            }
+                            splashAnimation_match.stop();
+                            sharedPreferences.setWalkThroughMatch(getActivity(), "true");
                             dosomething_nearme_matched_profile_popup.setVisibility(View.GONE);
                             dosmething_nearuser_matched_grid_control = "";
                             dosomething_nearme_gridview_layout.setAlpha(1);
@@ -1530,7 +1557,17 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                     sessionid = sharedPreferences.getSessionid(getActivity());
                                     request_send_user_id = sharedPreferences.getFriendUserId(getActivity());
                                     chatstart = "";
+                                    layout_walkthrough_profile.setVisibility(View.GONE);
+                                    if (blink_time != null) {
 
+                                        blink_time.cancel();
+
+
+                                        blink_time = null;
+
+                                    }
+                                    splashAnimation_nearme.stop();
+                                    sharedPreferences.setWalkThroughNearme(getActivity(), "true");
                                     holder.activity_dosomething_nearme_ralativelayout.setBackgroundColor(getResources().getColor(android.R.color.white));
                                     holder.activity_dosomething_nearme_textview_request.setText("Request Send!");
                                     aQuery.id(holder.nearby_dosomething_image1).image(filterr_list.get(position).getImag_inActive(), true, true, 0, 0, new BitmapAjaxCallback() {
@@ -1709,7 +1746,17 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                     sessionid = sharedPreferences.getSessionid(getActivity());
                                     request_send_user_id = sharedPreferences.getFriendUserId(getActivity());
                                     chatstart = "";
+                                    layout_walkthrough_profile.setVisibility(View.GONE);
+                                    if (blink_time != null) {
 
+                                        blink_time.cancel();
+
+
+                                        blink_time = null;
+
+                                    }
+                                    splashAnimation_nearme.stop();
+                                    sharedPreferences.setWalkThroughNearme(getActivity(), "true");
                                     holder.activity_dosomething_nearme_ralativelayout.setBackgroundColor(getResources().getColor(R.color.red));
                                     holder.activity_dosomething_nearme_textview_request.setText("Send Request");
                                     holder.activity_dosomething_nearme_textview_request.setTextColor(getResources().getColor(R.color.white));
@@ -2269,17 +2316,29 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                 activity_dosomething_nearme_textview_nouser.setVisibility(View.GONE);
                                 if (sharedPreferences.getWalkThroughNearme(getActivity()).equals("false")) {
                                     layout_walkthrough_profile.setVisibility(View.VISIBLE);
+                                    blink_time = new Timer();
+                                    blink_time.schedule(new Blink_progress(), 0, 340);
+                                    splashAnimation_nearme.start();
                                     sharedPreferences.setWalkThroughNearme(getActivity(), "true");
                                 }
 
 
-                                layout_walkthrough_profile.setOnClickListener(new View.OnClickListener() {
+                                /*layout_walkthrough_profile.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         layout_walkthrough_profile.setVisibility(View.GONE);
+                                        if (blink_time != null) {
+
+                                            blink_time.cancel();
+
+
+                                            blink_time = null;
+
+                                        }
+                                        splashAnimation_nearme.stop();
                                         sharedPreferences.setWalkThroughNearme(getActivity(), "true");
                                     }
-                                });
+                                });*/
                           /*  if (dosmething_nearuser_matched_Api_staus.equals("matchedUser")) {
                                 activity_dosomething_nearme.setEnabled(false);
                                 dosomething_nearme_gridview_layout.setAlpha(0.1f);
@@ -2782,6 +2841,9 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                         dosomething_nearme_matched_profile_popup.setVisibility(View.VISIBLE);
                                         if (sharedPreferences.getWalkThroughMatch(getActivity()).equals("false")) {
                                             layout_walkthrough_match.setVisibility(View.VISIBLE);
+                                            blink_match = new Timer();
+                                            blink_match.schedule(new Blink_match(), 0, 340);
+                                            splashAnimation_match.start();
                                             sharedPreferences.setWalkThroughMatch(getActivity(), "true");
                                         }
                                         dosomething_nearme_matched_profile_name_textview.setText("You and " + Name + " " + "are a match \n\n Start Chatting to");
@@ -3312,5 +3374,62 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
     public void onStop() {
         super.onStop();
         Log.d("dosomething", "stop");
+    }
+
+
+
+
+    class Blink_progress extends TimerTask{
+
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+
+                public void run() {
+
+                    try {
+                        if (splashAnimation_nearme.isRunning()) {
+                            splashAnimation_nearme.stop();
+                        } else {
+                            splashAnimation_nearme.start();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // TODO Auto-generated catch block
+                    }
+
+
+                }
+
+            });
+        }
+    }
+
+
+
+    class Blink_match extends TimerTask{
+
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable() {
+
+                public void run() {
+
+                    try {
+                        if (splashAnimation_match.isRunning()) {
+                            splashAnimation_match.stop();
+                        } else {
+                            splashAnimation_match.start();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        // TODO Auto-generated catch block
+                    }
+
+
+                }
+
+            });
+        }
     }
 }

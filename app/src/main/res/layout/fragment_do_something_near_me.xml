@@ -216,7 +216,6 @@
     </RelativeLayout>
     <RelativeLayout
         android:visibility="gone"
-        android:id="@+id/layout_walkthrough_profile"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -229,7 +228,6 @@
     </RelativeLayout>
     <RelativeLayout
         android:visibility="gone"
-        android:id="@+id/layout_walkthrough_match"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -239,5 +237,69 @@
             android:id="@+id/image_walkthrough_account_match"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/layout_walkthrough_profile"
+        android:background="@color/lite_blacktrans"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="38dp"
+            android:layout_marginEnd="38dp"
+            android:layout_marginBottom="60dp"
+            android:id="@+id/imageview_walkthrough_profile" />
+        <TextView
+            android:id="@+id/text_walkthrough_profile"
+            android:layout_width="200dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="62dp"
+            android:background="@drawable/walkthrough_border"
+            android:gravity="center"
+            android:text="Send a request to any user \n on the list"
+            android:textColor="@color/white"
+            android:layout_above="@+id/imageview_walkthrough_profile"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/layout_walkthrough_match"
+
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageview_walkthrough_match"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="120dp" />
+        <TextView
+            android:id="@+id/textview_walkthrough_match"
+
+            android:textSize="12sp"
+            android:layout_width="230dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:background="@drawable/walkthrough_border"
+            android:gravity="center"
+            android:text="Once there's match, pop up\nwill be shown. So let's 'Do Something'"
+            android:textColor="@color/white"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="25dp" />
     </RelativeLayout>
 </FrameLayout>

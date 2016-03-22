@@ -161,8 +161,7 @@
             android:layout_height="match_parent"
             android:visibility="gone">
 
-            <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -176,14 +175,14 @@
                     android:orientation="vertical">
 
                     <GridView
-                        android:visibility="visible"
                         android:id="@+id/dosomething_activity_status_gridview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:columnWidth="@dimen/tab_max_width"
                         android:gravity="center"
-                        android:numColumns="3"/>
+                        android:numColumns="3"
+                        android:visibility="visible" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -194,75 +193,75 @@
 
                         <LinearLayout
                             android:id="@+id/status_dosomething_layout1"
-                            android:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/status_dosomething_image1"
                                 android:layout_width="70dp"
                                 android:layout_height="70dp"
-                                android:layout_gravity="center"/>
+                                android:layout_gravity="center" />
 
                             <TextView
                                 android:id="@+id/status_dosomething_text1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="CYCLING"
-                                android:textSize="18sp"
-                                android:textColor="@color/red" />
+                                android:textColor="@color/red"
+                                android:textSize="18sp" />
                         </LinearLayout>
 
                         <LinearLayout
-                            android:visibility="gone"
-android:id="@+id/status_dosomething_layout2"
+                            android:id="@+id/status_dosomething_layout2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/status_dosomething_image2"
                                 android:layout_width="70dp"
                                 android:layout_height="70dp"
-                                android:layout_gravity="center"/>
+                                android:layout_gravity="center" />
 
                             <TextView
                                 android:id="@+id/status_dosomething_text2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="CYCLING"
-                                android:textSize="18sp"
+                                android:textColor="@color/red"
 
-                                android:textColor="@color/red" />
+                                android:textSize="18sp" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/status_dosomething_layout3"
-                            android:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/status_dosomething_image3"
                                 android:layout_width="70dp"
                                 android:layout_height="70dp"
-                                android:layout_gravity="center"/>
+                                android:layout_gravity="center" />
 
                             <TextView
                                 android:id="@+id/status_dosomething_text3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="CYCLING"
-                                android:textSize="18sp"
-                                android:textColor="@color/red" />
+                                android:textColor="@color/red"
+                                android:textSize="18sp" />
                         </LinearLayout>
 
 
@@ -339,99 +338,138 @@ android:id="@+id/status_dosomething_layout2"
         </RelativeLayout>
 
 
-
-
         <RelativeLayout
-            android:background="@color/lite_whitetrans"
-            android:visibility="gone"
             android:id="@+id/relativelayout_progressImage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/lite_whitetrans"
+            android:visibility="gone">
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/status_progress_image"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
-                android:indeterminateOnly="false"
                 android:indeterminate="true"
-                />
+                android:indeterminateOnly="false"
+                android:visibility="gone" />
         </RelativeLayout>
+
         <RelativeLayout
-            android:background="@drawable/walkthrough_home"
-            android:visibility="gone"
             android:id="@+id/layout_walkthrough_home"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/walkthrough_home"
+            android:visibility="gone">
+
             <TextView
                 android:id="@+id/textview_walkthrough_home"
-                android:background="@drawable/walkthrough_border"
                 android:layout_width="250dp"
                 android:layout_height="70dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:text="Hit 'Let's Do Something' \nto get things started "
                 android:layout_above="@+id/imageview_walkthrough_home"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="70dp" />
+                android:layout_gravity="center"
+                android:layout_marginBottom="70dp"
+                android:background="@drawable/walkthrough_border"
+                android:gravity="center"
+                android:text="Hit 'Let's Do Something' \nto get things started "
+                android:textColor="@color/white" />
 
             <ImageView
                 android:id="@+id/imageview_walkthrough_home"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_centerInParent="true"
-                android:layout_alignParentBottom="true"/>
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true" />
         </RelativeLayout>
+
         <RelativeLayout
-            android:visibility="gone"
-            android:id="@+id/layout_walkthrough_activity"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <ImageView
-                android:background="@drawable/walkthrough_activity"
                 android:id="@+id/image_walkthrough_account_activity"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:background="@drawable/walkthrough_activity" />
         </RelativeLayout>
 
 
         <RelativeLayout
-            android:background="@drawable/walkthrough_home"
-            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/walkthrough_home"
+            android:visibility="gone">
 
 
             <TextView
                 android:id="@+id/walkthrough_account_create_TextView"
-                android:background="@drawable/walkthrough_border"
                 android:layout_width="250dp"
                 android:layout_height="70dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:layout_centerInParent="true"
                 android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
                 android:layout_marginBottom="50dp"
-                android:text="Insert your email and password \nto 'Create your Account"/>
+                android:background="@drawable/walkthrough_border"
+                android:gravity="center"
+                android:text="Insert your email and password \nto 'Create your Account"
+                android:textColor="@color/white" />
 
             <ImageView
                 android:id="@+id/walkthrough_account_create_imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
                 android:layout_marginBottom="10dp"
-                android:src="@drawable/tuto_points"/>
+                android:src="@drawable/tuto_points" />
 
 
         </RelativeLayout>
+<RelativeLayout
+    android:id="@+id/layout_walkthrough_activity"
+    android:visibility="gone"
+    android:background="@color/lite_blacktrans"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/image1_walkthrough_activity"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignTop="@+id/image2_walkthrough_activity"
+            android:layout_toLeftOf="@+id/walkthrough_activity_TextView"
+            android:layout_toStartOf="@+id/walkthrough_activity_TextView" />
+        <ImageView
+            android:id="@+id/image2_walkthrough_activity"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignTop="@+id/image3_walkthrough_activity"
+            android:layout_centerHorizontal="true" />
+        <ImageView
+            android:id="@+id/image3_walkthrough_activity"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="39dp"
+            android:layout_above="@+id/walkthrough_activity_TextView"
+            android:layout_toRightOf="@+id/walkthrough_activity_TextView"
+            android:layout_toEndOf="@+id/walkthrough_activity_TextView" />
+    <TextView
+        android:id="@+id/walkthrough_activity_TextView"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/walkthrough_border"
+        android:gravity="center"
+        android:text="Select any 3 activites"
+        android:textColor="@color/white" />
+</RelativeLayout>
 
     </RelativeLayout>
 

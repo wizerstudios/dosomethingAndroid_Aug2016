@@ -23,7 +23,7 @@ android {
         applicationId "com.dosomething.android"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 143
+        versionCode 145
         versionName "1.0"
         multiDexEnabled true
     }
