@@ -88,7 +88,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
     private OnFragmentInteractionListener mListener;
     RecyclerView activity_dosomething_nearme;
     boolean click_action = false;
@@ -170,6 +170,8 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
     private Timer blink_time, blink_match;
     private TextView text_walkthrough_profile;
     private TextView textview_walkthrough_match;
+    private boolean loading = true;
+    private int count = 1;
 
     /**
      * Use this factory method to create a new instance of
@@ -316,7 +318,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                     }
                 } else {
 
-
+                    filter_list=((MyApplication) getActivity().getApplication()).getListFilterBeans();
                    /* adapter = new ProfileAdapter(getActivity(), ((MyApplication) getActivity().getApplication()).getListFilterBeans());
                     activity_dosomething_nearme.setAdapter(adapter);
                     adapter.notifyDataSetChanged();*/
@@ -482,6 +484,78 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                 }
             }
         });*/
+
+
+        activity_dosomething_nearme.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+
+                if (dy > 0) //check for scroll down
+                {
+
+                    visibleItemCount = layoutManager.getChildCount();
+                    totalItemCount = layoutManager.getItemCount();
+                    pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
+
+
+
+
+
+                        if (loading) {
+                            if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                                pull_to_refresh_progress.setVisibility(View.VISIBLE);
+                                Log.v("...", "Last Item Wow !");
+
+                                loading = false;
+                                if (!sharedPreferences.getSessionid(getActivity()).equals("") || !sharedPreferences.getLatitude(getActivity()).equals("") || !sharedPreferences.getLongitude(getActivity()).equals("") && getActivity() != null) {
+
+                                    sessionid = sharedPreferences.getSessionid(getActivity());
+                                    latitude = sharedPreferences.getLatitude(getActivity());
+                                    longitude = sharedPreferences.getLongitude(getActivity());
+                                    filter_status = sharedPreferences.getFilterStatus(getActivity());
+                                    filter_gender = sharedPreferences.getFilterGender(getActivity());
+
+                                    Log.d("dosomething", "filter_distance" + sharedPreferences.getFilterDistance(getActivity()));
+
+                                    if (sharedPreferences.getFilterDistance(getActivity()).trim().equals("0.0-50.0")) {
+
+                                        filter_distance = "";
+                                        Log.d("dosomething", "filter_distance" + filter_distance);
+
+                                    } else {
+                                        filter_distance = sharedPreferences.getFilterDistance(getActivity());
+                                        Log.d("dosomething", "filter_distance" + filter_distance);
+
+                                    }
+                                    Log.d("dosomething", "filter_agerange" + sharedPreferences.getFilterAge(getActivity()));
+
+                                    if (sharedPreferences.getFilterAge(getActivity()).trim().equals("18.0-80.0")) {
+
+                                        filter_agerange = "";
+                                        Log.d("dosomething", "filter_agerange" + filter_agerange);
+                                    } else {
+                                        filter_agerange = sharedPreferences.getFilterAge(getActivity());
+                                        Log.d("dosomething", "filter_agerange" + filter_agerange);
+                                    }
+
+                                    page = String.valueOf(count++);
+                                    new AsynDataClass().execute();
+
+                                } else {
+                                    Toast.makeText(getActivity(), "null", Toast.LENGTH_SHORT).show();
+                                }
+
+
+                            }
+                        }
+
+                }
+            }
+        });
+
+
         nearme_profile_refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -496,9 +570,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                     filter_distance = sharedPreferences.getFilterDistance(getActivity());
                     filter_gender = sharedPreferences.getFilterGender(getActivity());
 
-                    if (filter_list != null) {
-                        filter_list.clear();
-                    }
+
                     if (dosomething_list != null) {
                         dosomething_list.clear();
                     }
@@ -1561,6 +1633,8 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
 
 
                                 if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
+                                    filter_list.get(position).setDoSomething("Yes");
+
                                     sharedPreferences.setFriendUserId(getActivity(), String.valueOf(filterr_list.get(position).getuser_id()));
                                     sessionid = sharedPreferences.getSessionid(getActivity());
                                     request_send_user_id = sharedPreferences.getFriendUserId(getActivity());
@@ -1626,6 +1700,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                         }
                                     });
                                     holder.activity_dosomething_nearme_textview_request.setTextColor(getResources().getColor(R.color.text_grey));
+
 
 
                                     new SendRequest().execute();
@@ -1737,7 +1812,10 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                             @Override
                             public void onClick(View v) {
                                 ((MyApplication) getActivity().getApplication()).setanInt(position);
+
                                 if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
+
+                                    filter_list.get(position).setDoSomething("No");
                                     sharedPreferences.setFriendUserId(getActivity(), String.valueOf(filterr_list.get(position).getuser_id()));
                                     sessionid = sharedPreferences.getSessionid(getActivity());
                                     request_send_user_id = sharedPreferences.getFriendUserId(getActivity());
@@ -1956,11 +2034,19 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
 //            pDialog.show();
 //            pd.show();
             dosmething_nearuser_matched_grid_control = "Click_false";
-            kbv.setVisibility(View.VISIBLE);
-            relativelayout_nearme_progress.setVisibility(View.VISIBLE);
-            timer = new Timer();
-            timer.schedule(new AutoSlider(), 0, 1350);
-            splashAnimation.start();
+            if(((MyApplication) getActivity().getApplication()).getListFilterBeans().size()==0)
+            {
+                kbv.setVisibility(View.VISIBLE);
+                relativelayout_nearme_progress.setVisibility(View.VISIBLE);
+                timer = new Timer();
+                timer.schedule(new AutoSlider(), 0, 1350);
+                splashAnimation.start();
+            }
+
+
+
+
+
 
             if (getActivity() != null) {
                 nearbyUser_Api_url = getActivity().getResources().getString(R.string.dosomething_apilink_string_nearestusers);
@@ -2013,6 +2099,10 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                             }
 
 
+                        }
+                        if(json_content.has("page"))
+                        {
+                            page = json_content.getString("page");
                         }
 
 
@@ -2294,7 +2384,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                     switch (status) {
                         case "success":
                             try {
-
+                                loading = true;
                                 kbv.setVisibility(View.GONE);
                                 relativelayout_nearme_progress.setVisibility(View.GONE);
                                 if (timer != null) {
@@ -2433,6 +2523,14 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                     int index = 0;
 
                                     pull_to_refresh_progress.setVisibility(View.GONE);
+
+
+
+
+
+
+
+
 
                                     /*activity_dosomething_nearme.setSelection(index);
                                     activity_dosomething_nearme.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -2832,7 +2930,17 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                             case "success":
 
                                 if (getActivity() != null) {
+                                    kbv.setVisibility(View.GONE);
+                                    relativelayout_nearme_progress.setVisibility(View.GONE);
+                                    if (timer != null) {
 
+                                        timer.cancel();
+
+
+                                        timer = null;
+
+                                    }
+                                    splashAnimation.stop();
                                     if (conversation_matched.equals("match")) {
                                         isGridClick = false;
                                         activity_dosomething_nearme.setEnabled(false);
@@ -2926,7 +3034,8 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                     }
 
 
-                                    latitude = sharedPreferences.getLatitude(getActivity());
+                                    profileViewAdapter.notifyDataSetChanged();
+                                    /*latitude = sharedPreferences.getLatitude(getActivity());
                                     longitude = sharedPreferences.getLongitude(getActivity());
                                     filter_status = sharedPreferences.getFilterStatus(getActivity());
                                     filter_agerange = sharedPreferences.getFilterAge(getActivity());
@@ -2938,24 +3047,15 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                     if (dosomething_list != null) {
                                         dosomething_list.clear();
                                     }
-                                /*progress_bar.dismiss();
-                                if (timer != null) {
-
-                                    timer.cancel();
 
 
-                                    timer = null;
-
-                                }
-                                splashAnimation_progress.stop();*/
-
-                                    new AsynDataClass().execute();
+                                    new AsynDataClass().execute();*/
                                 }
 
                                 break;
                             case "failed":
 
-                           /* progress_bar.dismiss();
+                            progress_bar.dismiss();
                             if (timer != null) {
 
                                 timer.cancel();
@@ -2964,12 +3064,12 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                 timer = null;
 
                             }
-                            splashAnimation_progress.stop();*/
+                            splashAnimation_progress.stop();
                                 break;
 
                             case "InvalidSession":
 
-                           /* progress_bar.dismiss();
+                            progress_bar.dismiss();
                             if (timer != null) {
 
                                 timer.cancel();
@@ -2978,7 +3078,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                 timer = null;
 
                             }
-                            splashAnimation_progress.stop();*/
+                            splashAnimation_progress.stop();
                                 sharedPreferences.setLogin(getActivity(), "");
                                 sharedPreferences.setEmail(getActivity(), "");
                                 sharedPreferences.setDateofBirth(getActivity(), "");
