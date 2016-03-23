@@ -1064,10 +1064,10 @@ public class DoSomethingStatus extends AppCompatActivity {
             status_ImageView_setting.setImageDrawable(getResources().getDrawable(R.drawable.setting));
 
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            if (somethingNearMe == null) {
+
                 somethingNearMe = new DoSomethingNearMe();
 //                        fragmentTransaction.setCustomAnimations(R.anim.slide_out, R.anim.slide_out);
-            }
+
             activity_dosomething_textview_toolbar_save.setVisibility(View.GONE);
             activity_dosomething_imageview_filter_icon.setVisibility(View.VISIBLE);
             fragmentTransaction.replace(R.id.detail_fragment, somethingNearMe);
@@ -1092,10 +1092,10 @@ public class DoSomethingStatus extends AppCompatActivity {
             status_ImageView_setting.setImageDrawable(getResources().getDrawable(R.drawable.setting));
 
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            if (somethingNearMe == null) {
+
                 somethingNearMe = new DoSomethingNearMe();
 //                        fragmentTransaction.setCustomAnimations(R.anim.slide_out, R.anim.slide_out);
-            }
+
             activity_dosomething_textview_toolbar_save.setVisibility(View.GONE);
             activity_dosomething_imageview_filter_icon.setVisibility(View.VISIBLE);
             fragmentTransaction.replace(R.id.detail_fragment, somethingNearMe);
@@ -2458,7 +2458,7 @@ public class DoSomethingStatus extends AppCompatActivity {
                 });
             }
         };
-        timer.schedule(doAsynchronousTask, 0, 30000); //execute in every 50000 ms
+        timer.schedule(doAsynchronousTask, 0, 7000); //execute in every 50000 ms
     }
 
 

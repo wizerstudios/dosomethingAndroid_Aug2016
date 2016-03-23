@@ -21,6 +21,7 @@ public class DBAdapter {
     private static final String DATABASE_NAME = "DoSomethingDatabase";
     private static final String DATABASE_TABLE = "DoSomethingStatus";
     private static final String DATABASE_TABLE_HOBBIES = "DoSomethingHobbies";
+    private static final String DATABASE_TABLE_NEARUSERS = "DoSomethingNearusers";
     private static final int DATABASE_VERSION = 1;
     private static final String KEY_IMAGEID = "statusimage_id";
     private static final String KEY_HOBBIESIMAGEID = "hobbies_id";
@@ -30,9 +31,12 @@ public class DBAdapter {
     private static final String KEY_IMAGEACTIVEURL = "statusimage_activeimage";
     private static final String KEY_HOBBIESIMAGEINACTIVEURL = "image";
     private static final String KEY_IMAGEINACTIVEURL = "statusimage_inactiveimage";
+
+
     private static final String KEY_HOBBIESIMAGEACTIVEURL = "image_active";
     private static final String DATABASE_CREATE_STATUS = "CREATE TABLE DoSomethingStatus(statusimage_id INTEGER,statusimage_name TEXT,statusimage_activeimage TEXT,statusimage_inactiveimage TEXT)";
     private static final String DATABASE_CREATE_HOBBIES = "CREATE TABLE DoSomethingHobbies(hobbies_id INTEGER UNIQUE,category_id INTEGER,name TEXT UNIQUE,image TEXT UNIQUE,image_active TEXT UNIQUE)";
+    private static final String DATABASE_CREATE_NEARUSERS = "CREATE TABLE DoSomethingNearusers(user_id INTEGER UNIQUE,first_name TEXT,last_name TEXT,about TEXT,gender TEXT,date_of_birth VARCHAR,hobbies VARCHAR,age INTEGER,available_now VARCHAR,online_status VARCHAR,image2 VARCHAR,image1 VARCHAR,image3 VARCHAR,dosomepoints INTEGER,onlinepoints INTEGER,)";
     private DatabaseHelper DBHelper;
     private SQLiteDatabase db;
 

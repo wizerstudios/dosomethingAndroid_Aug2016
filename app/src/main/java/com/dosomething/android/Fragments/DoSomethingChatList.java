@@ -190,6 +190,7 @@ public class DoSomethingChatList extends Fragment {
                 chatAdapter = new RecyclerAdapter(getActivity());
                 dosomething_fragment_chatlist.setAdapter(chatAdapter);
             } else {
+                chatAdapter.setHasStableIds(false);
                 chatAdapter.notifyDataSetChanged();
             }
 /*
@@ -336,13 +337,14 @@ chatAdapter.notifyDataSetChanged();
 
 
                         } catch (Exception e) {
+                            e.printStackTrace();
                             // TODO Auto-generated catch block
                         }
                     }
                 });
             }
         };
-        timer.schedule(doAsynchronousTask, 0, 10000); //execute in every 15 sec
+        timer.schedule(doAsynchronousTask, 0, 7000); //execute in every 15 sec
     }
 
 
@@ -588,6 +590,7 @@ chatAdapter.notifyDataSetChanged();
 
     class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.DataObjectHolder> {
         Activity activity;
+        private int lastPosition=listChatBeans.size()-1;
 
         public RecyclerAdapter(Activity activity) {
             super();
@@ -609,6 +612,7 @@ chatAdapter.notifyDataSetChanged();
             try
             {
                 final ChatBean chatBean = listChatBeans.get(listChatBeanIds.get(position));
+
                 holder.activity_dosomething_chatperson_name.setTypeface(patron_bold);
                 holder.activity_dosomething_chatperson_Tectview_delete.setTypeface(patron_regular);
                 holder.activity_dosomething_chatperson_Tectview_block.setTypeface(patron_regular);
@@ -801,6 +805,18 @@ try
                 activity_dosomething_chatperson_Tectview_delete = (TextView) itemview.findViewById(R.id.activity_dosomething_chatperson_Tectview_delete);
             }
         }
+
+
+        /*private void setAnimation(View viewToAnimate, int position)
+        {
+            // If the bound view wasn't previously displayed on screen, it's animated
+            if (position > lastPosition)
+            {
+                Animation animation = AnimationUtils.loadAnimation(activity, android.R.anim.slide_in_left);
+                viewToAnimate.startAnimation(animation);
+                lastPosition = position;
+            }
+        }*/
     }
 
 
@@ -1015,6 +1031,7 @@ try
                                             chatAdapter = new RecyclerAdapter(getActivity());
                                             dosomething_fragment_chatlist.setAdapter(chatAdapter);
                                         } else {
+                                            chatAdapter.setHasStableIds(false);
                                             chatAdapter.notifyDataSetChanged();
                                         }
                                         dosomething_fragment_chatlist.getItemAnimator().setSupportsChangeAnimations(false);

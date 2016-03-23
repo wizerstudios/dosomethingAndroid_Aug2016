@@ -166,8 +166,8 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
     RelativeLayout layout_walkthrough_match;
     ImageView imageview_walkthrough_match;
     ImageView imageview_walkthrough_profile;
-    private AnimationDrawable splashAnimation_nearme,splashAnimation_match;
-    private Timer blink_time,blink_match;
+    private AnimationDrawable splashAnimation_nearme, splashAnimation_match;
+    private Timer blink_time, blink_match;
     private TextView text_walkthrough_profile;
     private TextView textview_walkthrough_match;
 
@@ -213,8 +213,8 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
         relativelayout_nearme_retry = (RelativeLayout) view.findViewById(R.id.relativelayout_nearme_retry);
         layout_walkthrough_profile = (RelativeLayout) view.findViewById(R.id.layout_walkthrough_profile);
         layout_walkthrough_match = (RelativeLayout) view.findViewById(R.id.layout_walkthrough_match);
-        text_walkthrough_profile=(TextView)view.findViewById(R.id.text_walkthrough_profile);
-        textview_walkthrough_match=(TextView)view.findViewById(R.id.textview_walkthrough_match);
+        text_walkthrough_profile = (TextView) view.findViewById(R.id.text_walkthrough_profile);
+        textview_walkthrough_match = (TextView) view.findViewById(R.id.textview_walkthrough_match);
         imageview_walkthrough_profile = (ImageView) view.findViewById(R.id.imageview_walkthrough_profile);
         imageview_walkthrough_match = (ImageView) view.findViewById(R.id.imageview_walkthrough_match);
         nearme_retry_image = (ImageView) view.findViewById(R.id.nearme_retry_image);
@@ -237,7 +237,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
         nearme_profile_refreshlayout = (SwipeRefreshLayout) view.findViewById(R.id.nearme_profile_refreshlayout);
         activity_dosomething_nearme = (RecyclerView) view.findViewById(R.id.activity_dosomething_nearme);
         dosomething_nearme_matched_profile_popup = (RelativeLayout) view.findViewById(R.id.dosomething_nearme_matched_profile_popup);
-        dosomething_nearme_matched_profile_popup_layout=(LinearLayout)view.findViewById(R.id.dosomething_nearme_matched_profile_popup_layout);
+        dosomething_nearme_matched_profile_popup_layout = (LinearLayout) view.findViewById(R.id.dosomething_nearme_matched_profile_popup_layout);
         dosomething_nearme_matched_profile_userImage = (ImageView) view.findViewById(R.id.dosomething_nearme_matched_profile_userImage);
         dosomething_nearme_matched_profile_near_userImage = (ImageView) view.findViewById(R.id.dosomething_nearme_matched_profile_near_userImage);
         dosomething_nearme_matched_profile_name_textview = (TextView) view.findViewById(R.id.dosomething_nearme_matched_profile_name_textview);
@@ -278,7 +278,6 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
 
                     Log.d("dosomething", "nearme_list" + filter_list);
                     if (!sharedPreferences.getSessionid(getActivity()).equals("") || !sharedPreferences.getLatitude(getActivity()).equals("") || !sharedPreferences.getLongitude(getActivity()).equals("") && getActivity() != null) {
-
 
                         sessionid = sharedPreferences.getSessionid(getActivity());
                         latitude = sharedPreferences.getLatitude(getActivity());
@@ -321,10 +320,17 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                    /* adapter = new ProfileAdapter(getActivity(), ((MyApplication) getActivity().getApplication()).getListFilterBeans());
                     activity_dosomething_nearme.setAdapter(adapter);
                     adapter.notifyDataSetChanged();*/
+                    if (profileViewAdapter == null) {
+                        profileViewAdapter = new ProfileViewAdapter(getActivity(), ((MyApplication) getActivity().getApplication()).getListFilterBeans());
+                        activity_dosomething_nearme.setAdapter(profileViewAdapter);
+                    } else {
 
-                    profileViewAdapter = new ProfileViewAdapter(getActivity(), ((MyApplication) getActivity().getApplication()).getListFilterBeans());
-                    activity_dosomething_nearme.setAdapter(profileViewAdapter);
-                    profileViewAdapter.notifyDataSetChanged();
+                        profileViewAdapter.setSelectedIndex(((MyApplication) getActivity().getApplication()).getListFilterBeans());
+
+
+                    }
+
+
 //                    activity_dosomething_nearme.setExpanded(true);
                 }
             }
@@ -803,10 +809,6 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
             selectedIndex = -1;
         }
 
-        public void setSelectedIndex(int ind) {
-            selectedIndex = ind;
-            notifyDataSetChanged();
-        }
 
         @Override
         public int getCount() {
@@ -1395,6 +1397,12 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
         }
 
 
+        public void setSelectedIndex(ArrayList<Filterbean> filterbeans) {
+            this.filterr_list = filterbeans;
+            notifyDataSetChanged();
+        }
+
+
         public ProfileViewAdapter.DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = mInflater.inflate(R.layout.activity_nearme_profile, parent, false);
@@ -1580,8 +1588,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                                 iv.setImageBitmap(bm);
 
 
-                                            }else
-                                            {
+                                            } else {
                                                 holder.nearby_dosomething_image1.setVisibility(View.GONE);
                                             }
 
@@ -1598,8 +1605,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                                 iv.setImageBitmap(bm);
 
 
-                                            }else
-                                            {
+                                            } else {
                                                 holder.nearby_dosomething_image2.setVisibility(View.GONE);
                                             }
                                         }
@@ -1614,8 +1620,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                                 iv.setImageBitmap(bm);
 
 
-                                            }else
-                                            {
+                                            } else {
                                                 holder.nearby_dosomething_image3.setVisibility(View.GONE);
                                             }
                                         }
@@ -1639,8 +1644,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
 //                    Bitmap resized = Bitmap.createScaledBitmap(bm, 200, 200, true);
 //                    Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 40);
                                     iv.setImageBitmap(bm);
-                                }else
-                                {
+                                } else {
                                     holder.nearby_dosomething_image1.setVisibility(View.GONE);
                                 }
                             }
@@ -1653,8 +1657,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
 //                    Bitmap resized = Bitmap.createScaledBitmap(bm, 200, 200, true);
 //                    Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 40);
                                     iv.setImageBitmap(bm);
-                                }else
-                                {
+                                } else {
                                     holder.nearby_dosomething_image2.setVisibility(View.GONE);
                                 }
                             }
@@ -1669,8 +1672,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                     iv.setImageBitmap(bm);
 
 
-                                }else
-                                {
+                                } else {
                                     holder.nearby_dosomething_image3.setVisibility(View.GONE);
                                 }
                             }
@@ -1693,8 +1695,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                     iv.setImageBitmap(bm);
 
 
-                                }else
-                                {
+                                } else {
                                     holder.nearby_dosomething_image1.setVisibility(View.GONE);
                                 }
                             }
@@ -1709,8 +1710,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                     iv.setImageBitmap(bm);
 
 
-                                }else
-                                {
+                                } else {
                                     holder.nearby_dosomething_image2.setVisibility(View.GONE);
                                 }
                             }
@@ -1725,16 +1725,12 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                     iv.setImageBitmap(bm);
 
 
-                                }else
-                                {
+                                } else {
                                     holder.nearby_dosomething_image3.setVisibility(View.GONE);
                                 }
                             }
                         });
                         holder.activity_dosomething_nearme_textview_request.setTextColor(getResources().getColor(R.color.text_grey));
-
-
-
 
 
                         holder.activity_dosomething_nearme_ralativelayout.setOnClickListener(new View.OnClickListener() {
@@ -1770,8 +1766,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                                 iv.setImageBitmap(bm);
 
 
-                                            }else
-                                            {
+                                            } else {
                                                 holder.nearby_dosomething_image1.setVisibility(View.GONE);
                                             }
 
@@ -1788,8 +1783,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                                 iv.setImageBitmap(bm);
 
 
-                                            }else
-                                            {
+                                            } else {
                                                 holder.nearby_dosomething_image2.setVisibility(View.GONE);
                                             }
                                         }
@@ -1804,8 +1798,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                                 iv.setImageBitmap(bm);
 
 
-                                            }else
-                                            {
+                                            } else {
                                                 holder.nearby_dosomething_image3.setVisibility(View.GONE);
                                             }
                                         }
@@ -2419,14 +2412,20 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                     adapter.notifyDataSetChanged();*/
                                     activity_dosomething_nearme.hasFixedSize();
                                     activity_dosomething_nearme.setLayoutManager(layoutManager);
-                                    profileViewAdapter = new ProfileViewAdapter(getActivity(), ((MyApplication) getActivity().getApplication()).getListFilterBeans());
-                                    activity_dosomething_nearme.setAdapter(profileViewAdapter);
-                                    profileViewAdapter.notifyDataSetChanged();
 
-                                    if (((MyApplication) getActivity().getApplication()).getanInt() != 0) {
-                                        activity_dosomething_nearme.scrollToPosition(((MyApplication) getActivity().getApplication()).getanInt());
+                                    if (profileViewAdapter == null) {
+                                        profileViewAdapter = new ProfileViewAdapter(getActivity(), ((MyApplication) getActivity().getApplication()).getListFilterBeans());
+                                        activity_dosomething_nearme.setAdapter(profileViewAdapter);
+                                    } else {
+//                                       profileViewAdapter.setHasStableIds(false);
+                                        profileViewAdapter.setSelectedIndex(((MyApplication) getActivity().getApplication()).getListFilterBeans());
 
                                     }
+
+//                                    if (((MyApplication) getActivity().getApplication()).getanInt() != 0) {
+//                                        activity_dosomething_nearme.scrollToPosition(((MyApplication) getActivity().getApplication()).getanInt());
+//
+//                                    }
 
 
 //                                    activity_dosomething_nearme.setExpanded(true);
@@ -3377,9 +3376,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
     }
 
 
-
-
-    class Blink_progress extends TimerTask{
+    class Blink_progress extends TimerTask {
 
         @Override
         public void run() {
@@ -3406,8 +3403,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
     }
 
 
-
-    class Blink_match extends TimerTask{
+    class Blink_match extends TimerTask {
 
         @Override
         public void run() {
