@@ -331,7 +331,12 @@ public class DoSomeThingLogin extends Activity {
 
                 } else {
                     if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context)) {
-
+                        sharedPreferences.setWalkThroughHobbies(context, "true");
+                        sharedPreferences.setWalkThroughNearme(context, "true");
+                        sharedPreferences.setWalkThroughHomescreen(context, "true");
+                        sharedPreferences.setWalkThroughActivity(context, "true");
+                        sharedPreferences.setWalkThroughchat(context, "true");
+                        sharedPreferences.setWalkThroughMatch(context, "true");
                         type = "1";
                         profileId = "";
                         dob = "";
@@ -438,6 +443,12 @@ public class DoSomeThingLogin extends Activity {
                                                 System.out.println("birthday" + birthday);
                                             }
                                             System.out.println("url url" + url);
+                                            sharedPreferences.setWalkThroughHobbies(context, "true");
+                                            sharedPreferences.setWalkThroughNearme(context, "true");
+                                            sharedPreferences.setWalkThroughHomescreen(context, "true");
+                                            sharedPreferences.setWalkThroughActivity(context, "true");
+                                            sharedPreferences.setWalkThroughchat(context, "true");
+                                            sharedPreferences.setWalkThroughMatch(context, "true");
                                             type = "2";
                                             password = "";
                                             latitude = sharedPreferences.getLatitude(context);

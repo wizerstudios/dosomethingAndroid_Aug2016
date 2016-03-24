@@ -684,9 +684,9 @@ try
 //            else {
 
 
-                if (chatBean.getImage1().equals("") || chatBean.getImage1().equals("http://128.199.130.137//dosomething//uploads//profile//noimage.png")) {
+                if (chatBean.getImage1().equals("") || chatBean.getImage1().equals("http://mobileapp.dosomethingapp.com//uploads//profile//noimage.png")) {
                     holder.activity_dosomething_chatperson_appIcon.setImageDrawable(getResources().getDrawable(R.drawable.profile_noimg));
-                } else if (!(chatBean.getImage1().equals("") || chatBean.getImage1().equals("http://128.199.130.137//dosomething//uploads//profile//noimage.png")) && (!chatBean.getImage1().equalsIgnoreCase(chatBean.getOldImageUrl()))) {
+                } else if (!(chatBean.getImage1().equals("") || chatBean.getImage1().equals("http://mobileapp.dosomethingapp.com//uploads//profile//noimage.png")) && (!chatBean.getImage1().equalsIgnoreCase(chatBean.getOldImageUrl()))) {
 
                     aQuery.id(holder.activity_dosomething_chatperson_appIcon).image(chatBean.getImage1(), true, true, 0, 0, new BitmapAjaxCallback() {
                         @Override

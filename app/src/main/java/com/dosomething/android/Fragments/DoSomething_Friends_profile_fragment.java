@@ -602,18 +602,22 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
 
         friendprofile_relative_image_zoom.setAnimation(animation);
 
-        aQuery.id(friend_profile_zoom_imageview).image(Url, true, true, 0, 0, new BitmapAjaxCallback() {
-            @Override
-            public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
-                if (status.getCode() == 200) {
-                    Bitmap resized = Bitmap.createScaledBitmap(bm, 1780, 1380, true);
-                    Bitmap conv_bm = getOvalCroppedBitmap(resized);
-                    iv.setImageBitmap(conv_bm);
 
 
+            aQuery.id(friend_profile_zoom_imageview).image(Url, true, true, 0, 0, new BitmapAjaxCallback() {
+                @Override
+                public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
+                    if (status.getCode() == 200) {
+                        Bitmap resized = Bitmap.createScaledBitmap(bm, bm.getWidth(), bm.getHeight(), true);
+//                    Bitmap conv_bm = getOvalCroppedBitmap(resized);
+                        iv.setImageBitmap(resized);
+
+
+                    }
                 }
-            }
-        });
+            });
+
+
 //        friend_profile_zoom_imageview.setImageDrawable(Url);
 
         animation.setAnimationListener(new Animation.AnimationListener() {

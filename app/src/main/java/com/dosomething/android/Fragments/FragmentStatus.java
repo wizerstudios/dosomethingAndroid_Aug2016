@@ -609,6 +609,19 @@ public class FragmentStatus extends Fragment {
 
                         dosmething_homescreenlayout_staus_gridview.setAlpha(0.2f);
 
+                        if (sharedPrefrences.getWalkThroughActivity(getActivity()).equals("false")) {
+                            layout_walkthrough_activity.setVisibility(View.VISIBLE);
+                            activity_blink1 = new Timer();
+                            activity_blink1.schedule(new Activity_Blink1(), 0, 340);
+                            splashAnimation_activity1.start();
+                            activity_blink2 = new Timer();
+                            activity_blink2.schedule(new Activity_Blink2(), 0, 340);
+                            splashAnimation_activity2.start();
+                            activity_blink3 = new Timer();
+                            activity_blink3.schedule(new Activity_Blink3(), 0, 340);
+                            splashAnimation_activity3.start();
+                            sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
+                        }
 
                         if (getActivity() != null) {
                             sharedPrefrences.setOp(getActivity(), "getlast");
@@ -5338,7 +5351,19 @@ public class FragmentStatus extends Fragment {
 
                         }
                         splashAnimation.stop();
-
+                       /* if (sharedPrefrences.getWalkThroughActivity(getActivity()).equals("false")) {
+                            layout_walkthrough_activity.setVisibility(View.VISIBLE);
+                            activity_blink1 = new Timer();
+                            activity_blink1.schedule(new Activity_Blink1(), 0, 340);
+                            splashAnimation_activity1.start();
+                            activity_blink2 = new Timer();
+                            activity_blink2.schedule(new Activity_Blink2(), 0, 340);
+                            splashAnimation_activity2.start();
+                            activity_blink3 = new Timer();
+                            activity_blink3.schedule(new Activity_Blink3(), 0, 340);
+                            splashAnimation_activity3.start();
+                            sharedPrefrences.setWalkThroughActivity(getActivity(), "true");
+                        }*/
                         ImageAdapter imageAdapter = new ImageAdapter(getActivity(), img_list);
 
                         activity_dosomething_status_grid.setAdapter(imageAdapter);

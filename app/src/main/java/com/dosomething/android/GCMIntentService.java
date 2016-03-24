@@ -53,12 +53,12 @@ public class GCMIntentService extends GCMBaseIntentService {
     @Override
     protected void onMessage(Context context, Intent intent) {
         //check whether the user and password can still be used
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.menu_btn);
+        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.home_button);
         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         try {
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
-            mBuilder.setSmallIcon(R.drawable.menu_btn);
+            mBuilder.setSmallIcon(R.drawable.home_button);
 
 
 //			http://indiawebcoders.com/mobileapps/dosomething/uploads/profile/noimage.png

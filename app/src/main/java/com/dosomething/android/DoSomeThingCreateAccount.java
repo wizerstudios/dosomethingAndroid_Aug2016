@@ -244,7 +244,7 @@ public class DoSomeThingCreateAccount extends Activity {
         splashAnimation = (AnimationDrawable) walkthrough_account_create_imageView.getBackground();
 
         if (sharedPreferences.getWalkThroughCreate(context).equals("false")) {
-            layout_walkthrough_account_create.setVisibility(View.VISIBLE);
+            layout_walkthrough_account_create.setVisibility(View.GONE);
             blink_time = new Timer();
             blink_time.schedule(new Blink_progress(), 0, 340);
             splashAnimation.start();
@@ -513,6 +513,14 @@ public class DoSomeThingCreateAccount extends Activity {
                 } else {
                     if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context)) {
                         splashAnimation.start();
+                        sharedPreferences.setWalkThroughProfile(context, "false");
+                        sharedPreferences.setWalkThroughProfilesave(context, "false");
+                        sharedPreferences.setWalkThroughHobbies(context, "false");
+                        sharedPreferences.setWalkThroughNearme(context, "false");
+                        sharedPreferences.setWalkThroughHomescreen(context, "false");
+                        sharedPreferences.setWalkThroughActivity(context, "false");
+                        sharedPreferences.setWalkThroughchat(context, "false");
+                        sharedPreferences.setWalkThroughMatch(context, "false");
                         type = "1";
                         profileId = "";
                         dob = "";
@@ -701,7 +709,14 @@ public class DoSomeThingCreateAccount extends Activity {
                                                 sharedPreferences.setDateofBirth(context, birthday);
                                                 System.out.println("birthday" + birthday);
                                             }
-
+                                            sharedPreferences.setWalkThroughProfile(context, "false");
+                                            sharedPreferences.setWalkThroughProfilesave(context, "false");
+                                            sharedPreferences.setWalkThroughHobbies(context, "false");
+                                            sharedPreferences.setWalkThroughNearme(context, "false");
+                                            sharedPreferences.setWalkThroughHomescreen(context, "false");
+                                            sharedPreferences.setWalkThroughActivity(context, "false");
+                                            sharedPreferences.setWalkThroughchat(context, "false");
+                                            sharedPreferences.setWalkThroughMatch(context, "false");
                                             type = "2";
                                             password = "";
                                             latitude = sharedPreferences.getLatitude(context);

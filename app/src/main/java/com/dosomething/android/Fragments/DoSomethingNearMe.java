@@ -2828,7 +2828,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
         private String image1;
         private String UserId;
         Exception error;
-
+String sendRequestApi;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -2840,6 +2840,8 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
             timer = new Timer();
             timer.schedule(new AutoSlider(), 0, 1350);
             splashAnimation.start();
+
+            sendRequestApi=getActivity().getResources().getString(R.string.dosomething_apilink_string_sendrequest);
            /* progress_bar.show();
             timer = new Timer();
             timer.schedule(new AutoSlider(), 0, 1350);
@@ -2857,7 +2859,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                 paramsfb.put(TAG_CHATSTART, chatstart);
             }
 
-            json_string = jsonfunctions.postToURL(getActivity().getResources().getString(R.string.dosomething_apilink_string_sendrequest), paramsfb);
+            json_string = jsonfunctions.postToURL(sendRequestApi, paramsfb);
             Log.v("jason url=======>", String.valueOf(paramsfb));
             try {
                 json_object = new JSONObject(json_string);
