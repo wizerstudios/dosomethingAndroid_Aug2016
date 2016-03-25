@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dosomething.android.R;
+import com.google.android.gms.analytics.Tracker;
 
 
 /**
@@ -40,6 +41,7 @@ public class DoSomethingBlockDelete extends Fragment {
     Typeface patron_regular;
     Typeface patron_medium;
     Typeface myfonts_thin;
+    private Tracker mTracker;
 
     /**
      * Use this factory method to create a new instance of
@@ -77,6 +79,7 @@ public class DoSomethingBlockDelete extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_do_something_block_delete, container, false);
+
         activity_dosomething_chatblock = (TextView) view.findViewById(R.id.activity_dosomething_chatblock);
         activity_dosomething_chatdelete = (TextView) view.findViewById(R.id.activity_dosomething_chatdelete);
         activity_dosomething_chatcancel = (TextView) view.findViewById(R.id.activity_dosomething_chatcancel);

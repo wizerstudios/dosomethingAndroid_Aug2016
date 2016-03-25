@@ -54,6 +54,7 @@ import com.dosomething.android.DoSomeThingLogin;
 import com.dosomething.android.DoSomethingStatus;
 import com.dosomething.android.MyApplication;
 import com.dosomething.android.R;
+import com.google.android.gms.analytics.Tracker;
 import com.paging.gridview.PagingGridView;
 
 import org.json.JSONArray;
@@ -67,7 +68,7 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.google.android.gms.internal.zzhl.runOnUiThread;
+import static com.google.android.gms.internal.zzip.runOnUiThread;
 
 
 /**
@@ -172,6 +173,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
     private TextView textview_walkthrough_match;
     private boolean loading = true;
     private int count = 1;
+    private Tracker mTracker;
 
     /**
      * Use this factory method to create a new instance of
@@ -210,6 +212,14 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_do_something_near_me, container, false);
+        try
+        {
+            MyApplication application = (MyApplication) getActivity().getApplication();
+            mTracker = application.getDefaultTracker();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         sharedPreferences = new SharedPrefrences();
         pd = new TransparentProgressDialog(getActivity(), getResources().getDrawable(R.drawable.loading));
         relativelayout_nearme_retry = (RelativeLayout) view.findViewById(R.id.relativelayout_nearme_retry);

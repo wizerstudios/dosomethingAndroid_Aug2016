@@ -55,6 +55,7 @@ import com.dosomething.android.DoSomethingStatus;
 import com.dosomething.android.Message;
 import com.dosomething.android.MyApplication;
 import com.dosomething.android.R;
+import com.google.android.gms.analytics.Tracker;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,7 +69,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.google.android.gms.internal.zzhl.runOnUiThread;
+import static com.google.android.gms.internal.zzip.runOnUiThread;
 
 
 /**
@@ -143,6 +144,7 @@ ImageView image_walkthrough_chat;
     private LinearLayoutManager layoutManager;
     private AnimationDrawable splashAnimation_chat;
     private Timer blink_time;
+    private Tracker mTracker;
 
     /**
      * Use this factory method to create a new instance of
@@ -183,6 +185,15 @@ ImageView image_walkthrough_chat;
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_do_something_chat_box, container, false);
+
+        try
+        {
+            MyApplication application = (MyApplication) getActivity().getApplication();
+            mTracker = application.getDefaultTracker();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         sharedPrefrences = new SharedPrefrences();
         jsonfunctions = new Jsonfunctions(getActivity());
         aQuery = new AQuery(getActivity());
@@ -275,6 +286,7 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
         layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         dosomething_fragment_chat_messages_list.setLayoutManager(layoutManager);
+
         adapter = new RecyclerAdapter(getActivity(), messages, conversationBeans);
         dosomething_fragment_chat_messages_list.setAdapter(adapter);
         dosomething_fragment_chat_messages_list.scrollToPosition(messages.size() - 1);
@@ -288,10 +300,10 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
             e.printStackTrace();
         }
 
-       if(dosomething_fragment_chatbox_messagebox.hasFocus())
+      /* if(dosomething_fragment_chatbox_messagebox.hasFocus())
        {
            layoutManager.scrollToPosition(messages.size() - 1);
-       }
+       }*/
 
         dosomething_fragment_chat_messages_list.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -665,7 +677,7 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
 
                     holder.dosomething_fragment_chat_message_date.setText(display_date);
                 }
-
+                layoutManager.scrollToPosition(position);
 
                 holder.dosomething_fragment_chat_message_date.setVisibility(View.GONE);
 
@@ -1009,6 +1021,9 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
                             final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
                             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                             dosomething_fragment_chat_messages_list.setLayoutManager(layoutManager);
+
+
+
                             isLoader = true;
                             adapter = new RecyclerAdapter(getActivity(), messages, conversationBeans);
                             dosomething_fragment_chat_messages_list.setAdapter(adapter);

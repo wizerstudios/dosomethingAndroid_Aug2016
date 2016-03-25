@@ -52,7 +52,9 @@ import com.dosomething.android.Database.DBAdapter;
 import com.dosomething.android.DoSomeThingLogin;
 import com.dosomething.android.DoSomethingHobbies;
 import com.dosomething.android.DoSomethingStatus;
+import com.dosomething.android.MyApplication;
 import com.dosomething.android.R;
+import com.google.android.gms.analytics.Tracker;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -194,6 +196,7 @@ public class FragmentProfile extends Fragment {
     private AccountHandle handle;
     private Date choosenDateFromUI;
     private TextView dosomething_login_via_textview;
+    private Tracker mTracker;
 
     /**
      * Use this factory method to create a new instance of
@@ -230,6 +233,14 @@ public class FragmentProfile extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fragment_profile, container, false);
+        try
+        {
+            MyApplication application = (MyApplication) getActivity().getApplication();
+            mTracker = application.getDefaultTracker();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         fragment_viewpager_dots = (LinearLayout) view.findViewById(R.id.fragment_viewpager_dots);
         dosomething_account_login_via_email = (LinearLayout) view.findViewById(R.id.dosomething_account_login_via_email);
         fragment_pager = (ViewPager) view.findViewById(R.id.fragment_pager);

@@ -47,6 +47,7 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.analytics.Tracker;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -154,6 +155,7 @@ public class DoSomeThingLogin extends Activity {
     private TextView status_textview_accept_check;
     private Dialog progress_bar;
     private ImageView progress_bar_imageview;
+    private Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +185,14 @@ public class DoSomeThingLogin extends Activity {
         profileTracker.startTracking();
 
         setContentView(R.layout.activity_do_some_thing_login);
+        try
+        {
+            MyApplication application = (MyApplication) getApplication();
+            mTracker = application.getDefaultTracker();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 //        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
 //        com.facebook.Profile.getCurrentProfile();
         Window window = getWindow();

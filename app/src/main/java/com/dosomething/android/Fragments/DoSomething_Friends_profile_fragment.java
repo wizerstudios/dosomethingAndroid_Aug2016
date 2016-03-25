@@ -59,6 +59,7 @@ import com.dosomething.android.CommonClasses.TransparentProgressDialog;
 import com.dosomething.android.DoSomeThingLogin;
 import com.dosomething.android.MyApplication;
 import com.dosomething.android.R;
+import com.google.android.gms.analytics.Tracker;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,7 +72,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 
-import static com.google.android.gms.internal.zzhl.runOnUiThread;
+import static com.google.android.gms.internal.zzip.runOnUiThread;
 
 
 public class DoSomething_Friends_profile_fragment extends Fragment implements Friend_Profile_one_fragment.Friend_profile_image_viewpager_dots_one,
@@ -178,6 +179,7 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
     private ImageView progress_bar_imageview;
     private AnimationDrawable splashAnimation;
     private Timer timer;
+    private Tracker mTracker;
 
     @Override
 
@@ -200,6 +202,14 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_do_something__friends_profile_fragment, container, false);
+        try
+        {
+            MyApplication application = (MyApplication) getActivity().getApplication();
+            mTracker = application.getDefaultTracker();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         aQuery = new AQuery(getActivity());
         windowManager = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
         pd = new TransparentProgressDialog(getActivity(), getResources().getDrawable(R.drawable.loading));

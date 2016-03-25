@@ -2,6 +2,8 @@ package com.dosomething.android;
 
 import android.app.Application;
 import android.support.multidex.MultiDex;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 
 import com.dosomething.android.Beanclasses.ActivityBean;
 import com.dosomething.android.Beanclasses.Arts_hobbies;
@@ -24,6 +26,7 @@ import io.fabric.sdk.android.Fabric;
  * Created by hi on 30-Oct-15.
  */
 public class MyApplication extends Application {
+    private Tracker mTracker;
 
     DoSomething_Friends_profile_fragment mDoSomething_Friends_profile_fragment;
     DoSomethingStatus doSomethingStatus;
@@ -156,6 +159,14 @@ int anInt;
         super.onCreate();
         MultiDex.install(getBaseContext());
         Fabric.with(this, new Crashlytics());
+        try
+        {
+            mTracker = this.getDefaultTracker();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
     public DoSomething_Friends_profile_fragment getmDoSomething_Friends_profile_fragment() {
@@ -173,4 +184,15 @@ int anInt;
     public void setDoSomethingStatus(DoSomethingStatus doSomethingStatus) {
         this.doSomethingStatus = doSomethingStatus;
     }
+
+
+    synchronized public Tracker getDefaultTracker() {
+        if (mTracker == null) {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
+            mTracker = analytics.newTracker(R.xml.global_tracker);
+        }
+        return mTracker;
+    }
+
 }

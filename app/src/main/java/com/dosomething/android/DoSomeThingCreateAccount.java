@@ -46,6 +46,8 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -151,6 +153,8 @@ public class DoSomeThingCreateAccount extends Activity {
     ImageView walkthrough_account_create_imageView;
     TextView walkthrough_account_create_TextView;
     private Timer blink_time;
+    private Tracker mTracker;
+    private String name="create account";
 //
 
     @Override
@@ -183,7 +187,14 @@ public class DoSomeThingCreateAccount extends Activity {
 
         setContentView(R.layout.activity_do_some_thing_create_account);
 //        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-
+        try
+        {
+            MyApplication application = (MyApplication) getApplication();
+            mTracker = application.getDefaultTracker();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         Window window = getWindow();
 
 // clear FLAG_TRANSLUCENT_STATUS flag:
@@ -407,6 +418,10 @@ public class DoSomeThingCreateAccount extends Activity {
             @Override
             public void onClick(View v) {
                 if (NetworkCheck.isWifiAvailable(context) || NetworkCheck.isNetworkAvailable(context)) {
+                    mTracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("Create Account")
+                            .setAction("Using Facebook")
+                            .build());
                     onFblogin();
                     sharedPreferences.setAbout(context, "");
                 } else {
@@ -433,6 +448,10 @@ public class DoSomeThingCreateAccount extends Activity {
         create_account_layout_create_account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mTracker.send(new HitBuilders.EventBuilder()
+                        .setCategory("Create Account")
+                        .setAction("Using email")
+                        .build());
                 if (create_account_edittext_email.getText().toString().equals("")) {
 
 
@@ -513,6 +532,7 @@ public class DoSomeThingCreateAccount extends Activity {
                 } else {
                     if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context)) {
                         splashAnimation.start();
+
                         sharedPreferences.setWalkThroughProfile(context, "false");
                         sharedPreferences.setWalkThroughProfilesave(context, "false");
                         sharedPreferences.setWalkThroughHobbies(context, "false");
@@ -709,6 +729,7 @@ public class DoSomeThingCreateAccount extends Activity {
                                                 sharedPreferences.setDateofBirth(context, birthday);
                                                 System.out.println("birthday" + birthday);
                                             }
+
                                             sharedPreferences.setWalkThroughProfile(context, "false");
                                             sharedPreferences.setWalkThroughProfilesave(context, "false");
                                             sharedPreferences.setWalkThroughHobbies(context, "false");
@@ -1160,5 +1181,12 @@ public class DoSomeThingCreateAccount extends Activity {
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("tracker", "Setting screen name: " + name);
+        mTracker.setScreenName("Image~" + name);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
 }
 

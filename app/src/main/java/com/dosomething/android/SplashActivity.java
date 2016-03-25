@@ -36,6 +36,7 @@ import com.dosomething.android.CommonClasses.NetworkCheck;
 import com.dosomething.android.CommonClasses.SharedPrefrences;
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.google.android.gcm.GCMRegistrar;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
@@ -84,6 +85,7 @@ RelativeLayout layout_walkthrough_account_create;
     ImageView walkthrough_account_create_imageView;
     TextView walkthrough_account_create_TextView;
     private AnimationDrawable splashAnimation;
+    private Tracker mTracker;
 
     @Override
 
@@ -92,6 +94,14 @@ RelativeLayout layout_walkthrough_account_create;
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        try
+        {
+            MyApplication application = (MyApplication) getApplication();
+            mTracker = application.getDefaultTracker();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
 //        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

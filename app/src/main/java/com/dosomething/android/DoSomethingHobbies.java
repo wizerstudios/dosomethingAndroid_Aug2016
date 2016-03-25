@@ -45,6 +45,7 @@ import com.dosomething.android.CommonClasses.SharedPrefrences;
 import com.dosomething.android.CommonClasses.TransparentProgressDialog;
 import com.dosomething.android.Database.DBAdapter;
 import com.dosomething.android.Fragments.FragmentProfile;
+import com.google.android.gms.analytics.Tracker;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -127,11 +128,20 @@ public class DoSomethingHobbies extends AppCompatActivity {
     ImageView walkthrough_hobbies_ImageView;
 TextView walkthrough_hobbies_TextView;
     private Timer blink_time;
+    private Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hobbies_page);
+        try
+        {
+            MyApplication application = (MyApplication) getApplication();
+            mTracker = application.getDefaultTracker();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 //        overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
         Window window = getWindow();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

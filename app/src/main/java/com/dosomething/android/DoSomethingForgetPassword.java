@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.dosomething.android.CommonClasses.Jsonfunctions;
 import com.dosomething.android.CommonClasses.NetworkCheck;
 import com.dosomething.android.CommonClasses.SharedPrefrences;
+import com.google.android.gms.analytics.Tracker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,11 +46,20 @@ public class DoSomethingForgetPassword extends AppCompatActivity {
     Timer timer = new Timer();
     private AnimationDrawable splashAnimation;
     private ImageView kbv;
+    private Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_do_something_forget_password);
+        try
+        {
+            MyApplication application = (MyApplication) getApplication();
+            mTracker = application.getDefaultTracker();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         sharedPreferences = new SharedPrefrences();
         jsonfunctions = new Jsonfunctions(this);
         context = this;

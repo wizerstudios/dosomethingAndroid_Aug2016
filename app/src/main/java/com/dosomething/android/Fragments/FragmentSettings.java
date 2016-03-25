@@ -35,6 +35,7 @@ import com.dosomething.android.DoSomethingTermsofUse;
 import com.dosomething.android.SplashActivity;
 import com.dosomething.android.MyApplication;
 import com.dosomething.android.R;
+import com.google.android.gms.analytics.Tracker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -95,6 +96,7 @@ public class FragmentSettings extends Fragment {
     DBAdapter dbAdapter;
     LinearLayout profilepage_layout_notifiacation_match, profilepage_layout_notifiacation_messages, profilepage_layout_notifiacation_sound, profilepage_layout_notifiacation_vibration;
     private String tonePath;
+    private Tracker mTracker;
 
     /**
      * Use this factory method to create a new instance of
@@ -132,6 +134,14 @@ public class FragmentSettings extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fragment_settings, container, false);
+        try
+        {
+            MyApplication application = (MyApplication) getActivity().getApplication();
+            mTracker = application.getDefaultTracker();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         sharedPrefrences = new SharedPrefrences();
         jsonfunctions = new Jsonfunctions(getActivity());
         dbAdapter = new DBAdapter(getActivity());

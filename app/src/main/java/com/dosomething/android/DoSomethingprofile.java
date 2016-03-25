@@ -68,6 +68,7 @@ import com.dosomething.android.CommonClasses.Jsonfunctions;
 import com.dosomething.android.CommonClasses.NetworkCheck;
 import com.dosomething.android.CommonClasses.SharedPrefrences;
 import com.dosomething.android.CommonClasses.TransparentProgressDialog;
+import com.google.android.gms.analytics.Tracker;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -280,11 +281,20 @@ RelativeLayout layout_walkthrough_profilesave;
     TextView walkthrough_profilesave_TextView;
     private Timer blink_time;
     private Timer blink_time_save;
+    private Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_do_somethingprofile);
+        try
+        {
+            MyApplication application = (MyApplication) getApplication();
+            mTracker = application.getDefaultTracker();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 //        overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
         Window window = getWindow();
 

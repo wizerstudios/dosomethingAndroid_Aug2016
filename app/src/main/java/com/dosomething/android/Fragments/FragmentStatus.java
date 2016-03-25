@@ -49,6 +49,7 @@ import com.dosomething.android.Database.DBAdapter;
 import com.dosomething.android.DoSomeThingLogin;
 import com.dosomething.android.MyApplication;
 import com.dosomething.android.R;
+import com.google.android.gms.analytics.Tracker;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,7 +60,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.google.android.gms.internal.zzhl.runOnUiThread;
+import static com.google.android.gms.internal.zzip.runOnUiThread;
 
 
 /**
@@ -297,6 +298,7 @@ public class FragmentStatus extends Fragment {
     private TextView textview_walkthrough_home;
     private Timer blink_time,activity_blink1,activity_blink2,activity_blink3;
     private TextView walkthrough_activity_TextView;
+    private Tracker mTracker;
 
 
     /**
@@ -360,7 +362,14 @@ public class FragmentStatus extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_status_gridview, container, false);
-
+        try
+        {
+            MyApplication application = (MyApplication) getActivity().getApplication();
+            mTracker = application.getDefaultTracker();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         aQuery = new AQuery(getActivity());
 
         dbAdapter = new DBAdapter(getActivity());

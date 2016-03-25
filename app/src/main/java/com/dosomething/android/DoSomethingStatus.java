@@ -56,6 +56,8 @@ import com.dosomething.android.Fragments.DoSomethingNearMe;
 import com.dosomething.android.Fragments.FragmentProfile;
 import com.dosomething.android.Fragments.FragmentSettings;
 import com.dosomething.android.Fragments.FragmentStatus;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -204,11 +206,21 @@ public class DoSomethingStatus extends AppCompatActivity {
 
     private RelativeLayout layout_walkthrough_profile;
     private ImageView image_walkthrough_account_profile;
+    private String name="NearBy Screen";
+    private Tracker mTracker;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_do_something_status);
+        try
+        {
+            MyApplication application = (MyApplication) getApplication();
+            mTracker = application.getDefaultTracker();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 //        overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
         Window window = getWindow();
         context = this;
@@ -457,6 +469,10 @@ public class DoSomethingStatus extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    mTracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("Applying filter")
+                            .setAction("User list")
+                            .build());
                     ((MyApplication) getApplication()).getListFilterBeans().clear();
                     latitude = sharedPreferences.getLatitude(context);
                     longitude = sharedPreferences.getLongitude(context);
@@ -1250,6 +1266,9 @@ public class DoSomethingStatus extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
+        Log.i("tracker", "Setting screen name: " + name);
+        mTracker.setScreenName("Image~" + name);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         if (!sharedPreferences.getSessionid(context).equals("")) {
             timer = new Timer();
             timer.schedule(new AutoChatHistory(), 0, 5000);
