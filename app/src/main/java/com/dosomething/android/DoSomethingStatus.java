@@ -153,7 +153,7 @@ public class DoSomethingStatus extends AppCompatActivity {
     private TransparentProgressDialog pd;
 
     Handler handler = new Handler();
-    Timer timer = new Timer();
+    Timer timer_chat = new Timer();
     private AnimationDrawable splashAnimation;
     private ImageView kbv;
     RelativeLayout relativelayoutupdate_profile_progress;
@@ -208,6 +208,7 @@ public class DoSomethingStatus extends AppCompatActivity {
     private ImageView image_walkthrough_account_profile;
     private String name="NearBy Screen";
     private Tracker mTracker;
+    private Timer timer;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -266,7 +267,7 @@ public class DoSomethingStatus extends AppCompatActivity {
 
 
         if (!sharedPreferences.getSessionid(context).equals("")) {
-            timer.schedule(new AutoChatHistory(), 0, 5000);
+            timer_chat.schedule(new AutoChatHistory(), 0, 5000);
         }
 
 
@@ -1270,8 +1271,8 @@ public class DoSomethingStatus extends AppCompatActivity {
         mTracker.setScreenName("Image~" + name);
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         if (!sharedPreferences.getSessionid(context).equals("")) {
-            timer = new Timer();
-            timer.schedule(new AutoChatHistory(), 0, 5000);
+            timer_chat = new Timer();
+            timer_chat.schedule(new AutoChatHistory(), 0, 5000);
         }
 
 
@@ -2372,7 +2373,6 @@ public class DoSomethingStatus extends AppCompatActivity {
                 sharedPreferences.setProfileImageBitmap1(context, "");
                 sharedPreferences.setProfileImageBitmap2(context, "");
                 sharedPreferences.setProfileImageBitmap3(context, "");
-                sharedPreferences.setOp(context, "");
                 dbAdapter.open();
                 dbAdapter.delete();
                 dbAdapter.close();
@@ -2484,12 +2484,12 @@ public class DoSomethingStatus extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (timer != null) {
+        if (timer_chat != null) {
 
-            timer.cancel();
+            timer_chat.cancel();
 
 
-            timer = null;
+            timer_chat = null;
 
         }
     }
@@ -2568,7 +2568,14 @@ public class DoSomethingStatus extends AppCompatActivity {
 
                         status = "InvalidSession";
 
+                        if (timer_chat != null) {
 
+                            timer_chat.cancel();
+
+
+                            timer_chat = null;
+
+                        }
                     }
                 }
                 return true;

@@ -201,7 +201,6 @@ public class DoSomethingChatList extends Fragment {
                 chatAdapter = new RecyclerAdapter(getActivity());
                 dosomething_fragment_chatlist.setAdapter(chatAdapter);
             } else {
-                chatAdapter.setHasStableIds(false);
                 chatAdapter.notifyDataSetChanged();
             }
 /*
@@ -337,14 +336,19 @@ chatAdapter.notifyDataSetChanged();
                     public void run() {
                         try {
                             // PerformBackgroundTask this class is the class that extends AsynchTask
-                            if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
-                                Date d = new Date();
-                                CharSequence s = DateFormat.format("yyyy-MM-dd HH:mm:ss", d.getTime());
-                                datetime = String.valueOf(s);
 
-                                Log.d("date and time", datetime);
-                                new ChatHistory().execute();
+                            if(getActivity()!=null)
+                            {
+                                if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
+                                    Date d = new Date();
+                                    CharSequence s = DateFormat.format("yyyy-MM-dd HH:mm:ss", d.getTime());
+                                    datetime = String.valueOf(s);
+
+                                    Log.d("date and time", datetime);
+                                    new ChatHistory().execute();
+                                }
                             }
+
 
 
                         } catch (Exception e) {
@@ -695,9 +699,9 @@ try
 //            else {
 
 
-                if (chatBean.getImage1().equals("") || chatBean.getImage1().equals("http://mobileapp.dosomethingapp.com//uploads//profile//noimage.png")) {
+                if (chatBean.getImage1().equals("") || chatBean.getImage1().equals("http://128.199.130.137//dosomething//uploads//profile//noimage.png")) {
                     holder.activity_dosomething_chatperson_appIcon.setImageDrawable(getResources().getDrawable(R.drawable.profile_noimg));
-                } else if (!(chatBean.getImage1().equals("") || chatBean.getImage1().equals("http://mobileapp.dosomethingapp.com//uploads//profile//noimage.png")) && (!chatBean.getImage1().equalsIgnoreCase(chatBean.getOldImageUrl()))) {
+                } else if (!(chatBean.getImage1().equals("") || chatBean.getImage1().equals("http://128.199.130.137//dosomething//uploads//profile//noimage.png")) && (!chatBean.getImage1().equalsIgnoreCase(chatBean.getOldImageUrl()))) {
 
                     aQuery.id(holder.activity_dosomething_chatperson_appIcon).image(chatBean.getImage1(), true, true, 0, 0, new BitmapAjaxCallback() {
                         @Override
@@ -1042,7 +1046,7 @@ try
                                             chatAdapter = new RecyclerAdapter(getActivity());
                                             dosomething_fragment_chatlist.setAdapter(chatAdapter);
                                         } else {
-                                            chatAdapter.setHasStableIds(false);
+
                                             chatAdapter.notifyDataSetChanged();
                                         }
                                         dosomething_fragment_chatlist.getItemAnimator().setSupportsChangeAnimations(false);

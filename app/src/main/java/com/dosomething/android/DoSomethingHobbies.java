@@ -382,8 +382,8 @@ TextView walkthrough_hobbies_TextView;
 
 
 //            kbv.setVisibility(View.VISIBLE);
-//        timer = new Timer();
-//        timer.schedule(new AutoSlider(), 0, 1350);
+//        timer_chat = new Timer();
+//        timer_chat.schedule(new AutoSlider(), 0, 1350);
 //        splashAnimation.start();
             new HobbiesFood_Array().execute();
         }
@@ -1333,8 +1333,8 @@ TextView walkthrough_hobbies_TextView;
 
 
         /*kbv.setVisibility(View.VISIBLE);
-        timer = new Timer();
-        timer.schedule(new AutoSlider(), 0, 1350);
+        timer_chat = new Timer();
+        timer_chat.schedule(new AutoSlider(), 0, 1350);
         splashAnimation.start();*/
 
         }
@@ -1449,8 +1449,8 @@ TextView walkthrough_hobbies_TextView;
 
 
        /* kbv.setVisibility(View.VISIBLE);
-        timer = new Timer();
-        timer.schedule(new AutoSlider(), 0, 1350);
+        timer_chat = new Timer();
+        timer_chat.schedule(new AutoSlider(), 0, 1350);
         splashAnimation.start();*/
 
         }
@@ -1569,8 +1569,8 @@ TextView walkthrough_hobbies_TextView;
 
 
       /*  kbv.setVisibility(View.VISIBLE);
-        timer = new Timer();
-        timer.schedule(new AutoSlider(), 0, 1350);
+        timer_chat = new Timer();
+        timer_chat.schedule(new AutoSlider(), 0, 1350);
         splashAnimation.start();
 */
         }
