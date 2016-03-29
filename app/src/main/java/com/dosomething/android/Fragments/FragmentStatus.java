@@ -612,6 +612,7 @@ public class FragmentStatus extends Fragment {
                 activity_dosomething_status_grid.setEnabled(false);
                 if (NetworkCheck.isNetworkAvailable(getActivity()) || NetworkCheck.isWifiAvailable(getActivity())) {
                     if (((MyApplication) getActivity().getApplication()).getActivityBeans().size() == 0) {
+                        sharedPrefrences.setSlideNearBy(getActivity(),"false");
                         new StatusUpdate().execute();
                         splashAnimation.start();
                     } else {
@@ -702,6 +703,7 @@ public class FragmentStatus extends Fragment {
         status_activity_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sharedPrefrences.setSlideNearBy(getActivity(),"true");
                 allowClick = true;
                 availableNow = "";
                 op = "cancel";
@@ -746,7 +748,7 @@ public class FragmentStatus extends Fragment {
                     fadeOut_alertdialog();
 
                     allowClick = true;
-
+                    sharedPrefrences.setSlideNearBy(getActivity(),"true");
                     status_id = statusimage_id1 + "," + statusimage_id2 + "," + statusimage_id3;
                     availableNow = "Yes";
                     op = "update";
@@ -796,7 +798,7 @@ public class FragmentStatus extends Fragment {
                     fadeOut_alertdialog();
 
                     allowClick = true;
-
+                    sharedPrefrences.setSlideNearBy(getActivity(),"true");
                     status_id = statusimage_id1 + "," + statusimage_id2 + "," + statusimage_id3;
                     availableNow = "No";
                     op = "update";
@@ -4969,12 +4971,28 @@ public class FragmentStatus extends Fragment {
                                 allowClick = false;
                                 status_textview_letsDoSomething.setClickable(false);
                                 status_textview_letsDoSomething.setEnabled(false);
+
+
                                 Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
+                                        try
+                                        {
+                                            if(getActivity()!=null)
+                                            {
+                                                if(sharedPrefrences.getSlideNearBy(getActivity()).equals("true"))
+                                                {
+                                                    ((DoSomethingStatus) getActivity()).clickNearme(true);
+                                                }
 
-                                        ((DoSomethingStatus) getActivity()).clickNearme(true);
+                                            }
+                                        }catch (Exception e)
+                                        {
+                                            e.printStackTrace();
+                                        }
+
+
                                     }
                                 }, 2000);
                             } else {

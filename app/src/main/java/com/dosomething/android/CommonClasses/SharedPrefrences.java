@@ -43,6 +43,7 @@ public class SharedPrefrences {
     String FilterAge = "filterage";
     String FilterDistance = "filterdistance";
     String LoginType = "logintype";
+    String SlideNearBy = "slidenearby";
 
     String FriendProfilePicture = "friendProfilePicture";
     String FriendProfilePicture1 = "friendProfilePicture1";
@@ -575,6 +576,34 @@ public class SharedPrefrences {
         // settings = PreferenceManager.getDefaultSharedPreferences(context);
         settings = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         text = settings.getString(LoginType, "");
+
+        return text;
+    }
+
+
+
+    public String setSlideNearBy(Context context, String slideNearBy) {
+        SharedPreferences sharedPreferences;
+        SharedPreferences.Editor editor;
+
+        //sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        editor.putString(SlideNearBy, slideNearBy);
+
+        editor.commit();
+        return slideNearBy;
+    }
+
+    public String getSlideNearBy(Context context) {
+        SharedPreferences settings;
+        String text;
+
+
+        // settings = PreferenceManager.getDefaultSharedPreferences(context);
+        settings = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        text = settings.getString(SlideNearBy, "true");
 
         return text;
     }

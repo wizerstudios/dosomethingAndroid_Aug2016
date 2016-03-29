@@ -2664,9 +2664,12 @@ public class DoSomethingStatus extends AppCompatActivity {
     public void clickNearme(boolean slide)
     {
         if (slide) {
+
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(status_layout_pin.getWindowToken(), 0);
             settext("YES");
+            slide=false;
+            sharedPreferences.setSlideNearBy(context,"false");
             if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context))
 
             {
@@ -2737,7 +2740,7 @@ public class DoSomethingStatus extends AppCompatActivity {
             } else {
                 NetworkCheck.alertdialog(context);
             }
-            slide=false;
+
         }
     }
 
