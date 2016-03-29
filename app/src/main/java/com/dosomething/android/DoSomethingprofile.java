@@ -1211,39 +1211,47 @@ RelativeLayout layout_walkthrough_profilesave;
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Iterator myVeryOwnIterator = post_params.keySet().iterator();
-            while (myVeryOwnIterator.hasNext()) {
-                String key = (String) myVeryOwnIterator.next();
-                String value = (String) post_params.get(key);
-                entity.addPart(key, new StringBody(value));
-            }
-            httpPost.setEntity(entity);
-            HttpResponse response = httpClient.execute(httpPost,
-                    localContext);
-
-            InputStreamReader is = new InputStreamReader(response.getEntity().getContent(), "UTF-8");
-            BufferedReader reader = new BufferedReader(is);
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            try {
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line + "\n");
+            try
+            {
+                Iterator myVeryOwnIterator = post_params.keySet().iterator();
+                while (myVeryOwnIterator.hasNext()) {
+                    String key = (String) myVeryOwnIterator.next();
+                    String value = (String) post_params.get(key);
+                    entity.addPart(key, new StringBody(value));
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
+                httpPost.setEntity(entity);
+                HttpResponse response = httpClient.execute(httpPost,
+                        localContext);
+
+                InputStreamReader is = new InputStreamReader(response.getEntity().getContent(), "UTF-8");
+                BufferedReader reader = new BufferedReader(is);
+                StringBuilder sb = new StringBuilder();
+                String line = null;
                 try {
-                    is.close();
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line + "\n");
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
+                } finally {
+                    try {
+                        is.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+                String sResponse = sb.toString();
+                Log.d("Responce", "====" + sResponse);
+                profile_update_response =  sResponse;
+            } catch (Exception e) {
+                Log.e(e.getClass().getName(), e.getMessage(), e);
+                e.printStackTrace();
             }
-            String sResponse = sb.toString();
-            Log.d("Responce", "====" + sResponse);
-            profile_update_response =  sResponse;
-        } catch (Exception e) {
-            Log.e(e.getClass().getName(), e.getMessage(), e);
-        }
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
     }
 
     public void refreshProfileData() {

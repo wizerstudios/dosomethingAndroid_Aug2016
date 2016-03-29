@@ -24,7 +24,7 @@ android {
         applicationId "com.dosomething.android"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 150
+        versionCode 157
         versionName "1.0"
         multiDexEnabled true
     }
@@ -60,6 +60,10 @@ dependencies {
     compile 'com.viewpagerindicator:library:2.4.1@aar'
     compile 'com.facebook.android:facebook-android-sdk:4.0.0'
     compile 'com.google.android.gms:play-services:8.3.0'
+    compile 'com.google.android.gms:play-services-analytics:8.3.0'
+    compile 'com.google.android.gms:play-services-ads:8.3.0'
+    compile 'com.google.android.gms:play-services-identity:8.3.0'
+    compile 'com.google.android.gms:play-services-gcm:8.3.0'
     compile 'com.android.support:design:22.2.1'
     compile 'com.github.lzyzsd:circleprogress:1.1.0@aar'
     compile 'com.mcxiaoke.volley:library:1.0.19'
@@ -71,11 +75,8 @@ dependencies {
     }
     compile project(':library')
 
-    compile('org.apache.httpcomponents:httpmime:4.3.6') {
+    compile('org.apache.httpcomponents:httpmime:4.2.4') {
         exclude module: 'httpclient'
     }
-    compile 'com.google.android.gms:play-services-analytics:8.3.0'
-    compile 'com.google.android.gms:play-services-ads:8.3.0'
-    compile 'com.google.android.gms:play-services-identity:8.3.0'
-    compile 'com.google.android.gms:play-services-gcm:8.3.0'
+
 }

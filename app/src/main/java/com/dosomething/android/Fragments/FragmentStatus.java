@@ -47,6 +47,7 @@ import com.dosomething.android.CommonClasses.SharedPrefrences;
 import com.dosomething.android.CommonClasses.TransparentProgressDialog;
 import com.dosomething.android.Database.DBAdapter;
 import com.dosomething.android.DoSomeThingLogin;
+import com.dosomething.android.DoSomethingStatus;
 import com.dosomething.android.MyApplication;
 import com.dosomething.android.R;
 import com.google.android.gms.analytics.Tracker;
@@ -2293,11 +2294,11 @@ public class FragmentStatus extends Fragment {
 
                                             click_action = false;
 
-                                            if (statusimage_id1 != null) {
+                                            if (statusimage_id1 == String.valueOf(img_list.get(0).getImage_id())) {
 
                                                 statusimage_id1 = null;
 
-                                            } else if (statusimage_id2 != null) {
+                                            } else if (statusimage_id2 == String.valueOf(img_list.get(0).getImage_id())) {
 
                                                 statusimage_id2 = null;
 
@@ -2502,11 +2503,11 @@ public class FragmentStatus extends Fragment {
 
                                             click_action1 = false;
 
-                                            if (statusimage_id1 != null) {
+                                            if (statusimage_id1 == String.valueOf(img_list.get(1).getImage_id())) {
 
                                                 statusimage_id1 = null;
 
-                                            } else if (statusimage_id2 != null) {
+                                            } else if (statusimage_id2 == String.valueOf(img_list.get(1).getImage_id())) {
 
                                                 statusimage_id2 = null;
 
@@ -2710,11 +2711,11 @@ public class FragmentStatus extends Fragment {
 
                                             click_action2 = false;
 
-                                            if (statusimage_id1 != null) {
+                                            if (statusimage_id1 == String.valueOf(img_list.get(2).getImage_id())) {
 
                                                 statusimage_id1 = null;
 
-                                            } else if (statusimage_id2 != null) {
+                                            } else if (statusimage_id2 == String.valueOf(img_list.get(2).getImage_id())) {
 
                                                 statusimage_id2 = null;
 
@@ -2916,11 +2917,11 @@ public class FragmentStatus extends Fragment {
 
                                             click_action3 = false;
 
-                                            if (statusimage_id1 != null) {
+                                            if (statusimage_id1 == String.valueOf(img_list.get(3).getImage_id())) {
 
                                                 statusimage_id1 = null;
 
-                                            } else if (statusimage_id2 != null) {
+                                            } else if (statusimage_id2 == String.valueOf(img_list.get(3).getImage_id())) {
 
                                                 statusimage_id2 = null;
 
@@ -3123,11 +3124,11 @@ public class FragmentStatus extends Fragment {
 
                                             click_action4 = false;
 
-                                            if (statusimage_id1 != null) {
+                                            if (statusimage_id1 == String.valueOf(img_list.get(4).getImage_id())) {
 
                                                 statusimage_id1 = null;
 
-                                            } else if (statusimage_id2 != null) {
+                                            } else if (statusimage_id2 == String.valueOf(img_list.get(4).getImage_id())) {
 
                                                 statusimage_id2 = null;
 
@@ -3329,11 +3330,11 @@ public class FragmentStatus extends Fragment {
 
                                             click_action5 = false;
 
-                                            if (statusimage_id1 != null) {
+                                            if (statusimage_id1 == String.valueOf(img_list.get(5).getImage_id())) {
 
                                                 statusimage_id1 = null;
 
-                                            } else if (statusimage_id2 != null) {
+                                            } else if (statusimage_id2 == String.valueOf(img_list.get(5).getImage_id())) {
 
                                                 statusimage_id2 = null;
 
@@ -3535,11 +3536,11 @@ public class FragmentStatus extends Fragment {
 
                                             click_action6 = false;
 
-                                            if (statusimage_id1 != null) {
+                                            if (statusimage_id1 == String.valueOf(img_list.get(6).getImage_id())) {
 
                                                 statusimage_id1 = null;
 
-                                            } else if (statusimage_id2 != null) {
+                                            } else if (statusimage_id2 == String.valueOf(img_list.get(6).getImage_id())) {
 
                                                 statusimage_id2 = null;
 
@@ -3739,11 +3740,11 @@ public class FragmentStatus extends Fragment {
 
                                             click_action7 = false;
 
-                                            if (statusimage_id1 != null) {
+                                            if (statusimage_id1 == String.valueOf(img_list.get(7).getImage_id())) {
 
                                                 statusimage_id1 = null;
 
-                                            } else if (statusimage_id2 != null) {
+                                            } else if (statusimage_id2 == String.valueOf(img_list.get(7).getImage_id())) {
 
                                                 statusimage_id2 = null;
 
@@ -3936,11 +3937,11 @@ public class FragmentStatus extends Fragment {
 
                                             click_action8 = false;
 
-                                            if (statusimage_id1 != null) {
+                                            if (statusimage_id1 == String.valueOf(img_list.get(8).getImage_id())) {
 
                                                 statusimage_id1 = null;
 
-                                            } else if (statusimage_id2 != null) {
+                                            } else if (statusimage_id2 == String.valueOf(img_list.get(8).getImage_id())) {
 
                                                 statusimage_id2 = null;
 
@@ -4134,11 +4135,11 @@ public class FragmentStatus extends Fragment {
 
                                             click_action9 = false;
 
-                                            if (statusimage_id1 != null) {
+                                            if (statusimage_id1 == String.valueOf(img_list.get(9).getImage_id())) {
 
                                                 statusimage_id1 = null;
 
-                                            } else if (statusimage_id2 != null) {
+                                            } else if (statusimage_id2 == String.valueOf(img_list.get(9).getImage_id())) {
 
                                                 statusimage_id2 = null;
 
@@ -4335,11 +4336,11 @@ public class FragmentStatus extends Fragment {
 
                                             click_action10 = false;
 
-                                            if (statusimage_id1 != null) {
+                                            if (statusimage_id1 == String.valueOf(img_list.get(10).getImage_id())) {
 
                                                 statusimage_id1 = null;
 
-                                            } else if (statusimage_id2 != null) {
+                                            } else if (statusimage_id2 == String.valueOf(img_list.get(10).getImage_id())) {
 
                                                 statusimage_id2 = null;
 
@@ -4534,11 +4535,11 @@ public class FragmentStatus extends Fragment {
 
                                             click_action11 = false;
 
-                                            if (statusimage_id1 != null) {
+                                            if (statusimage_id1 == String.valueOf(img_list.get(11).getImage_id())) {
 
                                                 statusimage_id1 = null;
 
-                                            } else if (statusimage_id2 != null) {
+                                            } else if (statusimage_id2 == String.valueOf(img_list.get(11).getImage_id())) {
 
                                                 statusimage_id2 = null;
 
@@ -4968,7 +4969,14 @@ public class FragmentStatus extends Fragment {
                                 allowClick = false;
                                 status_textview_letsDoSomething.setClickable(false);
                                 status_textview_letsDoSomething.setEnabled(false);
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
 
+                                        ((DoSomethingStatus) getActivity()).clickNearme(true);
+                                    }
+                                }, 2000);
                             } else {
                                 if (sharedPrefrences.getWalkThroughActivity(getActivity()).equals("false")) {
                                     layout_walkthrough_activity.setVisibility(View.VISIBLE);
@@ -5437,6 +5445,9 @@ public class FragmentStatus extends Fragment {
         }
 
     }
+
+
+
 }
 
 

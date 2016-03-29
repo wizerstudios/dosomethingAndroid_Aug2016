@@ -463,11 +463,11 @@ public class FragmentSettings extends Fragment {
         alert_textview_logout_yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 fadeOut_onlythree();
                 sessionid = sharedPrefrences.getSessionid(getActivity());
                 operation = "logout";
                 new Logout().execute();
+                ((MyApplication) getActivity().getApplication()).getActivityBeans().clear();
                 relativelayout_alertdialog_logout.setVisibility(View.GONE);
                 Intent intent = new Intent(getActivity(), SplashActivity.class);
                 startActivity(intent);

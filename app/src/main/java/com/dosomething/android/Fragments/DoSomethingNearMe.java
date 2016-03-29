@@ -136,7 +136,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
     private int matchedUser_user_id;
     private String matchedUser_first_name, matchedUser_last_name, matchedUser_about;
     private String matchedUser_image1;
-    String dosmething_nearuser_matched_Api_staus, dosmething_nearuser_matched_grid_control;
+    String dosmething_nearuser_matched_Api_staus, dosmething_nearuser_matched_grid_control="";
     TextView dosomething_nearme_matched_profile_chat_dosomething_textview, dosomething_nearme_matched_profile_name_textview, activity_dosomething_nearme_textview_nouser;
     LinearLayout dosomething_nearme_gridview_layout;
     private ArrayList<Dosomething_Bean> dosomething_beans = new ArrayList<>();
@@ -696,6 +696,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
             canvas.drawBitmap(bitmap, rect, rect, paint);
 
         } catch (NullPointerException | OutOfMemoryError ignored) {
+            ignored.printStackTrace();
         }
         return result;
     }
@@ -1261,6 +1262,12 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                     holder.activity_dosomething_nearme_ralativelayout.setClickable(false);
                     holder.activity_dosomething_nearme_ralativelayout.setEnabled(false);
                     activity_dosomething_nearme.setEnabled(false);
+                }else {
+                    holder.activity_dosomething_imageview_nearme_chong.setClickable(true);
+                    holder.activity_dosomething_imageview_nearme_chong.setEnabled(true);
+                    holder.activity_dosomething_nearme_ralativelayout.setClickable(true);
+                    holder.activity_dosomething_nearme_ralativelayout.setEnabled(true);
+                    activity_dosomething_nearme.setEnabled(true);
                 }
 //                if (filterr_list.get(position).getDoSomething().equals("No")) {
 //

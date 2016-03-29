@@ -2658,6 +2658,89 @@ public class DoSomethingStatus extends AppCompatActivity {
         }
     }
 
+
+
+
+    public void clickNearme(boolean slide)
+    {
+        if (slide) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(status_layout_pin.getWindowToken(), 0);
+            settext("YES");
+            if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context))
+
+            {
+                final LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    final Dialog dialog = new Dialog(context);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    dialog.setContentView(R.layout.dosomething_alert_save_changes);
+                    TextView status_textview_save = (TextView) dialog.findViewById(R.id.status_textview_save);
+                    TextView alert_textview_save = (TextView) dialog.findViewById(R.id.alert_textview_save);
+                    TextView alert_textview_save_cancel = (TextView) dialog.findViewById(R.id.alert_textview_save_cancel);
+                    status_textview_save.setText("Your GPS seems to be disabled, do you want to enable it?");
+                    alert_textview_save.setText("Yes");
+                    alert_textview_save_cancel.setText("No");
+                    alert_textview_save.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+
+                            context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                    alert_textview_save_cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+
+                } else {
+                    if (sharedPreferences.getBoolean(context).equals("false")) {
+                        settext("YES");
+                        sharedPreferences.setDosomething_filterImage_Visibility(context, "Yes");
+                        sharedPreferences.setFilterGender(context, "");
+                        sharedPreferences.setFilterAvailable(context, "");
+                        sharedPreferences.setFilterStatus(context, "");
+                        sharedPreferences.setFilterDistance(context, "");
+                        sharedPreferences.setFilterAge(context, "");
+                        status_ImageView_pin.setImageDrawable(getResources().getDrawable(R.drawable.pin_active));
+                        status_ImageView_chat.setImageDrawable(getResources().getDrawable(R.drawable.chat));
+                        status_ImageView_profile.setImageDrawable(getResources().getDrawable(R.drawable.profile_icon));
+                        status_ImageView_setting.setImageDrawable(getResources().getDrawable(R.drawable.setting));
+                        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+
+                        somethingNearMe = new DoSomethingNearMe();
+//                        fragmentTransaction.setCustomAnimations(R.anim.slide_out, R.anim.slide_out);
+
+                        activity_dosomething_textview_toolbar_save.setVisibility(View.GONE);
+                        activity_dosomething_imageview_filter_icon.setVisibility(View.VISIBLE);
+                        fragmentTransaction.replace(R.id.detail_fragment, somethingNearMe);
+                        fragmentTransaction.commit();
+                        click_action15 = false;
+                        click_action14 = false;
+                        click_action12 = true;
+                        click_action13 = false;
+                    } else {
+//                        fadeIn_alertdialogSave();
+                        dialog_savechanges.show();
+                    }
+                }
+
+
+            } else {
+                NetworkCheck.alertdialog(context);
+            }
+            slide=false;
+        }
+    }
+
     private class GetUserDetails extends AsyncTask<Void, Void, Void> {
 
         private String first_name, last_name, gender, about;
@@ -2845,6 +2928,10 @@ public class DoSomethingStatus extends AppCompatActivity {
 
         }
     }
+
+
+
+
 
 
 }
