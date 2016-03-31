@@ -756,6 +756,7 @@ public class DoSomethingStatus extends AppCompatActivity {
             public void onClick(View v) {
                 sharedPreferences.setPushType(context, "");
                 ((MyApplication) getApplication()).getListFilterBeans().clear();
+                ((MyApplication)getApplication()).setCount(0);
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(status_ImageView_profile.getWindowToken(), 0);
                 if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context)) {
@@ -812,6 +813,7 @@ public class DoSomethingStatus extends AppCompatActivity {
                 sharedPreferences.setPushType(context, "");
                 ((MyApplication) getApplication()).getListFilterBeans().clear();
                 ((MyApplication) getApplication()).setanInt(0);
+                ((MyApplication)getApplication()).setCount(0);
                 if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context)) {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(status_ImageView_setting.getWindowToken(), 0);
@@ -855,6 +857,7 @@ public class DoSomethingStatus extends AppCompatActivity {
                     sharedPreferences.setPushType(context, "");
                     ((MyApplication) getApplication()).getListFilterBeans().clear();
                     ((MyApplication) getApplication()).setanInt(0);
+                    ((MyApplication)getApplication()).setCount(0);
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(status_layout_menu.getWindowToken(), 0);
                     if (sharedPreferences.getBoolean(context).equals("false")) {
@@ -975,6 +978,7 @@ public class DoSomethingStatus extends AppCompatActivity {
                 sharedPreferences.setPushType(context, "");
                 ((MyApplication) getApplication()).getListFilterBeans().clear();
                 ((MyApplication) getApplication()).setanInt(0);
+                ((MyApplication)getApplication()).setCount(0);
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(status_layout_pin.getWindowToken(), 0);
                 if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context)) {
@@ -1476,6 +1480,7 @@ public class DoSomethingStatus extends AppCompatActivity {
                     } else {
                         file = new File(Environment.getExternalStorageDirectory(),
                                 getResources().getString(R.string.app_name) + "fragment_profie_image" + ".jpg");
+                        sharedPreferences.setUpdateProfilePicture(context,"");
 //                        Log.d("PATH====>", sharedPreferences.getUpdateProfilePicture(context));
 //                        params.put(TAG_PROFILEIMAGE1, file);
 //                        uploadProfilePicture(file);
@@ -1496,6 +1501,7 @@ public class DoSomethingStatus extends AppCompatActivity {
                     } else {
                         file2 = new File(Environment.getExternalStorageDirectory(),
                                 getResources().getString(R.string.app_name) + "fragment_profie_image1" + ".jpg");
+                        sharedPreferences.setUpdateProfilePicture1(context, "");
 //                        Log.d("PATH====>", sharedPreferences.getUpdateProfilePicture1(context));
 //                        params.put(TAG_PROFILEIMAGE2, file2);
                     }
@@ -1515,6 +1521,7 @@ public class DoSomethingStatus extends AppCompatActivity {
                     } else {
                         file3 = new File(Environment.getExternalStorageDirectory(),
                                 getResources().getString(R.string.app_name) + "fragment_profie_image2" + ".jpg");
+                        sharedPreferences.setUpdateProfilePicture2(context,"");
 //                        Log.d("PATH====>", sharedPreferences.getUpdateProfilePicture2(context));
 //                        params.put(TAG_PROFILEIMAGE3, file3);
                     }
@@ -2660,6 +2667,43 @@ public class DoSomethingStatus extends AppCompatActivity {
 
 
 
+public void profileRefresh(boolean refresh)
+{
+    if(refresh)
+    {
+        status_ImageView_profile.setImageDrawable(getResources().getDrawable(R.drawable.profile_icon_active));
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        FragmentProfile fragmentProfile = new FragmentProfile();
+        activity_dosomething_textview_toolbar_save.setVisibility(View.VISIBLE);
+        activity_dosomething_textview_toolbar_search.setVisibility(View.GONE);
+        activity_dosomething_imageview_filter_icon.setVisibility(View.GONE);
+        if (bundle_list.isEmpty()) {
+            Bundle bundle = new Bundle();
+            bundle_list.clear();
+            bundle_list.add(R.drawable.pluis_icon);
+            Log.d("FFFFFFFFFFFFFFFFFFFFFFF", "H" + bundle_list);
+            bundle.putIntegerArrayList("array_bundle_hobbies_image", bundle_list);
+            fragmentProfile.setArguments(bundle);
+        } else {
+            Bundle value = new Bundle();
+            value.putIntegerArrayList("array_bundle_hobbies_image", bundle_list);
+            Log.d("ARRAYYYYBUNDLE", "............" + value);
+            fragmentProfile.setArguments(value);
+        }
+        fragmentTransaction.replace(R.id.detail_fragment, fragmentProfile);
+        fragmentTransaction.commit();
+        status_ImageView_pin.setImageDrawable(getResources().getDrawable(R.drawable.pin));
+        status_ImageView_chat.setImageDrawable(getResources().getDrawable(R.drawable.chat));
+        status_ImageView_setting.setImageDrawable(getResources().getDrawable(R.drawable.setting));
+        click_action14 = true;
+        click_action15 = false;
+        click_action12 = false;
+        click_action13 = false;
+        refresh=false;
+    }
+}
+
+
 
     public void clickNearme(boolean slide)
     {
@@ -2932,7 +2976,48 @@ public class DoSomethingStatus extends AppCompatActivity {
         }
     }
 
+public void slideToChat(boolean b)
+{
+    if(b)
+    {
+        sharedPreferences.setPushType(context, "");
+        ((MyApplication) getApplication()).getListFilterBeans().clear();
+        ((MyApplication) getApplication()).setanInt(0);
+        ((MyApplication)getApplication()).setCount(0);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(status_layout_pin.getWindowToken(), 0);
+        if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context)) {
 
+            if (sharedPreferences.getBoolean(context).equals("false")) {
+
+                ((MyApplication) getApplication()).getListChatBean().clear();
+                activity_dosomething_textview_toolbar_save.setVisibility(View.GONE);
+
+                activity_dosomething_textview_toolbar_search.setVisibility(View.GONE);
+
+                DoSomethingChatList doSomethingChatList = new DoSomethingChatList();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.detail_fragment, doSomethingChatList);
+                fragmentTransaction.commit();
+                activity_dosomething_imageview_filter_icon.setVisibility(View.GONE);
+                status_ImageView_chat.setImageDrawable(getResources().getDrawable(R.drawable.chat_active));
+                status_ImageView_pin.setImageDrawable(getResources().getDrawable(R.drawable.pin));
+                status_ImageView_profile.setImageDrawable(getResources().getDrawable(R.drawable.profile_icon));
+                status_ImageView_setting.setImageDrawable(getResources().getDrawable(R.drawable.setting));
+                click_action15 = false;
+                click_action14 = false;
+                click_action13 = true;
+                click_action12 = false;
+                check++;
+                b=false;
+            } else {
+                dialog_savechanges.show();
+            }
+        } else {
+            NetworkCheck.alertdialog(context);
+        }
+    }
+}
 
 
 

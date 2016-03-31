@@ -84,11 +84,15 @@ public class FragmentProfile extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final int NUM_PAGES = 3;
+    private static int NUM_PAGES=3;
     private static final String TAG_PROFILEUSERID = "profile_user_id";
     private static final int RESULT_LOAD_IMG = 1;
     private Date oneWayTripDate;
     String tripDate;
+    private static final int PICK_FROM_CAMERA = 4;
+    private static final int CROP_FROM_CAMERA = 7;
+    private static final int PICK_FROM_FILE = 1;
+    private Uri mImageCaptureUri;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -121,7 +125,8 @@ public class FragmentProfile extends Fragment {
     LinearLayout dosomething_account_login_via_email;
     private PagerAdapter mPagerAdapter;
     private ViewPager fragment_pager;
-    private ArrayList<ImageView> dots;
+
+    ImageView dot;
     DBAdapter dbAdapter;
     ProgressBar fragment_profile_page_progressbar_hobbies;
     Bundle bundle;
@@ -197,6 +202,10 @@ public class FragmentProfile extends Fragment {
     private Date choosenDateFromUI;
     private TextView dosomething_login_via_textview;
     private Tracker mTracker;
+    ImageView fragment_profile_image_autoincrease;
+    List<android.support.v4.app.Fragment> fragments = new Vector<Fragment>();
+    UserProfileImage1_Fragment userProfileImage1_fragment;
+    private ArrayList<ImageView> dots;
 
     /**
      * Use this factory method to create a new instance of
@@ -233,19 +242,20 @@ public class FragmentProfile extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fragment_profile, container, false);
-        try
-        {
+        try {
             MyApplication application = (MyApplication) getActivity().getApplication();
             mTracker = application.getDefaultTracker();
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+
         fragment_viewpager_dots = (LinearLayout) view.findViewById(R.id.fragment_viewpager_dots);
         dosomething_account_login_via_email = (LinearLayout) view.findViewById(R.id.dosomething_account_login_via_email);
         fragment_pager = (ViewPager) view.findViewById(R.id.fragment_pager);
         grid_layout_profile_imageview_hobbies = (ImageView) view.findViewById(R.id.grid_layout_profile_imageview_hobbies);
         fragment_profile_page_imageview_hobbies = (ImageView) view.findViewById(R.id.fragment_profile_page_imageview_hobbies);
+        fragment_profile_image_autoincrease = (ImageView) view.findViewById(R.id.fragment_profile_image_autoincrease);
         dosomething_login_via_imageview = (ImageView) view.findViewById(R.id.dosomething_login_via_imageview);
         fragment_profile_page_edittext_firstname = (EditText) view.findViewById(R.id.fragment_profile_page_edittext_firstname);
         fragment_profile_page_edittext_lastname = (EditText) view.findViewById(R.id.fragment_profile_page_edittext_lastname);
@@ -274,21 +284,24 @@ public class FragmentProfile extends Fragment {
         jsonfunctions = new Jsonfunctions(getActivity());
         aQuery = new AQuery(getActivity());
         sharedPrefrences = new SharedPrefrences();
+        dots = new ArrayList<>();
 //        bundle = new Bundle();
         bundle = getArguments();
+
         ((DoSomethingStatus) getActivity()).passwordMatch(true);
 //        bundle.getStringArrayList("array_bundle_hobbies_name");
         bundle.getIntegerArrayList("array_bundle_hobbies_image");
         Log.d("DOSOMETHING_hobbies_id", "bundle_hobbiesId" + bundle.getIntegerArrayList("array_bundle_hobbies_image"));
 
-        this.initialisePaging();
+//        this.initialisePaging();
         text_font_typeface();
-        addDots();
-        selectDot(0);
+
 
         pd = new TransparentProgressDialog(getActivity(), getResources().getDrawable(R.drawable.loading));
 
         String date = sharedPrefrences.getDateOfbirth(getActivity());
+
+
 //                    String date ="29/07/13";
 //        SimpleDateFormat input = new SimpleDateFormat("dd/MM/yyyy");
 //        SimpleDateFormat output = new SimpleDateFormat("dd / MM / yyyy");
@@ -302,6 +315,65 @@ public class FragmentProfile extends Fragment {
 //        } catch (ParseException e) {
 //            e.printStackTrace();
 //        }
+        dots.clear();
+        fragment_viewpager_dots.removeAllViews();
+        selectDot(fragment_pager.getCurrentItem());
+        addDots();
+        if (fragments.size() == 3) {
+            fragment_profile_image_autoincrease.setClickable(false);
+        }
+
+        fragment_profile_image_autoincrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+
+
+
+
+/*userProfileImage1_fragment=new UserProfileImage1_Fragment();
+                userProfileImage1_fragment.showImageSelectionAlert();*/
+
+
+                if (fragments.size() == 0) {
+                    fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage1_Fragment.class.getName()));
+                    mPagerAdapter = new PagerAdapter(getChildFragmentManager(), fragments);
+                    fragment_pager.setAdapter(mPagerAdapter);
+                    fragment_pager.setOffscreenPageLimit(3);
+                    dots.clear();
+                    fragment_viewpager_dots.removeAllViews();
+
+                    addDots();
+
+                } else if (fragments.size() == 1)
+
+                {
+
+                    fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage2_Fragment.class.getName()));
+                    mPagerAdapter.notifyDataSetChanged();
+                    dots.clear();
+                    fragment_viewpager_dots.removeAllViews();
+
+                    addDots();
+
+
+                } else if (fragments.size() == 2) {
+
+                    fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage3_Fragment.class.getName()));
+                    mPagerAdapter.notifyDataSetChanged();
+                    dots.clear();
+                    fragment_viewpager_dots.removeAllViews();
+
+                    addDots();
+
+                }
+
+            }
+        });
+
+
         if (getActivity() != null) {
             if (sharedPrefrences.getRegistervia(getActivity()).equals("facebook")) {
                 if (sharedPrefrences.getShowPassword(getActivity()).equals("no")) {
@@ -310,7 +382,7 @@ public class FragmentProfile extends Fragment {
                 }
 
                 dosomething_login_via_imageview.setImageDrawable(getResources().getDrawable(R.drawable.fb_login_icon));
-                dosomething_login_via_textview.setText("You are connect via Facebook");
+                dosomething_login_via_textview.setText("You are connected via Facebook");
 
             }
             fragment_profile_page_edittext_firstname.setText(sharedPrefrences.getFirstName(getActivity()));
@@ -327,8 +399,6 @@ public class FragmentProfile extends Fragment {
 
             new AsynDataClass().execute();
         }
-
-
 
 
 ////////////////////////////////////////Hobbies/////////////////////////////////////////////////////
@@ -492,6 +562,7 @@ public class FragmentProfile extends Fragment {
         }
 
 
+
         ////////////////////////////////////////////////////////////////////////////////////////////
         fragment_profile_page_edittext_password.addTextChangedListener(new TextWatcher() {
             @Override
@@ -622,19 +693,60 @@ public class FragmentProfile extends Fragment {
     }
 
     public void addDots() {
-        dots = new ArrayList<>();
-        Log.d("num_pages", "______" + NUM_PAGES);
-        for (int i = 0; i < NUM_PAGES; i++) {
-            ImageView dot = new ImageView(getActivity());
-            dot.setImageDrawable(getResources().getDrawable(R.drawable.dot1));
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            params.setMargins(2, 5, 2, 5);
-            fragment_viewpager_dots.addView(dot, params);
-            dots.add(dot);
+
+        try
+        {
+
+
+            Log.d("num_pages", "______" + NUM_PAGES);
+            Log.d("num_dots", "______" + dots.size());
+            for (int i = 0; i < fragments.size(); i++) {
+                ImageView dot = new ImageView(getActivity());
+                if(i==fragment_pager.getCurrentItem())
+                {
+
+                    dot.setImageDrawable(getResources().getDrawable(R.drawable.dot1));
+                }else
+                {
+                    dot.setImageDrawable(getResources().getDrawable(R.drawable.dot1_active));
+                }
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+                params.setMargins(2, 5, 2, 5);
+                fragment_viewpager_dots.addView(dot, params);
+                dots.add(dot);
+                Log.d("num_dots2", "______" + dots.size());
+            }
+            fragment_pager.setCurrentItem(fragment_pager.getCurrentItem() + 1, true);
+
+            switch (fragments.size())
+            {
+                case 2:
+                    if(((MyApplication)getActivity().getApplication()).getUserProfileImage2_fragment()!=null)
+                    {
+                        ((MyApplication)getActivity().getApplication()).getUserProfileImage2_fragment().showImageSelectionAlert();
+                    }
+
+                    break;
+                case 3:
+                    if(((MyApplication)getActivity().getApplication()).getUserProfileImage3_fragment()!=null)
+                    {
+                        ((MyApplication)getActivity().getApplication()).getUserProfileImage3_fragment().showImageSelectionAlert();
+                    }
+
+                    break;
+            }
+
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
         }
+
+
 
         fragment_pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -657,7 +769,7 @@ public class FragmentProfile extends Fragment {
 
     public void selectDot(int idx) {
         Resources res = getResources();
-        for (int i = 0; i < NUM_PAGES; i++) {
+        for (int i = 0; i < fragments.size(); i++) {
             System.out.println("dots_pos..." + idx);
             int drawableId = (i == idx) ? (R.drawable.dot1) : (R.drawable.dot1_active);
             Drawable drawable = res.getDrawable(drawableId);
@@ -847,9 +959,8 @@ public class FragmentProfile extends Fragment {
 //
 //            pDialog.show();
 //            pd.show();
-            if(getActivity()!=null)
-            {
-                getuserdetails_Api_url=getActivity().getResources().getString(R.string.dosomething_apilink_string_getuserdetails);
+            if (getActivity() != null) {
+                getuserdetails_Api_url = getActivity().getResources().getString(R.string.dosomething_apilink_string_getuserdetails);
             }
         }
 
@@ -1001,8 +1112,7 @@ public class FragmentProfile extends Fragment {
 
             super.onPostExecute(result);
 
-            if(result)
-            {
+            if (result) {
                 try {
                     if (!status.equalsIgnoreCase("InvalidSession")) {
 
@@ -1017,10 +1127,53 @@ public class FragmentProfile extends Fragment {
 //                fragment_profile_page_gridview_hobbies.setExpanded(true);
 //                fragment_profile_page_gridview_hobbies.deferNotifyDataSetChanged();
                         if (getActivity() != null) {
+
                             sharedPrefrences.setProfilePicture(getActivity(), image1);
                             sharedPrefrences.setProfilePicture1(getActivity(), image2);
                             sharedPrefrences.setProfilePicture2(getActivity(), image3);
+
+
+
+
                         }
+
+
+
+                        fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage1_Fragment.class.getName()));
+                        mPagerAdapter = new PagerAdapter(getChildFragmentManager(), fragments);
+                        fragment_pager.setAdapter(mPagerAdapter);
+                        fragment_pager.setOffscreenPageLimit(3);
+
+                        dots.clear();
+                        fragment_viewpager_dots.removeAllViews();
+
+                        addDots();
+
+                        if (!sharedPrefrences.getProfilePicture1(getActivity()).equals("")) {
+                            fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage2_Fragment.class.getName()));
+                            mPagerAdapter.notifyDataSetChanged();
+                            NUM_PAGES=2;
+                            dots.clear();
+                            fragment_viewpager_dots.removeAllViews();
+
+                            addDots();
+
+                        }
+                        if (!sharedPrefrences.getProfilePicture2(getActivity()).equals("")) {
+                            fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage3_Fragment.class.getName()));
+                            mPagerAdapter.notifyDataSetChanged();
+                            NUM_PAGES=3;
+                            dots.clear();
+                            fragment_viewpager_dots.removeAllViews();
+
+                            addDots();
+
+                        }
+
+
+
+
+
                         if (getActivity() != null) {
                             sharedPrefrences.setPassword(getActivity(), password);
                             sharedPrefrences.setDateofBirth(getActivity(), date_of_birth);
@@ -1074,10 +1227,8 @@ public class FragmentProfile extends Fragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }else
-            {
-                if(error!=null)
-                {
+            } else {
+                if (error != null) {
                     new AsynDataClass().execute();
                 }
             }
@@ -1212,9 +1363,30 @@ public class FragmentProfile extends Fragment {
     }
 
 
+    public void cropCapturedImage() {
+        try {
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+            cropIntent.setDataAndType(mImageCaptureUri, "image/*");
+            cropIntent.putExtra("crop", "true");
+            cropIntent.putExtra("aspectX", 1);
+            cropIntent.putExtra("aspectY", 1);
+            cropIntent.putExtra("outputX", 1000);
+            cropIntent.putExtra("outputY", 1000);
+            cropIntent.putExtra("scale", true);
+            cropIntent.putExtra("return-data", true);
+//            cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+//            cropIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+            getParentFragment().startActivityForResult(cropIntent, CROP_FROM_CAMERA);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
 
         List<Fragment> fragments = getChildFragmentManager().getFragments();
         if (fragments != null) {
@@ -1222,25 +1394,36 @@ public class FragmentProfile extends Fragment {
                 Log.d("requestCode", String.valueOf(requestCode));
                 Log.d("fragment===", fragment.getClass().getSimpleName());
                 Log.d("fragments", String.valueOf(fragments.get(0).getChildFragmentManager().getClass().getSimpleName()));
-                Log.d("fragments", String.valueOf(fragments.get(1).getChildFragmentManager().getClass().getSimpleName()));
-                Log.d("fragments", String.valueOf(fragments.get(2).getChildFragmentManager().getClass().getSimpleName()));
+
                 if (fragment.getClass().getSimpleName().equals("UserProfileImage1_Fragment") && requestCode == 1) {
                     fragment.onActivityResult(requestCode, resultCode, data);
                 } else if (fragment.getClass().getSimpleName().equals("UserProfileImage1_Fragment") && requestCode == 4) {
                     fragment.onActivityResult(requestCode, resultCode, data);
+
                 } else if (fragment.getClass().getSimpleName().equals("UserProfileImage1_Fragment") && requestCode == 7) {
                     fragment.onActivityResult(requestCode, resultCode, data);
                 } else if (fragment.getClass().getSimpleName().equals("UserProfileImage2_Fragment") && requestCode == 2) {
+                    Log.d("fragments", String.valueOf(fragments.get(1).getChildFragmentManager().getClass().getSimpleName()));
                     fragment.onActivityResult(requestCode, resultCode, data);
                 } else if (fragment.getClass().getSimpleName().equals("UserProfileImage2_Fragment") && requestCode == 5) {
+                    Log.d("fragments", String.valueOf(fragments.get(1).getChildFragmentManager().getClass().getSimpleName()));
+
                     fragment.onActivityResult(requestCode, resultCode, data);
                 } else if (fragment.getClass().getSimpleName().equals("UserProfileImage2_Fragment") && requestCode == 8) {
+
+                    Log.d("fragments", String.valueOf(fragments.get(1).getChildFragmentManager().getClass().getSimpleName()));
                     fragment.onActivityResult(requestCode, resultCode, data);
                 } else if (fragment.getClass().getSimpleName().equals("UserProfileImage3_Fragment") && requestCode == 3) {
+                    Log.d("fragments", String.valueOf(fragments.get(2).getChildFragmentManager().getClass().getSimpleName()));
+
                     fragment.onActivityResult(requestCode, resultCode, data);
                 } else if (fragment.getClass().getSimpleName().equals("UserProfileImage3_Fragment") && requestCode == 6) {
+                    Log.d("fragments", String.valueOf(fragments.get(2).getChildFragmentManager().getClass().getSimpleName()));
+
                     fragment.onActivityResult(requestCode, resultCode, data);
                 } else if (fragment.getClass().getSimpleName().equals("UserProfileImage3_Fragment") && requestCode == 9) {
+                    Log.d("fragments", String.valueOf(fragments.get(2).getChildFragmentManager().getClass().getSimpleName()));
+
                     fragment.onActivityResult(requestCode, resultCode, data);
                 }
 
@@ -1248,6 +1431,7 @@ public class FragmentProfile extends Fragment {
             }
         }
     }
+
 
     @Override
     public void onResume() {
@@ -1258,15 +1442,15 @@ public class FragmentProfile extends Fragment {
     class Hobbies_getApi extends AsyncTask<String, String, String> {
         JSONObject opj;
         JSONArray content, hobbieslist;
-String getHobbies_Api_url;
+        String getHobbies_Api_url;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-if(getActivity()!=null)
-{
-    getHobbies_Api_url=getActivity().getResources().getString(R.string.dosomething_apilink_string_gethobbies);
-    sessionid=sharedPrefrences.getSessionid(getActivity());
-}
+            if (getActivity() != null) {
+                getHobbies_Api_url = getActivity().getResources().getString(R.string.dosomething_apilink_string_gethobbies);
+                sessionid = sharedPrefrences.getSessionid(getActivity());
+            }
         }
 
         protected String doInBackground(String... params) {
@@ -1274,94 +1458,94 @@ if(getActivity()!=null)
             try {
 
 
-                    HashMap<String, Object> map = new HashMap<String, Object>();
-                    map.put("sessionid", sessionid);
-                    response = jsonfunctions.postToURL(getHobbies_Api_url, map);
-                    opj = new JSONObject(response);
-                    Log.v("response_goods", response);
-                    JSONObject dosumthng = opj.getJSONObject("gethobbies");
-                    if (dosumthng.getString("status").equalsIgnoreCase("success")) {
-                        content = dosumthng.getJSONArray("list");
-                        for (int i = 0; i < content.length(); i++) {
-                            JSONObject details = content.getJSONObject(i);
-                            int Id = details.getInt("categories_id");
-                            Log.v("categories_id", String.valueOf(Id));
-                            Log.d("List", "........" + Id);
-                            if (details.getInt("categories_id") == 1) {
-                                if (details.getString("name").equalsIgnoreCase("Arts")) {
-                                    hobbieslist = details.getJSONArray("hobbieslist");
-                                    for (int j = 0; j < hobbieslist.length(); j++) {
-                                        JSONObject values = hobbieslist.getJSONObject(j);
-                                        int hobbies_id = values.getInt("hobbies_id");
-                                        int category_id = values.getInt("category_id");
-                                        String name = values.getString("name");
-                                        Log.d("NAMEEEEEEE", ",,,," + name);
-                                        String image = values.getString("image");
-                                        String image_active = values.getString("image_active");
-                                        Log.d("List1", "........");
-                                        hobbies_array_arts.add(new Arts_hobbies(hobbies_id, category_id, name, image, image_active, false));
-                                        Log.d("EEEEEEEE", "DDDDDDDD" + hobbies_array_arts);
+                HashMap<String, Object> map = new HashMap<String, Object>();
+                map.put("sessionid", sessionid);
+                response = jsonfunctions.postToURL(getHobbies_Api_url, map);
+                opj = new JSONObject(response);
+                Log.v("response_goods", response);
+                JSONObject dosumthng = opj.getJSONObject("gethobbies");
+                if (dosumthng.getString("status").equalsIgnoreCase("success")) {
+                    content = dosumthng.getJSONArray("list");
+                    for (int i = 0; i < content.length(); i++) {
+                        JSONObject details = content.getJSONObject(i);
+                        int Id = details.getInt("categories_id");
+                        Log.v("categories_id", String.valueOf(Id));
+                        Log.d("List", "........" + Id);
+                        if (details.getInt("categories_id") == 1) {
+                            if (details.getString("name").equalsIgnoreCase("Arts")) {
+                                hobbieslist = details.getJSONArray("hobbieslist");
+                                for (int j = 0; j < hobbieslist.length(); j++) {
+                                    JSONObject values = hobbieslist.getJSONObject(j);
+                                    int hobbies_id = values.getInt("hobbies_id");
+                                    int category_id = values.getInt("category_id");
+                                    String name = values.getString("name");
+                                    Log.d("NAMEEEEEEE", ",,,," + name);
+                                    String image = values.getString("image");
+                                    String image_active = values.getString("image_active");
+                                    Log.d("List1", "........");
+                                    hobbies_array_arts.add(new Arts_hobbies(hobbies_id, category_id, name, image, image_active, false));
+                                    Log.d("EEEEEEEE", "DDDDDDDD" + hobbies_array_arts);
 //                                   hobbies_image_arts.add(image);
-                                    }
-                                }
-                            } else if (details.getInt("categories_id") == 2) {
-                                if (details.getString("name").equalsIgnoreCase("Food")) {
-                                    hobbieslist = details.getJSONArray("hobbieslist");
-                                    for (int j = 0; j < hobbieslist.length(); j++) {
-                                        JSONObject values = hobbieslist.getJSONObject(j);
-                                        int hobbies_id = values.getInt("hobbies_id");
-                                        int category_id = values.getInt("category_id");
-                                        String name = values.getString("name");
-                                        String image = values.getString("image");
-                                        String image_active = values.getString("image_active");
-                                        Log.d("List2", "........");
-                                        hobbies_array_food.add(new Food_hobbies(hobbies_id, category_id, name, image, image_active, false));
-                                        Log.d("EEEEEEEE", "FFFFFFFFF" + hobbies_array_food);
-//                                    hobbies_image_food.add(image);
-                                    }
-                                }
-                            } else if (details.getInt("categories_id") == 3) {
-                                if (details.getString("name").equalsIgnoreCase("Pets")) {
-                                    hobbieslist = details.getJSONArray("hobbieslist");
-                                    for (int j = 0; j < hobbieslist.length(); j++) {
-                                        JSONObject values = hobbieslist.getJSONObject(j);
-                                        int hobbies_id = values.getInt("hobbies_id");
-                                        int category_id = values.getInt("category_id");
-                                        String name = values.getString("name");
-                                        String image = values.getString("image");
-                                        String image_active = values.getString("image_active");
-                                        Log.d("List3", "........");
-                                        hobbies_array_pets.add(new Pets_hobbies(hobbies_id, category_id, name, image, image_active, false));
-                                        Log.d("EEEEEEEE", "AAAAAAAA" + hobbies_array_pets);
-//                                    hobbies_image_pets.add(image);
-                                    }
-                                }
-                            } else if (details.getInt("categories_id") == 4) {
-                                if (details.getString("name").equalsIgnoreCase("Recreation")) {
-                                    hobbieslist = details.getJSONArray("hobbieslist");
-                                    for (int j = 0; j < hobbieslist.length(); j++) {
-                                        JSONObject values = hobbieslist.getJSONObject(j);
-                                        int hobbies_id = values.getInt("hobbies_id");
-                                        int category_id = values.getInt("category_id");
-                                        String name = values.getString("name");
-                                        String image = values.getString("image");
-                                        String image_active = values.getString("image_active");
-                                        Log.d("List4", "........");
-                                        hobbies_array_recreation.add(new Recreation_hobbies(hobbies_id, category_id, name, image, image_active, false));
-                                        Log.d("EEEEEEEE", "DDDDDDDD" + hobbies_array_recreation);
-//                                    hobbies_image_recreation.add(image);
-                                    }
                                 }
                             }
-                            Log.d("hobbies_array_arts", "........" + hobbies_array_arts);
-                            Log.d("hobbies_array_food", "........" + hobbies_array_food);
-                            Log.d("hobbies_array_pets", "........" + hobbies_array_pets);
-                            Log.d("hobbies_array_rec", "........" + hobbies_array_recreation);
-
-
+                        } else if (details.getInt("categories_id") == 2) {
+                            if (details.getString("name").equalsIgnoreCase("Food")) {
+                                hobbieslist = details.getJSONArray("hobbieslist");
+                                for (int j = 0; j < hobbieslist.length(); j++) {
+                                    JSONObject values = hobbieslist.getJSONObject(j);
+                                    int hobbies_id = values.getInt("hobbies_id");
+                                    int category_id = values.getInt("category_id");
+                                    String name = values.getString("name");
+                                    String image = values.getString("image");
+                                    String image_active = values.getString("image_active");
+                                    Log.d("List2", "........");
+                                    hobbies_array_food.add(new Food_hobbies(hobbies_id, category_id, name, image, image_active, false));
+                                    Log.d("EEEEEEEE", "FFFFFFFFF" + hobbies_array_food);
+//                                    hobbies_image_food.add(image);
+                                }
+                            }
+                        } else if (details.getInt("categories_id") == 3) {
+                            if (details.getString("name").equalsIgnoreCase("Pets")) {
+                                hobbieslist = details.getJSONArray("hobbieslist");
+                                for (int j = 0; j < hobbieslist.length(); j++) {
+                                    JSONObject values = hobbieslist.getJSONObject(j);
+                                    int hobbies_id = values.getInt("hobbies_id");
+                                    int category_id = values.getInt("category_id");
+                                    String name = values.getString("name");
+                                    String image = values.getString("image");
+                                    String image_active = values.getString("image_active");
+                                    Log.d("List3", "........");
+                                    hobbies_array_pets.add(new Pets_hobbies(hobbies_id, category_id, name, image, image_active, false));
+                                    Log.d("EEEEEEEE", "AAAAAAAA" + hobbies_array_pets);
+//                                    hobbies_image_pets.add(image);
+                                }
+                            }
+                        } else if (details.getInt("categories_id") == 4) {
+                            if (details.getString("name").equalsIgnoreCase("Recreation")) {
+                                hobbieslist = details.getJSONArray("hobbieslist");
+                                for (int j = 0; j < hobbieslist.length(); j++) {
+                                    JSONObject values = hobbieslist.getJSONObject(j);
+                                    int hobbies_id = values.getInt("hobbies_id");
+                                    int category_id = values.getInt("category_id");
+                                    String name = values.getString("name");
+                                    String image = values.getString("image");
+                                    String image_active = values.getString("image_active");
+                                    Log.d("List4", "........");
+                                    hobbies_array_recreation.add(new Recreation_hobbies(hobbies_id, category_id, name, image, image_active, false));
+                                    Log.d("EEEEEEEE", "DDDDDDDD" + hobbies_array_recreation);
+//                                    hobbies_image_recreation.add(image);
+                                }
+                            }
                         }
+                        Log.d("hobbies_array_arts", "........" + hobbies_array_arts);
+                        Log.d("hobbies_array_food", "........" + hobbies_array_food);
+                        Log.d("hobbies_array_pets", "........" + hobbies_array_pets);
+                        Log.d("hobbies_array_rec", "........" + hobbies_array_recreation);
+
 
                     }
+
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -1551,6 +1735,7 @@ if(getActivity()!=null)
 
         }
     }
+
 
 }
 

@@ -916,6 +916,12 @@ public class DoSomeThingCreateAccount extends Activity {
                             } else if (json_content.getString("status").equalsIgnoreCase("error")) {
                                 if (json_content.getString("Message").equalsIgnoreCase("Email Already available")) {
                                     if (json_content.getString("RegisterType").equalsIgnoreCase("2")) {
+                                        sharedPreferences.setWalkThroughHobbies(context, "true");
+                                        sharedPreferences.setWalkThroughNearme(context, "true");
+                                        sharedPreferences.setWalkThroughHomescreen(context, "true");
+                                        sharedPreferences.setWalkThroughActivity(context, "true");
+                                        sharedPreferences.setWalkThroughchat(context, "true");
+                                        sharedPreferences.setWalkThroughMatch(context, "true");
                                         JSONArray sportsArray = json_content.getJSONArray("userDetails");
                                         JSONObject firstSport = sportsArray.getJSONObject(0);
                                         showpassword = firstSport.getString("showpassword");
@@ -1053,6 +1059,7 @@ public class DoSomeThingCreateAccount extends Activity {
                                         sharedPreferences.setNotifySound(context, notification_sound);
                                         sharedPreferences.setNotifyVibration(context, notification_vibration);
                                         sharedPreferences.setNotifyMatch(context, notification_match);
+                                        sharedPreferences.setAbout(context,about);
                                         sharedPreferences.setEmail(context, email);
                                         sharedPreferences.setUserId(context, user_id);
                                         sharedPreferences.setLogin(context, "Yes");

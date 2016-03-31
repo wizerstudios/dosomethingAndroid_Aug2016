@@ -136,7 +136,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
     private int matchedUser_user_id;
     private String matchedUser_first_name, matchedUser_last_name, matchedUser_about;
     private String matchedUser_image1;
-    String dosmething_nearuser_matched_Api_staus, dosmething_nearuser_matched_grid_control="";
+    String dosmething_nearuser_matched_Api_staus, dosmething_nearuser_matched_grid_control = "";
     TextView dosomething_nearme_matched_profile_chat_dosomething_textview, dosomething_nearme_matched_profile_name_textview, activity_dosomething_nearme_textview_nouser;
     LinearLayout dosomething_nearme_gridview_layout;
     private ArrayList<Dosomething_Bean> dosomething_beans = new ArrayList<>();
@@ -212,12 +212,10 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_do_something_near_me, container, false);
-        try
-        {
+        try {
             MyApplication application = (MyApplication) getActivity().getApplication();
             mTracker = application.getDefaultTracker();
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         sharedPreferences = new SharedPrefrences();
@@ -269,6 +267,10 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
 
         try {
             if (getActivity() != null) {
+                if (((MyApplication) getActivity().getApplication()).getCount() != 0) {
+                    count = ((MyApplication) getActivity().getApplication()).getCount();
+
+                }
                /* layout_walkthrough_match.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -321,6 +323,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                         }
 
                         page = "1";
+                        count = 1;
                         new AsynDataClass().execute();
 
                     } else {
@@ -328,7 +331,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                     }
                 } else {
 
-                    filter_list=((MyApplication) getActivity().getApplication()).getListFilterBeans();
+                    filter_list = ((MyApplication) getActivity().getApplication()).getListFilterBeans();
                    /* adapter = new ProfileAdapter(getActivity(), ((MyApplication) getActivity().getApplication()).getListFilterBeans());
                     activity_dosomething_nearme.setAdapter(adapter);
                     adapter.notifyDataSetChanged();*/
@@ -510,56 +513,55 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                     pastVisiblesItems = layoutManager.findFirstVisibleItemPosition();
 
 
+                    if (loading) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            pull_to_refresh_progress.setVisibility(View.VISIBLE);
+                            Log.v("...", "Last Item Wow !");
+                            count++;
+                            ((MyApplication) getActivity().getApplication()).setCount(count);
 
+                            loading = false;
+                            if (!sharedPreferences.getSessionid(getActivity()).equals("") || !sharedPreferences.getLatitude(getActivity()).equals("") || !sharedPreferences.getLongitude(getActivity()).equals("") && getActivity() != null) {
 
+                                sessionid = sharedPreferences.getSessionid(getActivity());
+                                latitude = sharedPreferences.getLatitude(getActivity());
+                                longitude = sharedPreferences.getLongitude(getActivity());
+                                filter_status = sharedPreferences.getFilterStatus(getActivity());
+                                filter_gender = sharedPreferences.getFilterGender(getActivity());
 
-                        if (loading) {
-                            if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                                pull_to_refresh_progress.setVisibility(View.VISIBLE);
-                                Log.v("...", "Last Item Wow !");
+                                Log.d("dosomething", "filter_distance" + sharedPreferences.getFilterDistance(getActivity()));
 
-                                loading = false;
-                                if (!sharedPreferences.getSessionid(getActivity()).equals("") || !sharedPreferences.getLatitude(getActivity()).equals("") || !sharedPreferences.getLongitude(getActivity()).equals("") && getActivity() != null) {
+                                if (sharedPreferences.getFilterDistance(getActivity()).trim().equals("0.0-50.0")) {
 
-                                    sessionid = sharedPreferences.getSessionid(getActivity());
-                                    latitude = sharedPreferences.getLatitude(getActivity());
-                                    longitude = sharedPreferences.getLongitude(getActivity());
-                                    filter_status = sharedPreferences.getFilterStatus(getActivity());
-                                    filter_gender = sharedPreferences.getFilterGender(getActivity());
-
-                                    Log.d("dosomething", "filter_distance" + sharedPreferences.getFilterDistance(getActivity()));
-
-                                    if (sharedPreferences.getFilterDistance(getActivity()).trim().equals("0.0-50.0")) {
-
-                                        filter_distance = "";
-                                        Log.d("dosomething", "filter_distance" + filter_distance);
-
-                                    } else {
-                                        filter_distance = sharedPreferences.getFilterDistance(getActivity());
-                                        Log.d("dosomething", "filter_distance" + filter_distance);
-
-                                    }
-                                    Log.d("dosomething", "filter_agerange" + sharedPreferences.getFilterAge(getActivity()));
-
-                                    if (sharedPreferences.getFilterAge(getActivity()).trim().equals("18.0-80.0")) {
-
-                                        filter_agerange = "";
-                                        Log.d("dosomething", "filter_agerange" + filter_agerange);
-                                    } else {
-                                        filter_agerange = sharedPreferences.getFilterAge(getActivity());
-                                        Log.d("dosomething", "filter_agerange" + filter_agerange);
-                                    }
-
-                                    page = String.valueOf(count++);
-                                    new AsynDataClass().execute();
+                                    filter_distance = "";
+                                    Log.d("dosomething", "filter_distance" + filter_distance);
 
                                 } else {
-                                    Toast.makeText(getActivity(), "null", Toast.LENGTH_SHORT).show();
+                                    filter_distance = sharedPreferences.getFilterDistance(getActivity());
+                                    Log.d("dosomething", "filter_distance" + filter_distance);
+
+                                }
+                                Log.d("dosomething", "filter_agerange" + sharedPreferences.getFilterAge(getActivity()));
+
+                                if (sharedPreferences.getFilterAge(getActivity()).trim().equals("18.0-80.0")) {
+
+                                    filter_agerange = "";
+                                    Log.d("dosomething", "filter_agerange" + filter_agerange);
+                                } else {
+                                    filter_agerange = sharedPreferences.getFilterAge(getActivity());
+                                    Log.d("dosomething", "filter_agerange" + filter_agerange);
                                 }
 
+                                page = String.valueOf(count);
+                                new AsynDataClass().execute();
 
+                            } else {
+                                Toast.makeText(getActivity(), "null", Toast.LENGTH_SHORT).show();
                             }
+
+
                         }
+                    }
 
                 }
             }
@@ -579,8 +581,8 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                     filter_agerange = sharedPreferences.getFilterAge(getActivity());
                     filter_distance = sharedPreferences.getFilterDistance(getActivity());
                     filter_gender = sharedPreferences.getFilterGender(getActivity());
-
-
+                    page = "1";
+                    count = 1;
                     if (dosomething_list != null) {
                         dosomething_list.clear();
                     }
@@ -796,40 +798,14 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                     dosomething_nearme_matched_profile_popup_layout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            isGridClick = true;
-                            layout_walkthrough_match.setVisibility(View.GONE);
-                            if (blink_match != null) {
 
-                                blink_match.cancel();
+                            sessionid = sharedPreferences.getSessionid(getActivity());
+                            request_send_user_id = sharedPreferences.getFriendUserId(getActivity());
 
-
-                                blink_match = null;
-
-                            }
-                            splashAnimation_match.stop();
-                            sharedPreferences.setWalkThroughMatch(getActivity(), "true");
-                            dosomething_nearme_matched_profile_popup.setVisibility(View.GONE);
-                            dosmething_nearuser_matched_grid_control = "";
-                            dosomething_nearme_gridview_layout.setAlpha(1);
-                                               /* chatstart = "1";
-                                                sessionid = sharedPreferences.getSessionid(getActivity());
-                                                request_send_user_id = String.valueOf(UserId);
-                                                new SendRequest().execute();*/
-                            if (getActivity() != null) {
-                                ((MyApplication) getActivity().getApplication()).getDoSomethingStatus().setmatchState("match_chat");
-                                sessionid = sharedPreferences.getSessionid(getActivity());
-
-                                ((DoSomethingStatus) getActivity()).hideFilterIconVisible(true);
-                                sharedPreferences.setDosomething_filterImage_Visibility(getActivity(), "No");
-                                DoSomethingChatBox doSomethingChatBox = new DoSomethingChatBox();
-                                fragmentTransaction = getFragmentManager().beginTransaction();
-                                fragmentTransaction.replace(R.id.detail_fragment, doSomethingChatBox);
-                                fragmentTransaction.commit();
-
-                                sharedPreferences.setPushType(getActivity(), "");
+                            new CheckRequestStatus().execute();
 
 
-                            }
+
 
 
                         }
@@ -1262,7 +1238,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                     holder.activity_dosomething_nearme_ralativelayout.setClickable(false);
                     holder.activity_dosomething_nearme_ralativelayout.setEnabled(false);
                     activity_dosomething_nearme.setEnabled(false);
-                }else {
+                } else {
                     holder.activity_dosomething_imageview_nearme_chong.setClickable(true);
                     holder.activity_dosomething_imageview_nearme_chong.setEnabled(true);
                     holder.activity_dosomething_nearme_ralativelayout.setClickable(true);
@@ -1719,7 +1695,6 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                     holder.activity_dosomething_nearme_textview_request.setTextColor(getResources().getColor(R.color.text_grey));
 
 
-
                                     new SendRequest().execute();
                                 }
 
@@ -2051,18 +2026,13 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
 //            pDialog.show();
 //            pd.show();
             dosmething_nearuser_matched_grid_control = "Click_false";
-            if(((MyApplication) getActivity().getApplication()).getListFilterBeans().size()==0)
-            {
+            if (((MyApplication) getActivity().getApplication()).getListFilterBeans().size() == 0) {
                 kbv.setVisibility(View.VISIBLE);
                 relativelayout_nearme_progress.setVisibility(View.VISIBLE);
                 timer = new Timer();
                 timer.schedule(new AutoSlider(), 0, 1350);
                 splashAnimation.start();
             }
-
-
-
-
 
 
             if (getActivity() != null) {
@@ -2117,8 +2087,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
 
 
                         }
-                        if(json_content.has("page"))
-                        {
+                        if (json_content.has("page")) {
                             page = json_content.getString("page");
                         }
 
@@ -2401,7 +2370,6 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                     switch (status) {
                         case "success":
                             try {
-                                loading = true;
                                 kbv.setVisibility(View.GONE);
                                 relativelayout_nearme_progress.setVisibility(View.GONE);
                                 if (timer != null) {
@@ -2534,7 +2502,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
 //
 //                                    }
 
-
+                                    loading = true;
 //                                    activity_dosomething_nearme.setExpanded(true);
                                     Log.d("filter_list", String.valueOf(filter_list.size()));
                                     int index = 0;
@@ -2632,10 +2600,12 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                 sharedPreferences.setFilterDistance(getActivity(), "");
                                 sharedPreferences.setFilterAge(getActivity(), "");
 
-
-                                activity_dosomething_nearme_textview_nouser.setText("No Users Found");
-                                activity_dosomething_nearme_textview_nouser.setVisibility(View.VISIBLE);
-                                activity_dosomething_nearme_textview_nouser.setTextColor(getActivity().getResources().getColor(R.color.text_red));
+                                if (page == "1") {
+                                    activity_dosomething_nearme_textview_nouser.setText("No Users Found");
+                                    activity_dosomething_nearme_textview_nouser.setVisibility(View.VISIBLE);
+                                    activity_dosomething_nearme_textview_nouser.setTextColor(getActivity().getResources().getColor(R.color.text_red));
+                                }
+                                dosmething_nearuser_matched_grid_control = "";
                             /*AlertDialog dialogBuilder = new AlertDialog.Builder(getActivity()).create();
                             dialogBuilder.setTitle("Info");
                             dialogBuilder.setMessage("No Users Found");
@@ -2845,7 +2815,8 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
         private String image1;
         private String UserId;
         Exception error;
-String sendRequestApi;
+        String sendRequestApi;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -2858,7 +2829,7 @@ String sendRequestApi;
             timer.schedule(new AutoSlider(), 0, 1350);
             splashAnimation.start();
 
-            sendRequestApi=getActivity().getResources().getString(R.string.dosomething_apilink_string_sendrequest);
+            sendRequestApi = getActivity().getResources().getString(R.string.dosomething_apilink_string_sendrequest);
            /* progress_bar.show();
             timer = new Timer();
             timer.schedule(new AutoSlider(), 0, 1350);
@@ -3018,31 +2989,7 @@ String sendRequestApi;
                                             @Override
                                             public void onClick(View v) {
 
-                                                isGridClick = true;
-                                                dosomething_nearme_matched_profile_popup.setVisibility(View.GONE);
-                                                dosmething_nearuser_matched_grid_control = "";
-                                                dosomething_nearme_gridview_layout.setAlpha(1);
-                                               /* chatstart = "1";
-                                                sessionid = sharedPreferences.getSessionid(getActivity());
-                                                request_send_user_id = String.valueOf(UserId);
-                                                new SendRequest().execute();*/
-                                                if (getActivity() != null) {
-                                                    ((MyApplication) getActivity().getApplication()).getDoSomethingStatus().setmatchState("match_chat");
-                                                    sharedPreferences.setFriendFirstname(getActivity(), Name);
-                                                    sharedPreferences.setFriendProfilePicture(getActivity(), image1);
-
-                                                    sessionid = sharedPreferences.getSessionid(getActivity());
-
-                                                    ((DoSomethingStatus) getActivity()).hideFilterIconVisible(true);
-                                                    sharedPreferences.setDosomething_filterImage_Visibility(getActivity(), "No");
-                                                    DoSomethingChatBox doSomethingChatBox = new DoSomethingChatBox();
-                                                    fragmentTransaction = getFragmentManager().beginTransaction();
-                                                    fragmentTransaction.replace(R.id.detail_fragment, doSomethingChatBox);
-                                                    fragmentTransaction.commit();
-
-
-                                                }
-
+                                                new CheckRequestStatus().execute();
 
                                             }
                                         });
@@ -3074,30 +3021,30 @@ String sendRequestApi;
                                 break;
                             case "failed":
 
-                            progress_bar.dismiss();
-                            if (timer != null) {
+                                progress_bar.dismiss();
+                                if (timer != null) {
 
-                                timer.cancel();
+                                    timer.cancel();
 
 
-                                timer = null;
+                                    timer = null;
 
-                            }
-                            splashAnimation_progress.stop();
+                                }
+                                splashAnimation_progress.stop();
                                 break;
 
                             case "InvalidSession":
 
-                            progress_bar.dismiss();
-                            if (timer != null) {
+                                progress_bar.dismiss();
+                                if (timer != null) {
 
-                                timer.cancel();
+                                    timer.cancel();
 
 
-                                timer = null;
+                                    timer = null;
 
-                            }
-                            splashAnimation_progress.stop();
+                                }
+                                splashAnimation_progress.stop();
                                 sharedPreferences.setLogin(getActivity(), "");
                                 sharedPreferences.setEmail(getActivity(), "");
                                 sharedPreferences.setDateofBirth(getActivity(), "");
@@ -3545,6 +3492,106 @@ String sendRequestApi;
                 }
 
             });
+        }
+    }
+
+    private class CheckRequestStatus extends AsyncTask<Void, Void, Boolean> {
+
+        private String checkRequestApi;
+        private Exception error;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (getActivity() != null) {
+                checkRequestApi = getActivity().getResources().getString(R.string.dosomething_apilink_string_checkrequeststatus);
+            }
+
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            HashMap<String, Object> paramsCheck = new HashMap<>();
+
+            paramsCheck.put(TAG_REQUESTSEND_USERID, request_send_user_id);
+            paramsCheck.put(TAG_SESSIONID, sessionid);
+            json_string = jsonfunctions.postToURL(checkRequestApi, paramsCheck);
+            Log.v("jason url=======>", String.valueOf(paramsCheck));
+            try {
+                json_object = new JSONObject(json_string);
+                json_content = json_object.getJSONObject("checkrequeststatus");
+
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                error = e;
+                return false;
+            }
+
+        }
+
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (aBoolean) {
+                if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
+                    try {
+                        if (json_object.has("checkrequeststatus")) {
+                            if (json_content.getString("status").equalsIgnoreCase("success")) {
+
+                                isGridClick = true;
+                                layout_walkthrough_match.setVisibility(View.GONE);
+                                if (blink_match != null) {
+
+                                    blink_match.cancel();
+
+
+                                    blink_match = null;
+
+                                }
+                                splashAnimation_match.stop();
+                                sharedPreferences.setWalkThroughMatch(getActivity(), "true");
+                                dosomething_nearme_matched_profile_popup.setVisibility(View.GONE);
+                                dosmething_nearuser_matched_grid_control = "";
+                                dosomething_nearme_gridview_layout.setAlpha(1);
+                                               /* chatstart = "1";
+                                                sessionid = sharedPreferences.getSessionid(getActivity());
+                                                request_send_user_id = String.valueOf(UserId);
+                                                new SendRequest().execute();*/
+                                if (getActivity() != null) {
+                                    ((MyApplication) getActivity().getApplication()).getDoSomethingStatus().setmatchState("match_chat");
+                                    sessionid = sharedPreferences.getSessionid(getActivity());
+
+                                    ((DoSomethingStatus) getActivity()).hideFilterIconVisible(true);
+                                    sharedPreferences.setDosomething_filterImage_Visibility(getActivity(), "No");
+                                    DoSomethingChatBox doSomethingChatBox = new DoSomethingChatBox();
+                                    fragmentTransaction = getFragmentManager().beginTransaction();
+                                    fragmentTransaction.replace(R.id.detail_fragment, doSomethingChatBox);
+                                    fragmentTransaction.commit();
+
+                                    sharedPreferences.setPushType(getActivity(), "");
+
+
+                                }
+                            }else
+                                 if(json_content.getString("status").equalsIgnoreCase("failed"))
+                                 {
+                                     ((DoSomethingStatus)getActivity()).slideToChat(true);
+
+                                 }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            } else {
+                if (error != null) {
+
+                }
+            }
         }
     }
 }

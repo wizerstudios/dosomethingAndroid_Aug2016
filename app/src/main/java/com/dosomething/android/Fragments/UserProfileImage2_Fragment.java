@@ -35,11 +35,16 @@ import android.widget.Toast;
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
+import com.dosomething.android.CommonClasses.Jsonfunctions;
+import com.dosomething.android.CommonClasses.NetworkCheck;
 import com.dosomething.android.CommonClasses.SharedPrefrences;
 import com.dosomething.android.CropOption;
 import com.dosomething.android.CropOptionAdapter;
+import com.dosomething.android.DoSomethingStatus;
 import com.dosomething.android.MyApplication;
 import com.dosomething.android.R;
+
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -49,6 +54,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -64,7 +70,14 @@ public class UserProfileImage2_Fragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final int RESULT_LOAD_IMG = 2;
-
+    private static final String TAG_SESSIONID = "sessionid";
+    private static final String TAG_FIELD = "field";
+    private String sessionid;
+    private String field;
+    private Jsonfunctions jsonfunctions;
+    private String json_string;
+    private JSONObject json_object;
+    private JSONObject json_content;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -84,6 +97,8 @@ public class UserProfileImage2_Fragment extends Fragment {
     private TextView dosomething_alert_pick_image_textview;
     private TextView dosomething_alert_pick_image_textview_gallery;
     private TextView dosomething_alert_pick_image_textview_camera;
+    TextView dosomething_alert_pick_image_textview_remove;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -123,17 +138,21 @@ public class UserProfileImage2_Fragment extends Fragment {
         View view=inflater.inflate(R.layout.fragment_user_profile_image2_, container, false);
         sharedPrefrences=new SharedPrefrences();
         aQuery=new AQuery(getActivity());
+        jsonfunctions = new Jsonfunctions(getActivity());
+        sessionid = sharedPrefrences.getSessionid(getActivity());
+        field = "image2";
         user_profile_imageview_two=(ImageView)view.findViewById(R.id.user_profile_imageview_two);
         user_image_two_imageview_camera_outside=(ImageView)view.findViewById(R.id.user_image_two_imageview_camera_outside);
         user_image_two_imageview_camera_inside=(ImageView)view.findViewById(R.id.user_image_two_imageview_camera_inside);
         dialog = new Dialog(getActivity());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dosomething_alert_pick_image);
-        dosomething_alert_pick_image_textview = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview);
+        dialog.setContentView(R.layout.dosomething_alert_imagepickandremove);
+//        dosomething_alert_pick_image_textview = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview);
         dosomething_alert_pick_image_textview_gallery = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_gallery);
         dosomething_alert_pick_image_textview_camera = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_camera);
 
-
+        dosomething_alert_pick_image_textview_remove = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_remove);
+        ((MyApplication)getActivity().getApplication()).setUserProfileImage2_fragment(this);
         if (!sharedPrefrences.getProfilePicture1(getActivity()).equals("")) {
 //            LoadImageFromURL loadImage = new LoadImageFromURL();
 //            loadImage.execute();
@@ -144,17 +163,78 @@ public class UserProfileImage2_Fragment extends Fragment {
                         Bitmap resized = Bitmap.createScaledBitmap(bm, 200, 200, true);
                         Bitmap conv_bm = getCroppedBitmap(bm);
                         iv.setImageBitmap(conv_bm);
-                        user_image_two_imageview_camera_inside.setVisibility(View.VISIBLE);
+                        user_image_two_imageview_camera_inside.setVisibility(View.GONE);
                         user_image_two_imageview_camera_outside.setVisibility(View.GONE);
 
                     }
                 }
             });
+        }else
+        {
+            dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
         }
 
         user_image_two_imageview_camera_outside.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getActivity());
+                builder.setTitle("Choose Image");
+                builder.setMessage("Do you want to go with?");
+                builder.setPositiveButton("Camera", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+////                        cameraIntent.putExtra("crop", "true");
+////                        cameraIntent.putExtra("outputX", 900);
+////                        cameraIntent.putExtra("outputY", 900);
+////                        cameraIntent.putExtra("aspectX", 4);
+////                        cameraIntent.putExtra("aspectY", 16);
+////                        cameraIntent.putExtra("scale", true);
+//                        startActivityForResult(cameraIntent, 5);
+
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                        mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
+                                "crop.jpg"));
+                        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+                        getParentFragment().startActivityForResult(intent, PICK_FROM_CAMERA);
+                        dialog.dismiss();
+
+
+                    }
+                });
+
+                builder.setNeutralButton("Remove", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new Imageremoval().execute();
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("Gallery", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//                        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+//                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//
+//                        startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+                        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        getParentFragment().startActivityForResult(i, PICK_FROM_FILE);
+
+                        *//*Intent intent = new Intent(
+                                Intent.ACTION_GET_CONTENT,
+                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        intent.setType("image*//**//*");
+                        startActivityForResult(
+                                Intent.createChooser(intent, "Choose an image"),
+                                PICK_FROM_FILE);*//*
+                        dialog.dismiss();
+
+
+                    }
+                });
+                builder.show();*/
 
                 showImageSelectionAlert();
             }
@@ -162,6 +242,64 @@ public class UserProfileImage2_Fragment extends Fragment {
         user_profile_imageview_two.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getActivity());
+                builder.setTitle("Choose Image");
+                builder.setMessage("Do you want to go with?");
+                builder.setPositiveButton("Camera", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+////                        cameraIntent.putExtra("crop", "true");
+////                        cameraIntent.putExtra("outputX", 900);
+////                        cameraIntent.putExtra("outputY", 900);
+////                        cameraIntent.putExtra("aspectX", 4);
+////                        cameraIntent.putExtra("aspectY", 16);
+////                        cameraIntent.putExtra("scale", true);
+//                        startActivityForResult(cameraIntent, 5);
+
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                        mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
+                                "crop.jpg"));
+                        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+                        getParentFragment().startActivityForResult(intent, PICK_FROM_CAMERA);
+                        dialog.dismiss();
+
+
+                    }
+                });
+
+                builder.setNeutralButton("Remove", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new Imageremoval().execute();
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("Gallery", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//                        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+//                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//
+//                        startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+                        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        getParentFragment().startActivityForResult(i, PICK_FROM_FILE);
+
+                        *//*Intent intent = new Intent(
+                                Intent.ACTION_GET_CONTENT,
+                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        intent.setType("image*//**//*");
+                        startActivityForResult(
+                                Intent.createChooser(intent, "Choose an image"),
+                                PICK_FROM_FILE);*//*
+                        dialog.dismiss();
+
+
+                    }
+                });
+                builder.show();*/
                 showImageSelectionAlert();
 
 
@@ -176,11 +314,12 @@ public class UserProfileImage2_Fragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
 
 
-    public void showImageSelectionAlert()
-    {
-        dosomething_alert_pick_image_textview_gallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    public void showImageSelectionAlert() {
+        try{
+            if (dosomething_alert_pick_image_textview_gallery!=null){
+                dosomething_alert_pick_image_textview_gallery.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
                /* Intent intent = new Intent(
                         Intent.ACTION_PICK,
@@ -194,30 +333,44 @@ public class UserProfileImage2_Fragment extends Fragment {
                         PICK_FROM_FILE);*/
 
 
-                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                getParentFragment().startActivityForResult(i, PICK_FROM_FILE);
-                dialog.dismiss();
+                        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        getParentFragment().startActivityForResult(i, PICK_FROM_FILE);
+                        dialog.dismiss();
+                    }
+                });
+
+                dosomething_alert_pick_image_textview_remove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new Imageremoval().execute();
+                        dialog.dismiss();
+                    }
+                });
+
+
+                dosomething_alert_pick_image_textview_camera.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+
+                        mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
+                                "fragmentcrop2.jpg"));
+                        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+                        getParentFragment().startActivityForResult(intent, PICK_FROM_CAMERA);
+
+
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
             }
-        });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
 
-        dosomething_alert_pick_image_textview_camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-
-                mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
-                        "fragmentcrop2.jpg"));
-                intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
-                getParentFragment().startActivityForResult(intent, PICK_FROM_CAMERA);
-
-
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
     }
 
     public void OnClickListener(){
@@ -307,7 +460,7 @@ public class UserProfileImage2_Fragment extends Fragment {
 
                             Bitmap conv_bm = getCroppedBitmap(photo);
                             user_profile_imageview_two.setImageBitmap(conv_bm);
-                            user_image_two_imageview_camera_inside.setVisibility(View.VISIBLE);
+                            user_image_two_imageview_camera_inside.setVisibility(View.GONE);
                             user_image_two_imageview_camera_outside.setVisibility(View.GONE);
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
                             assert resized != null;
@@ -567,6 +720,74 @@ public class UserProfileImage2_Fragment extends Fragment {
 //            profile_image_viewpager_dots_one.profile_Image_one();
         }
 
+    }
+
+
+    private class Imageremoval extends AsyncTask<Void, Void, Boolean> {
+
+        private Exception error;
+        String deleteimageApi;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if(getActivity()!=null)
+            {
+                deleteimageApi=getActivity().getResources().getString(R.string.dosomething_apilink_string_deleteimage);
+            }
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            HashMap<String, Object> paramsCheck = new HashMap<>();
+            paramsCheck.put(TAG_SESSIONID, sessionid);
+            paramsCheck.put(TAG_FIELD, field);
+            json_string = jsonfunctions.postToURL(deleteimageApi, paramsCheck);
+            Log.v("jason url=======>", String.valueOf(paramsCheck));
+            try {
+                json_object = new JSONObject(json_string);
+                json_content = json_object.getJSONObject("deleteprofileimage");
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                error = e;
+                return false;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            try
+            {
+                if (aBoolean) {
+
+                    if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
+                        try {
+                            if (json_object.has("deleteprofileimage")) {
+                                if (json_content.getString("status").equalsIgnoreCase("success")) {
+                                    sharedPrefrences.setProfilePicture1(getActivity(), "");
+                                    ((DoSomethingStatus) getActivity()).profileRefresh(true);
+
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
+                        if (error != null) {
+
+                        }
+                    }
+                }
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     /**

@@ -376,6 +376,7 @@ RelativeLayout layout_walkthrough_account_create;
     }
 
 
+
     //////////////////////////assign method/////////////////////////////////////////////////////////
 
     public void assign_layoutComponent() {

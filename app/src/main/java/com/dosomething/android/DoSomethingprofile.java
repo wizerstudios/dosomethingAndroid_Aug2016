@@ -115,7 +115,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
             profile_page_imageview_camera,
             profile_page_imageview_profile_image,
             profile_page_imageview_hobbies,
-            grid_layout_profile_imageview_hobbies,
+            grid_layout_profile_imageview_hobbies,profile_image_autoincrease,
             profile_Cam;
     AccountHandle handle = null;
     RelativeLayout dosomething_account_confirmation_alert;
@@ -1738,6 +1738,7 @@ RelativeLayout layout_walkthrough_profilesave;
 
     private void assign_declaration() {
 //        profile_page_imageview_camera = (ImageView) findViewById(R.id.profile_page_imageview_camera);
+        profile_image_autoincrease = (ImageView) findViewById(R.id.profile_image_autoincrease);
         image_walkthrough_account_profilesave = (ImageView) findViewById(R.id.image_walkthrough_account_profilesave);
         image_walkthrough_account_profile = (ImageView) findViewById(R.id.image_walkthrough_account_profile);
         walkthrough_profile_imageView = (ImageView) findViewById(R.id.walkthrough_profile_imageView);

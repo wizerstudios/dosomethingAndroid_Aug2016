@@ -453,12 +453,7 @@ public class DoSomeThingLogin extends Activity {
                                                 System.out.println("birthday" + birthday);
                                             }
                                             System.out.println("url url" + url);
-                                            sharedPreferences.setWalkThroughHobbies(context, "true");
-                                            sharedPreferences.setWalkThroughNearme(context, "true");
-                                            sharedPreferences.setWalkThroughHomescreen(context, "true");
-                                            sharedPreferences.setWalkThroughActivity(context, "true");
-                                            sharedPreferences.setWalkThroughchat(context, "true");
-                                            sharedPreferences.setWalkThroughMatch(context, "true");
+
                                             type = "2";
                                             password = "";
                                             latitude = sharedPreferences.getLatitude(context);
@@ -1030,6 +1025,14 @@ public class DoSomeThingLogin extends Activity {
                     try {
                         if (json_object.has("checkuser")) {
                             if (json_content.getString("status").equalsIgnoreCase("success")) {
+                                sharedPreferences.setWalkThroughProfile(context, "false");
+                                sharedPreferences.setWalkThroughProfilesave(context, "false");
+                                sharedPreferences.setWalkThroughHobbies(context, "false");
+                                sharedPreferences.setWalkThroughNearme(context, "false");
+                                sharedPreferences.setWalkThroughHomescreen(context, "false");
+                                sharedPreferences.setWalkThroughActivity(context, "false");
+                                sharedPreferences.setWalkThroughchat(context, "false");
+                                sharedPreferences.setWalkThroughMatch(context, "false");
 //                            pd.dismiss();
                            /* kbv.setVisibility(View.GONE);*/
                                 progress_bar.dismiss();
@@ -1045,8 +1048,15 @@ public class DoSomeThingLogin extends Activity {
                                 finish();
                             } else if (json_content.getString("status").equalsIgnoreCase("error")) {
 //                            pd.dismiss();
+                                sharedPreferences.setWalkThroughHobbies(context, "true");
+                                sharedPreferences.setWalkThroughNearme(context, "true");
+                                sharedPreferences.setWalkThroughHomescreen(context, "true");
+                                sharedPreferences.setWalkThroughActivity(context, "true");
+                                sharedPreferences.setWalkThroughchat(context, "true");
+                                sharedPreferences.setWalkThroughMatch(context, "true");
                                 JSONArray sportsArray = json_content.getJSONArray("userDetails");
                                 JSONObject firstSport = sportsArray.getJSONObject(0);
+
                                 if (firstSport.has("SessionId")) {
                                     SessionId = firstSport.getString("SessionId");
 

@@ -61,6 +61,7 @@ public class Profile_image_three_fragment extends android.support.v4.app.Fragmen
     private static final int PICK_FROM_CAMERA = 4;
     private static final int CROP_FROM_CAMERA = 5;
     private static final int PICK_FROM_FILE = 6;
+    private TextView dosomething_alert_pick_image_textview_remove;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,10 +82,12 @@ public class Profile_image_three_fragment extends android.support.v4.app.Fragmen
 
         dialog = new Dialog(getActivity());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dosomething_alert_pick_image);
-        dosomething_alert_pick_image_textview = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview);
+        dialog.setContentView(R.layout.dosomething_alert_imagepickandremove);
+//        dosomething_alert_pick_image_textview = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview);
         dosomething_alert_pick_image_textview_gallery = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_gallery);
         dosomething_alert_pick_image_textview_camera = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_camera);
+        dosomething_alert_pick_image_textview_remove=(TextView)dialog.findViewById(R.id.dosomething_alert_pick_image_textview_remove);
+
 
 
         try
@@ -99,6 +102,13 @@ public class Profile_image_three_fragment extends android.support.v4.app.Fragmen
                 profile_image_three_imageview_camera_inside.setVisibility(View.VISIBLE);
                 profile_image_three_imageview_camera_outside.setVisibility(View.GONE);
                 profile_image_viewpager_dots_three.profile_Image_three();
+
+            }else
+            {
+                if(sharedPrefrences.getProfilePicture2(getActivity()).equals(""))
+                {
+                    dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
+                }
 
             }
         }catch (Exception e)
@@ -130,7 +140,18 @@ public class Profile_image_three_fragment extends android.support.v4.app.Fragmen
                     }
                 });
 
-
+                dosomething_alert_pick_image_textview_remove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        profile_image_three_imageview_profile_image.setImageResource(R.drawable.profile_noimg);
+                        profile_image_three_imageview_camera_inside.setVisibility(View.GONE);
+                        profile_image_three_imageview_camera_outside.setVisibility(View.VISIBLE);
+                        dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
+                        sharedPrefrences.setProfileImageBitmap3(getActivity(), "");
+                        sharedPrefrences.setProfilePicture2(getActivity(), "");
+                        dialog.dismiss();
+                    }
+                });
                 dosomething_alert_pick_image_textview_camera.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -229,7 +250,18 @@ public class Profile_image_three_fragment extends android.support.v4.app.Fragmen
                     }
                 });
 
-
+                dosomething_alert_pick_image_textview_remove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        profile_image_three_imageview_profile_image.setImageResource(R.drawable.profile_noimg);
+                        profile_image_three_imageview_camera_inside.setVisibility(View.GONE);
+                        profile_image_three_imageview_camera_outside.setVisibility(View.VISIBLE);
+                        dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
+                        sharedPrefrences.setProfileImageBitmap3(getActivity(), "");
+                        sharedPrefrences.setProfilePicture2(getActivity(), "");
+                        dialog.dismiss();
+                    }
+                });
                 dosomething_alert_pick_image_textview_camera.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -342,6 +374,7 @@ public class Profile_image_three_fragment extends android.support.v4.app.Fragmen
                             profile_image_three_imageview_profile_image.setImageBitmap(conv_bm);
                             profile_image_three_imageview_camera_inside.setVisibility(View.VISIBLE);
                             profile_image_three_imageview_camera_outside.setVisibility(View.GONE);
+                            dosomething_alert_pick_image_textview_remove.setVisibility(View.VISIBLE);
                             profile_image_viewpager_dots_three.profile_Image_three();
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
                             resized.compress(Bitmap.CompressFormat.JPEG, 100, baos);

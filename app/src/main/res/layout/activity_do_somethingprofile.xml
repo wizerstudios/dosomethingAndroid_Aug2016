@@ -58,14 +58,36 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
-
-                                <android.support.v4.view.ViewPager
-                                    xmlns:android="http://schemas.android.com/apk/res/android"
-                                    android:id="@+id/pager"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
+                                <LinearLayout
                                     android:layout_weight="1"
-                                    android:gravity="top|center" />
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent">
+                                    <RelativeLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
+                                        <android.support.v4.view.ViewPager
+                                            xmlns:android="http://schemas.android.com/apk/res/android"
+                                            android:id="@+id/pager"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="1"
+                                            android:gravity="top|center" />
+                                        <ImageView
+                                            android:visibility="gone"
+                                            android:id="@+id/profile_image_autoincrease"
+                                            android:layout_marginBottom="10dp"
+                                            android:layout_marginRight="10dp"
+                                            android:layout_alignParentRight="true"
+                                            android:layout_alignParentEnd="true"
+                                            android:layout_alignParentBottom="true"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:src="@drawable/camera_icon"/>
+                                    </RelativeLayout>
+
+                                </LinearLayout>
+
+
 
                                 <LinearLayout
                                     android:id="@+id/viewpager_dots"

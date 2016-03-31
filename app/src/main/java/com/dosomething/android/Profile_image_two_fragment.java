@@ -62,6 +62,7 @@ public class Profile_image_two_fragment extends android.support.v4.app.Fragment 
     private TextView dosomething_alert_pick_image_textview;
     private TextView dosomething_alert_pick_image_textview_gallery;
     private TextView dosomething_alert_pick_image_textview_camera;
+    private TextView dosomething_alert_pick_image_textview_remove;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,10 +82,11 @@ public class Profile_image_two_fragment extends android.support.v4.app.Fragment 
 
         dialog = new Dialog(getActivity());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dosomething_alert_pick_image);
-        dosomething_alert_pick_image_textview = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview);
+        dialog.setContentView(R.layout.dosomething_alert_imagepickandremove);
+//        dosomething_alert_pick_image_textview = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview);
         dosomething_alert_pick_image_textview_gallery = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_gallery);
         dosomething_alert_pick_image_textview_camera = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_camera);
+        dosomething_alert_pick_image_textview_remove=(TextView)dialog.findViewById(R.id.dosomething_alert_pick_image_textview_remove);
 
 
         try {
@@ -97,6 +99,10 @@ public class Profile_image_two_fragment extends android.support.v4.app.Fragment 
                 profile_image_two_imageview_camera_inside.setVisibility(View.VISIBLE);
                 profile_image_two_imageview_camera_outside.setVisibility(View.GONE);
                 profile_image_viewpager_dots_two.profile_Image_two();
+            }else
+            {
+                if(sharedPrefrences.getProfilePicture1(getActivity()).equals(""))
+                dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,7 +136,19 @@ public class Profile_image_two_fragment extends android.support.v4.app.Fragment 
                     }
                 });
 
+                dosomething_alert_pick_image_textview_remove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        profile_image_two_imageview_profile_image.setImageResource(R.drawable.profile_noimg);
+                        profile_image_two_imageview_camera_inside.setVisibility(View.GONE);
+                        profile_image_two_imageview_camera_outside.setVisibility(View.VISIBLE);
+                        dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
 
+                        sharedPrefrences.setProfileImageBitmap2(getActivity(), "");
+                        sharedPrefrences.setProfilePicture1(getActivity(), "");
+                        dialog.dismiss();
+                    }
+                });
                 dosomething_alert_pick_image_textview_camera.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -222,7 +240,18 @@ public class Profile_image_two_fragment extends android.support.v4.app.Fragment 
                     }
                 });
 
-
+                dosomething_alert_pick_image_textview_remove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        profile_image_two_imageview_profile_image.setImageResource(R.drawable.profile_noimg);
+                        profile_image_two_imageview_camera_inside.setVisibility(View.GONE);
+                        profile_image_two_imageview_camera_outside.setVisibility(View.VISIBLE);
+                        dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
+                        sharedPrefrences.setProfileImageBitmap2(getActivity(), "");
+                        sharedPrefrences.setProfilePicture1(getActivity(), "");
+                        dialog.dismiss();
+                    }
+                });
                 dosomething_alert_pick_image_textview_camera.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -334,6 +363,8 @@ public class Profile_image_two_fragment extends android.support.v4.app.Fragment 
                             profile_image_two_imageview_profile_image.setImageBitmap(conv_bm);
                             profile_image_two_imageview_camera_inside.setVisibility(View.VISIBLE);
                             profile_image_two_imageview_camera_outside.setVisibility(View.GONE);
+                            dosomething_alert_pick_image_textview_remove.setVisibility(View.VISIBLE);
+
                             profile_image_viewpager_dots_two.profile_Image_two();
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
                             resized.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -352,7 +383,6 @@ public class Profile_image_two_fragment extends android.support.v4.app.Fragment 
                             fos.flush();
                             fos.close();
                             sharedPrefrences.setProfilePicture1(getActivity(), String.valueOf(f));
-
 
                         }
 

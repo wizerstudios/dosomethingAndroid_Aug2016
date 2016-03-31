@@ -2,9 +2,8 @@ package com.dosomething.android;
 
 import android.app.Application;
 import android.support.multidex.MultiDex;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;
 
+import com.crashlytics.android.Crashlytics;
 import com.dosomething.android.Beanclasses.ActivityBean;
 import com.dosomething.android.Beanclasses.Arts_hobbies;
 import com.dosomething.android.Beanclasses.ChatBean;
@@ -15,7 +14,11 @@ import com.dosomething.android.Beanclasses.HobbiesBean;
 import com.dosomething.android.Beanclasses.Pets_hobbies;
 import com.dosomething.android.Beanclasses.Recreation_hobbies;
 import com.dosomething.android.Fragments.DoSomething_Friends_profile_fragment;
-import com.crashlytics.android.Crashlytics;
+import com.dosomething.android.Fragments.UserProfileImage1_Fragment;
+import com.dosomething.android.Fragments.UserProfileImage2_Fragment;
+import com.dosomething.android.Fragments.UserProfileImage3_Fragment;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +33,36 @@ public class MyApplication extends Application {
 
     DoSomething_Friends_profile_fragment mDoSomething_Friends_profile_fragment;
     DoSomethingStatus doSomethingStatus;
-int anInt;
+    UserProfileImage1_Fragment userProfileImage1_fragment;
+    UserProfileImage2_Fragment userProfileImage2_fragment;
+    UserProfileImage3_Fragment userProfileImage3_fragment;
+
+    public UserProfileImage3_Fragment getUserProfileImage3_fragment() {
+        return userProfileImage3_fragment;
+    }
+
+    public void setUserProfileImage3_fragment(UserProfileImage3_Fragment userProfileImage3_fragment) {
+        this.userProfileImage3_fragment = userProfileImage3_fragment;
+    }
+
+    public UserProfileImage2_Fragment getUserProfileImage2_fragment() {
+        return userProfileImage2_fragment;
+    }
+
+    public void setUserProfileImage2_fragment(UserProfileImage2_Fragment userProfileImage2_fragment) {
+        this.userProfileImage2_fragment = userProfileImage2_fragment;
+    }
+
+    public UserProfileImage1_Fragment getUserProfileImage1_fragment() {
+        return userProfileImage1_fragment;
+    }
+
+    public void setUserProfileImage1_fragment(UserProfileImage1_Fragment userProfileImage1_fragment) {
+        this.userProfileImage1_fragment = userProfileImage1_fragment;
+    }
+
+    int anInt;
+    int count=0;
     ArrayList<Filterbean> listFilterBeans = new ArrayList<>();
     HashMap<String, ChatBean> chatBeanList = new HashMap<>();
     ArrayList<String> chatBeanIdsList = new ArrayList<>();
@@ -48,10 +80,18 @@ int anInt;
         return anInt;
     }
 
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+
+    public int getCount() {
+        return count;
+    }
+
     public void setanInt(int anInt) {
         this.anInt = anInt;
     }
-
     public ArrayList<Arts_hobbies> getArts_hobbies() {
         return arts_hobbies;
     }

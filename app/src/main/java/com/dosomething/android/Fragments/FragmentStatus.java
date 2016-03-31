@@ -684,6 +684,9 @@ public class FragmentStatus extends Fragment {
             }
         }
 
+
+
+
         layout_walkthrough_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1659,7 +1662,13 @@ public class FragmentStatus extends Fragment {
 
 
         animation.addAnimation(fadeIn);
-
+        if(count==0)
+        {
+            status_textview_onlythree.setText("Atleast 1 activity\nmust be selected");
+        }else
+        {
+            status_textview_onlythree.setText("ONLY 3 ACTIVITES\nCAN BE SELECTED");
+        }
         relativelayout_alertdialog_only_three.setVisibility(View.VISIBLE);
 
         relativelayout_alertdialog_only_three.setAnimation(animation);

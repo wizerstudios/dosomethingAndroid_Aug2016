@@ -88,6 +88,8 @@
     <string name="dosomething_apilink_string_blockuser">http://mobileapp.dosomethingapp.com/blockuser?</string>
     <string name="dosomething_apilink_string_deleteconversation">http://mobileapp.dosomethingapp.com/deleteconversation?</string>
     <string name="dosomething_apilink_string_onlinestatus">http://mobileapp.dosomethingapp.com/onlinestatus?</string>
+    <string name="dosomething_apilink_string_deleteimage">http://mobileapp.dosomethingapp.com/deleteprofileimage?</string>
+    <string name="dosomething_apilink_string_checkrequeststatus">http://mobileapp.dosomethingapp.com/checkrequeststatus?</string>
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////IndiaCoder
     ApiLink/////////////////////////////////////////////////////

@@ -129,7 +129,7 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
     PagerAdapter mPagerAdapter;
 
     List<ImageView> dots;
-
+    List<Fragment> fragments = new Vector<>();
     Context mContext;
 
     private final static int NUM_PAGES = 3;
@@ -211,6 +211,7 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
             e.printStackTrace();
         }
         aQuery = new AQuery(getActivity());
+        dots = new ArrayList<>();
         windowManager = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
         pd = new TransparentProgressDialog(getActivity(), getResources().getDrawable(R.drawable.loading));
         jsonfunctions = new Jsonfunctions(getActivity());
@@ -525,10 +526,11 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
         typeFace_textview();
 
         this.initialisePaging();
-
+        dots.clear();
+        dotsLayout.removeAllViews();
         addDots();
 
-        selectDot(0);
+        selectDot(pager.getCurrentItem());
 
 //        CustomGrid customGrid_wanna_do = new CustomGrid(getActivity(), things_image, things_name);
 //
@@ -855,19 +857,39 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
     private void initialisePaging() {
 
 
-        List<Fragment> fragments = new Vector<>();
+
 
         fragments.add(Fragment.instantiate(getActivity(), Friend_Profile_one_fragment.class.getName()));
-
-        fragments.add(Fragment.instantiate(getActivity(), Friend_Profile_two_fragment.class.getName()));
-
-        fragments.add(Fragment.instantiate(getActivity(), Friend_Profile_three_fragment.class.getName()));
-
         this.mPagerAdapter = new PagerAdapter(getChildFragmentManager(), fragments);
 
         pager.setAdapter(this.mPagerAdapter);
 
         pager.setOffscreenPageLimit(3);
+        dots.clear();
+        dotsLayout.removeAllViews();
+
+        addDots();
+        if(getActivity()!=null)
+        {
+            if(!sharedPreferences.getFriendProfilePicture1(getActivity()).equals("")||sharedPreferences.getFriendProfilePicture1(getActivity()).equals("http://mobileapp.dosomethingapp.com//uploads//profile//noimage.png"))
+            {
+                fragments.add(Fragment.instantiate(getActivity(), Friend_Profile_two_fragment.class.getName()));
+                this.mPagerAdapter.notifyDataSetChanged();
+                dots.clear();
+                dotsLayout.removeAllViews();
+                addDots();
+            }
+
+            if(!sharedPreferences.getFriendProfilePicture2(getActivity()).equals("")||sharedPreferences.getFriendProfilePicture2(getActivity()).equals("http://mobileapp.dosomethingapp.com//uploads//profile//noimage.png"))
+            {
+                fragments.add(Fragment.instantiate(getActivity(), Friend_Profile_three_fragment.class.getName()));
+                this.mPagerAdapter.notifyDataSetChanged();
+                dots.clear();
+                dotsLayout.removeAllViews();
+                addDots();
+            }
+
+        }
 
 
     }
@@ -875,15 +897,22 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
 
     public void addDots() {
 
-        dots = new ArrayList<>();
+
 
         Log.d("num_pages", "______" + NUM_PAGES);
 
-        for (int i = 0; i < NUM_PAGES; i++) {
+        for (int i = 0; i < fragments.size(); i++) {
 
             ImageView dot = new ImageView(getActivity());
 
-            dot.setImageDrawable(getResources().getDrawable(R.drawable.dot1));
+            if(i==pager.getCurrentItem())
+            {
+                dot.setImageDrawable(getResources().getDrawable(R.drawable.dot1));
+            }else
+            {
+                dot.setImageDrawable(getResources().getDrawable(R.drawable.dot1_active));
+            }
+
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 
@@ -937,7 +966,7 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
 
         Resources res = getResources();
 
-        for (int i = 0; i < NUM_PAGES; i++) {
+        for (int i = 0; i < fragments.size(); i++) {
 
             System.out.println("dots_pos..." + idx);
 
