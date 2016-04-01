@@ -61,9 +61,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -174,6 +177,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
     private boolean loading = true;
     private int count = 1;
     private Tracker mTracker;
+    private String formattedDate;
 
     /**
      * Use this factory method to create a new instance of
@@ -256,6 +260,9 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
 //        dosomething_nearmelist_paginggridview=(PagingGridView)view.findViewById(R.id.dosomething_nearmelist_paginggridview);
         activity_dosomething_nearme_view_top = (View) view.findViewById(R.id.activity_dosomething_nearme_view_top);
         activity_dosomething_nearme_view_bottom = (View) view.findViewById(R.id.activity_dosomething_nearme_view_bottom);
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
+        formattedDate = df.format(c.getTime());
         layoutManager = new GridLayoutManager(getActivity(), 3);
         layoutManager.setOrientation(GridLayoutManager.VERTICAL);
         activity_dosomething_nearme.hasFixedSize();
@@ -497,7 +504,39 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                 }
             }
         });*/
+        layout_walkthrough_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout_walkthrough_profile.setVisibility(View.GONE);
+                if (blink_time != null) {
 
+                    blink_time.cancel();
+
+
+                    blink_time = null;
+
+                }
+                splashAnimation_nearme.stop();
+                sharedPreferences.setWalkThroughNearme(getActivity(), "true");
+            }
+        });
+
+        imageview_walkthrough_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout_walkthrough_profile.setVisibility(View.GONE);
+                if (blink_time != null) {
+
+                    blink_time.cancel();
+
+
+                    blink_time = null;
+
+                }
+                splashAnimation_nearme.stop();
+                sharedPreferences.setWalkThroughNearme(getActivity(), "true");
+            }
+        });
 
         activity_dosomething_nearme.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -735,14 +774,14 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
             if (getActivity() != null) {
 
                 if (sharedPreferences.getPushType(getActivity()).equals("sendrequest")) {
-
+                    if(formattedDate.equals(sharedPreferences.getDeviceDate(getActivity()))) {
                     if (sharedPreferences.getWalkThroughMatch(getActivity()).equals("false")) {
                         layout_walkthrough_match.setVisibility(View.VISIBLE);
                         blink_match = new Timer();
                         blink_match.schedule(new Blink_match(), 0, 340);
                         splashAnimation_match.start();
                         sharedPreferences.setWalkThroughMatch(getActivity(), "true");
-                    }
+                    }}
 
                     isGridClick = false;
                     activity_dosomething_nearme.setEnabled(false);
@@ -2382,14 +2421,15 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                 }
                                 splashAnimation.stop();
                                 activity_dosomething_nearme_textview_nouser.setVisibility(View.GONE);
-                                if (sharedPreferences.getWalkThroughNearme(getActivity()).equals("false")) {
-                                    layout_walkthrough_profile.setVisibility(View.VISIBLE);
-                                    blink_time = new Timer();
-                                    blink_time.schedule(new Blink_progress(), 0, 340);
-                                    splashAnimation_nearme.start();
-                                    sharedPreferences.setWalkThroughNearme(getActivity(), "true");
+                                if(formattedDate.equals(sharedPreferences.getDeviceDate(getActivity()))) {
+                                    if (sharedPreferences.getWalkThroughNearme(getActivity()).equals("false")) {
+                                        layout_walkthrough_profile.setVisibility(View.VISIBLE);
+                                        blink_time = new Timer();
+                                        blink_time.schedule(new Blink_progress(), 0, 340);
+                                        splashAnimation_nearme.start();
+                                        sharedPreferences.setWalkThroughNearme(getActivity(), "true");
+                                    }
                                 }
-
 
                                 /*layout_walkthrough_profile.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -2813,9 +2853,10 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
         String conversation_matched;
         private String Name;
         private String image1;
-        private String UserId;
+        private String UserId="0";
         Exception error;
         String sendRequestApi;
+        private String ConversaionId="0";
 
         @Override
         protected void onPreExecute() {
@@ -2860,15 +2901,12 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                 conversation_matched = "match";
                                 JSONObject sendrequest = json_content.getJSONObject("Conversaion");
                                 if (sendrequest.has("id")) {
-                                    String ConversaionId = sendrequest.getString("id");
+                                    ConversaionId = sendrequest.getString("id");
                                     UserId = sendrequest.getString("UserId");
                                     Name = sendrequest.getString("Name");
                                     image1 = sendrequest.getString("image1");
 
-                                    if (getActivity() != null) {
-                                        sharedPreferences.setConversationId(getActivity(), ConversaionId);
-                                        sharedPreferences.setFriendUserId(getActivity(), UserId);
-                                    }
+
 
                                 }
                             } else {
@@ -2936,14 +2974,25 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                         activity_dosomething_nearme.setEnabled(false);
                                         dosomething_nearme_gridview_layout.setAlpha(0.1f);
                                         dosomething_nearme_matched_profile_popup.setVisibility(View.VISIBLE);
-                                        if (sharedPreferences.getWalkThroughMatch(getActivity()).equals("false")) {
-                                            layout_walkthrough_match.setVisibility(View.VISIBLE);
-                                            blink_match = new Timer();
-                                            blink_match.schedule(new Blink_match(), 0, 340);
-                                            splashAnimation_match.start();
-                                            sharedPreferences.setWalkThroughMatch(getActivity(), "true");
+                                        if(formattedDate.equals(sharedPreferences.getDeviceDate(getActivity()))) {
+                                            if (sharedPreferences.getWalkThroughMatch(getActivity()).equals("false")) {
+                                                layout_walkthrough_match.setVisibility(View.VISIBLE);
+                                                blink_match = new Timer();
+                                                blink_match.schedule(new Blink_match(), 0, 340);
+                                                splashAnimation_match.start();
+                                                sharedPreferences.setWalkThroughMatch(getActivity(), "true");
+                                            }
                                         }
+
+                                            sharedPreferences.setConversationId(getActivity(), ConversaionId);
+                                            sharedPreferences.setFriendUserId(getActivity(), UserId);
+                                            sharedPreferences.setFriendFirstname(getActivity(),Name);
+
+
                                         dosomething_nearme_matched_profile_name_textview.setText("You and " + Name + " " + "are a match \n\n Start Chatting to");
+
+
+
                                         if (!image1.equals("")) {
 
                                             aQuery.id(dosomething_nearme_matched_profile_near_userImage).image(image1, true, true, 0, 0, new BitmapAjaxCallback() {
@@ -3521,7 +3570,15 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
             try {
                 json_object = new JSONObject(json_string);
                 json_content = json_object.getJSONObject("checkrequeststatus");
+                if (json_content.has("checkrequeststatus")) {
+                    if (!json_content.get("Conversaion").equals("0")) {
 
+                        String ConversaionId = json_content.getString("id");
+
+                                sharedPreferences.setConversationId(getActivity(), ConversaionId);
+
+                    }
+                }
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();

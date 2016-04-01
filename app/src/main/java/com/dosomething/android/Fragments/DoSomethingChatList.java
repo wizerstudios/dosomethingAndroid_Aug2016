@@ -213,7 +213,11 @@ chatAdapter.notifyDataSetChanged();
 
             if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
                 isLoader = true;
-                callAsynchronousTask();
+if(sharedPrefrences.getChatAutoUpdate(getActivity()).equals("false"))
+{
+    callAsynchronousTask();
+}
+
             }
 
         } catch (Exception e) {

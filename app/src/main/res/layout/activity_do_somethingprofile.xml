@@ -58,13 +58,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
-                                <LinearLayout
-                                    android:layout_weight="1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent">
-                                    <RelativeLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent">
+
+
                                         <android.support.v4.view.ViewPager
                                             xmlns:android="http://schemas.android.com/apk/res/android"
                                             android:id="@+id/pager"
@@ -72,32 +67,41 @@
                                             android:layout_height="match_parent"
                                             android:layout_weight="1"
                                             android:gravity="top|center" />
+
+
+                                <LinearLayout
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_height="58dp"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:layout_weight="1"
+                                    android:layout_width="match_parent">
+                                    <RelativeLayout
+
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content">
+                                        <LinearLayout
+                                            android:id="@+id/viewpager_dots"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="50dp"
+                                            android:layout_gravity="center"
+                                            android:layout_weight="1"
+                                            android:gravity="center"
+                                            android:orientation="horizontal"/>
                                         <ImageView
-                                            android:visibility="gone"
+                                            android:scaleType="centerCrop"
                                             android:id="@+id/profile_image_autoincrease"
-                                            android:layout_marginBottom="10dp"
-                                            android:layout_marginRight="10dp"
                                             android:layout_alignParentRight="true"
                                             android:layout_alignParentEnd="true"
                                             android:layout_alignParentBottom="true"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
+                                            android:layout_width="48dp"
+                                            android:layout_height="48dp"
                                             android:src="@drawable/camera_icon"/>
                                     </RelativeLayout>
 
                                 </LinearLayout>
 
 
-
-                                <LinearLayout
-                                    android:id="@+id/viewpager_dots"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="50dp"
-                                    android:layout_gravity="center"
-                                    android:layout_weight="1"
-                                    android:gravity="center"
-                                    android:orientation="horizontal"
-                                    android:visibility="gone" />
                             </LinearLayout>
 
                         </LinearLayout>

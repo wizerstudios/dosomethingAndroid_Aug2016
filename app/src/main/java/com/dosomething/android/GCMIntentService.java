@@ -102,6 +102,7 @@ public class GCMIntentService extends GCMBaseIntentService {
                         sharedPrefrences.setFriendFirstname(context, part);
                     } else if (type.equals("sendrequest")) {
                         sharedPrefrences.setPushType(context,"sendrequest");
+
                         String string = message;
                         assert string != null;
                         String[] parts = string.split(" ");

@@ -51,9 +51,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -129,6 +132,7 @@ public class DoSomethingHobbies extends AppCompatActivity {
 TextView walkthrough_hobbies_TextView;
     private Timer blink_time;
     private Tracker mTracker;
+    private String formattedDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,6 +204,9 @@ TextView walkthrough_hobbies_TextView;
 
         hobbies_page_gridview_hobbies_recreation = (ExpandableHeightGridView) findViewById(R.id.hobbies_page_gridview_hobbies_recreation);
         aQuery = new AQuery(DoSomethingHobbies.this);
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
+        formattedDate = df.format(c.getTime());
         hobbies_toolbar_textview_save = (TextView) findViewById(R.id.custom_toolbar_textview_save);
         hobbies_toolbar_textview_save.setText(R.string.custom_toolbar_textview_save);
         hobbies_name = new ArrayList<>();
@@ -221,14 +228,17 @@ TextView walkthrough_hobbies_TextView;
         jsonfunctions = new Jsonfunctions(DoSomethingHobbies.this);
         sessionid = sharedPrefrences.getSessionid(DoSomethingHobbies.this);
 
+if(formattedDate.equals(sharedPrefrences.getDeviceDate(context)))
+{
+    if (sharedPrefrences.getWalkThroughhobbies(context).equals("false")) {
+        layout_walkthrough_profile.setVisibility(View.VISIBLE);
+        blink_time = new Timer();
+        blink_time.schedule(new Blink_progress(), 0, 340);
+        splashAnimation_walkthrough_hobbies.start();
+        sharedPrefrences.setWalkThroughHobbies(context,"true");
+    }
+}
 
-        if (sharedPrefrences.getWalkThroughhobbies(context).equals("false")) {
-            layout_walkthrough_profile.setVisibility(View.VISIBLE);
-            blink_time = new Timer();
-            blink_time.schedule(new Blink_progress(), 0, 340);
-            splashAnimation_walkthrough_hobbies.start();
-            sharedPrefrences.setWalkThroughHobbies(context,"true");
-        }
         layout_walkthrough_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -243,35 +253,7 @@ TextView walkthrough_hobbies_TextView;
 
                 layout_walkthrough_profile.setVisibility(View.GONE);
                 sharedPrefrences.setWalkThroughHobbies(context,"true");
-                bundle_list.clear();
 
-
-                for (int i = 0; i < ((MyApplication) getApplication()).getArts_hobbies().size(); i++) {
-                    if (((MyApplication) getApplication()).getArts_hobbies().get(i).getstate()) {
-                        bundle_list.add(((MyApplication) getApplication()).getArts_hobbies().get(i).getImage_id_arts());
-                    }
-                }
-
-
-                for (int i = 0; i < ((MyApplication) getApplication()).getFood_hobbies().size(); i++) {
-                    if (((MyApplication) getApplication()).getFood_hobbies().get(i).getstate()) {
-                        bundle_list.add(((MyApplication) getApplication()).getFood_hobbies().get(i).getImage_id_food());
-                    }
-                }
-
-
-                for (int i = 0; i < ((MyApplication) getApplication()).getPets_hobbies().size(); i++) {
-                    if (((MyApplication) getApplication()).getPets_hobbies().get(i).getstate()) {
-                        bundle_list.add(((MyApplication) getApplication()).getPets_hobbies().get(i).getImage_id_pets());
-                    }
-                }
-
-
-                for (int i = 0; i < ((MyApplication) getApplication()).getRecreation_hobbies().size(); i++) {
-                    if (((MyApplication) getApplication()).getRecreation_hobbies().get(i).getstate()) {
-                        bundle_list.add(((MyApplication) getApplication()).getRecreation_hobbies().get(i).getImage_id_recreation());
-                    }
-                }
                 if (blink_time != null) {
 
                     blink_time.cancel();
@@ -282,57 +264,6 @@ TextView walkthrough_hobbies_TextView;
                 }
                 splashAnimation_walkthrough_hobbies.stop();
 
-//                bundle_list.addAll(hobbies_list_arts);
-//                bundle_list.addAll(hobbies_list_food);
-//                bundle_list.addAll(hobbies_list_pets);
-//                bundle_list.addAll(hobbies_list_recreation);
-                Log.d("AAAA", "LLLL" + bundle_list);
-                if (!sharedPrefrences.getHobbies(context).equalsIgnoreCase("Yes")) {
-                    Intent i = new Intent(DoSomethingHobbies.this, DoSomethingprofile.class);
-                    if (bundle_list.isEmpty()) {
-                        Bundle bundle = new Bundle();
-                        bundle_list.clear();
-                        bundle_list.add(R.drawable.pluis_icon);
-                        Log.d("bundle_list", "H" + bundle_list);
-
-                        bundle.putIntegerArrayList("array_bundle_hobbies_image", bundle_list);
-                        i.putIntegerArrayListExtra("array_bundle_hobbies_image", bundle_list);
-                    } else {
-                        value = new Bundle();
-//                value.putStringArrayList("array_bundle_hobbies_name", hobbies_array);
-                        value.putIntegerArrayList("array_bundle_hobbies_image", bundle_list);
-
-                        Log.d("DOSOMETHINGARRAyBUNDLE", "............" + value);
-//                i.putStringArrayListExtra("array_bundle_hobbies_name", hobbies_array);
-                        i.putIntegerArrayListExtra("array_bundle_hobbies_image", bundle_list);
-                    }
-                    startActivity(i);
-                    finish();
-                } else {
-                    Intent i = new Intent(DoSomethingHobbies.this, DoSomethingStatus.class);
-                    FragmentProfile fragmentProfile = new FragmentProfile();
-
-                    if (bundle_list.isEmpty()) {
-                        Bundle bundle = new Bundle();
-                        bundle_list.clear();
-                        bundle_list.add(R.drawable.pluis_icon);
-                        Log.d("FFFFFFFFFFFFFFFFFFFFFFF", "H" + bundle_list);
-                        Log.d("bundle_list", "string" + String.valueOf(bundle_list));
-                        bundle.putIntegerArrayList("array_bundle_hobbies_image", bundle_list);
-                        i.putIntegerArrayListExtra("array_bundle_hobbies_image", bundle_list);
-                    } else {
-                        value = new Bundle();
-//                value.putStringArrayList("array_bundle_hobbies_name", hobbies_array);
-                        value.putIntegerArrayList("array_bundle_hobbies_image", bundle_list);
-                        Log.d("ARRAYYYYBUNDLE", "............" + value);
-                        Log.d("bundle_list", "withoutemptystring" + String.valueOf(bundle_list));
-//                i.putStringArrayListExtra("array_bundle_hobbies_name", hobbies_array);
-                        i.putIntegerArrayListExtra("array_bundle_hobbies_image", bundle_list);
-                    }
-                    startActivity(i);
-                    finish();
-
-                }
             }
         });
         hobbies_list_arts = new ArrayList<Integer>();

@@ -18,7 +18,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -36,10 +35,6 @@ import com.dosomething.android.CommonClasses.SharedPrefrences;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,7 +82,7 @@ public class Profile_image_two_fragment extends android.support.v4.app.Fragment 
         dosomething_alert_pick_image_textview_gallery = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_gallery);
         dosomething_alert_pick_image_textview_camera = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_camera);
         dosomething_alert_pick_image_textview_remove=(TextView)dialog.findViewById(R.id.dosomething_alert_pick_image_textview_remove);
-
+        ((MyApplication)getActivity().getApplication()).setProfile_image_two_fragment(this);
 
         try {
             if (!sharedPrefrences.getProfileImageBitmap2(getActivity()).equals("")) {
@@ -96,7 +91,7 @@ public class Profile_image_two_fragment extends android.support.v4.app.Fragment 
                 Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
                 Bitmap conv_bm = getCroppedBitmap(bitmap);
                 profile_image_two_imageview_profile_image.setImageBitmap(conv_bm);
-                profile_image_two_imageview_camera_inside.setVisibility(View.VISIBLE);
+                profile_image_two_imageview_camera_inside.setVisibility(View.GONE);
                 profile_image_two_imageview_camera_outside.setVisibility(View.GONE);
                 profile_image_viewpager_dots_two.profile_Image_two();
             }else
@@ -119,98 +114,7 @@ public class Profile_image_two_fragment extends android.support.v4.app.Fragment 
 
 
 
-                dosomething_alert_pick_image_textview_gallery.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                      /*  Intent intent = new Intent(
-                                Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        intent.setType("image*//*");
-                        startActivityForResult(
-                                Intent.createChooser(intent, "Select File"),
-                                PICK_FROM_FILE);*/
-
-                        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(i, PICK_FROM_FILE);
-                        dialog.dismiss();
-                    }
-                });
-
-                dosomething_alert_pick_image_textview_remove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        profile_image_two_imageview_profile_image.setImageResource(R.drawable.profile_noimg);
-                        profile_image_two_imageview_camera_inside.setVisibility(View.GONE);
-                        profile_image_two_imageview_camera_outside.setVisibility(View.VISIBLE);
-                        dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
-
-                        sharedPrefrences.setProfileImageBitmap2(getActivity(), "");
-                        sharedPrefrences.setProfilePicture1(getActivity(), "");
-                        dialog.dismiss();
-                    }
-                });
-                dosomething_alert_pick_image_textview_camera.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                        mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
-                                "crop2.jpg"));
-                        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
-                        startActivityForResult(intent, PICK_FROM_CAMERA);
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
-
-
-
-
-
-
-
-              /*  AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Choose Image");
-                builder.setMessage("Do you want to go with?");
-                builder.setPositiveButton("Camera", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-//                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//                        startActivityForResult(cameraIntent, 5);
-
-
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                        mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
-                                getResources().getString(R.string.app_name) + "profie_image2" + ".jpg"));
-
-                        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
-
-                        try {
-                            intent.putExtra("return-data", true);
-
-                            startActivityForResult(intent, PICK_FROM_CAMERA);
-                        } catch (ActivityNotFoundException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                });*/
-               /* builder.setNegativeButton("Gallery", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent();
-
-                        intent.setType("image*//*");
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-
-                        startActivityForResult(Intent.createChooser(intent, "Complete action using"), PICK_FROM_FILE);
-
-
-                    }
-                });
-                builder.show();*/
+                showImageSelectionAlert();
             }
         });
 
@@ -222,54 +126,11 @@ public class Profile_image_two_fragment extends android.support.v4.app.Fragment 
 
 
 
-                dosomething_alert_pick_image_textview_gallery.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                       /* Intent intent = new Intent(
-                                Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        intent.setType("image*//*");
-                        startActivityForResult(
-                                Intent.createChooser(intent, "Select File"),
-                                PICK_FROM_FILE);*/
-
-                        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(i, PICK_FROM_FILE);
-                        dialog.dismiss();
-                    }
-                });
-
-                dosomething_alert_pick_image_textview_remove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        profile_image_two_imageview_profile_image.setImageResource(R.drawable.profile_noimg);
-                        profile_image_two_imageview_camera_inside.setVisibility(View.GONE);
-                        profile_image_two_imageview_camera_outside.setVisibility(View.VISIBLE);
-                        dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
-                        sharedPrefrences.setProfileImageBitmap2(getActivity(), "");
-                        sharedPrefrences.setProfilePicture1(getActivity(), "");
-                        dialog.dismiss();
-                    }
-                });
-                dosomething_alert_pick_image_textview_camera.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                        mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
-                                "crop2.jpg"));
-                        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
-                        startActivityForResult(intent, PICK_FROM_CAMERA);
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
 
 
 
 
+                showImageSelectionAlert();
 
 
 
@@ -324,6 +185,55 @@ public class Profile_image_two_fragment extends android.support.v4.app.Fragment 
         return view;
     }
 
+    public void showImageSelectionAlert() {
+        dosomething_alert_pick_image_textview_gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                       /* Intent intent = new Intent(
+                                Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        intent.setType("image*//*");
+                        startActivityForResult(
+                                Intent.createChooser(intent, "Select File"),
+                                PICK_FROM_FILE);*/
+
+                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, PICK_FROM_FILE);
+                dialog.dismiss();
+            }
+        });
+
+        dosomething_alert_pick_image_textview_remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                profile_image_two_imageview_profile_image.setImageResource(R.drawable.profile_noimg);
+                profile_image_two_imageview_camera_inside.setVisibility(View.GONE);
+                profile_image_two_imageview_camera_outside.setVisibility(View.GONE);
+                dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
+                sharedPrefrences.setProfileImageBitmap2(getActivity(), "");
+                sharedPrefrences.setProfilePicture1(getActivity(), "");
+                dialog.dismiss();
+            }
+        });
+        dosomething_alert_pick_image_textview_camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
+                        "crop2.jpg"));
+                intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+                startActivityForResult(intent, PICK_FROM_CAMERA);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+    }
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -361,7 +271,7 @@ public class Profile_image_two_fragment extends android.support.v4.app.Fragment 
 
                             Bitmap conv_bm = getCroppedBitmap(photo);
                             profile_image_two_imageview_profile_image.setImageBitmap(conv_bm);
-                            profile_image_two_imageview_camera_inside.setVisibility(View.VISIBLE);
+                            profile_image_two_imageview_camera_inside.setVisibility(View.GONE);
                             profile_image_two_imageview_camera_outside.setVisibility(View.GONE);
                             dosomething_alert_pick_image_textview_remove.setVisibility(View.VISIBLE);
 
@@ -624,42 +534,5 @@ public class Profile_image_two_fragment extends android.support.v4.app.Fragment 
     }
 
 
-    public class LoadImageFromURL1 extends AsyncTask<String, Void, Bitmap> {
-
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            // TODO Auto-generated method stub
-
-            try {
-                URL url = new URL(sharedPrefrences.getProfilePicture2(getActivity()));
-                InputStream is = url.openConnection().getInputStream();
-                Bitmap bitMap = BitmapFactory.decodeStream(is);
-                Bitmap resized = Bitmap.createScaledBitmap(bitMap, 200, 200, true);
-                Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 10);
-                return conv_bm;
-
-            } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            return null;
-
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            // TODO Auto-generated method stub
-            super.onPostExecute(result);
-            profile_image_two_imageview_profile_image.setImageBitmap(result);
-            profile_image_two_imageview_profile_image.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            profile_image_two_imageview_camera_inside.setVisibility(View.VISIBLE);
-            profile_image_two_imageview_camera_outside.setVisibility(View.GONE);
-            profile_image_viewpager_dots_two.profile_Image_two();
-        }
-
-    }
 
 }

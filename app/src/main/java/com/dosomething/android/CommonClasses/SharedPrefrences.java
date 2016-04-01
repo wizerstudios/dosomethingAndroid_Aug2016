@@ -85,6 +85,10 @@ public class SharedPrefrences {
     String WalkThroughNearme = "walkthroughnear";
     String WalkThroughmatch = "walkthroughmatch";
     String WalkThroughchat = "walkthroughchat";
+    String DeviceDate ="devicedate";
+    String ChatAutoUpdate ="chatupdate";
+
+
 
     public SharedPrefrences() {
         super();
@@ -93,6 +97,66 @@ public class SharedPrefrences {
     public SharedPrefrences(FragmentActivity activity) {
 
     }
+
+
+
+    public String setChatAutoUpdate(Context context, String chatAutoUpdate) {
+        SharedPreferences sharedPreferences;
+        SharedPreferences.Editor editor;
+
+        //sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        editor.putString(ChatAutoUpdate, chatAutoUpdate);
+
+        editor.commit();
+        return chatAutoUpdate;
+    }
+
+
+    public String getChatAutoUpdate(Context context) {
+        SharedPreferences settings;
+        String text;
+
+
+        // settings = PreferenceManager.getDefaultSharedPreferences(context);
+        settings = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        text = settings.getString(ChatAutoUpdate, "false");
+
+        return text;
+    }
+
+
+
+    public String setDeviceDate(Context context, String deviceDate) {
+        SharedPreferences sharedPreferences;
+        SharedPreferences.Editor editor;
+
+        //sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        editor.putString(DeviceDate, deviceDate);
+
+        editor.commit();
+        return deviceDate;
+    }
+
+
+    public String getDeviceDate(Context context) {
+        SharedPreferences settings;
+        String text;
+
+
+        // settings = PreferenceManager.getDefaultSharedPreferences(context);
+        settings = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        text = settings.getString(DeviceDate, "false");
+
+        return text;
+    }
+
+
 
 
     public String setWalkThrough_Splash(Context context, String walkThroughSplash) {

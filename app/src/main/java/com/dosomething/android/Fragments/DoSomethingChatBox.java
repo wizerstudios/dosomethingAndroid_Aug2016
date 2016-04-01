@@ -64,8 +64,10 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -145,6 +147,7 @@ ImageView image_walkthrough_chat;
     private AnimationDrawable splashAnimation_chat;
     private Timer blink_time;
     private Tracker mTracker;
+    private String formattedDate;
 
     /**
      * Use this factory method to create a new instance of
@@ -223,7 +226,9 @@ ImageView image_walkthrough_chat;
 
         image_walkthrough_chat.setBackgroundResource(R.drawable.blink_icon);
         splashAnimation_chat = (AnimationDrawable) image_walkthrough_chat.getBackground();
-
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
+        formattedDate = df.format(c.getTime());
         text_font_typeface();
 
 
@@ -233,7 +238,7 @@ ImageView image_walkthrough_chat;
 //            dosomething_fragment_chatbox_deleteorblock.setClickable(false);
 //        }
 
-
+        if(formattedDate.equals(sharedPrefrences.getDeviceDate(getActivity()))) {
 
 if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
 {
@@ -242,7 +247,7 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
     blink_time.schedule(new Blink_progress(), 0, 340);
     splashAnimation_chat.start();
     sharedPrefrences.setWalkThroughchat(getActivity(),"true");
-}
+}}
         layout_walkthrough_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -263,10 +268,17 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
             @Override
             public void onClick(View v) {
                 layout_walkthrough_profile.setVisibility(View.GONE);
-                sharedPrefrences.setWalkThroughchat(getActivity(),"true");
-                if (getActivity() != null)
-                    ((DoSomethingStatus) getActivity()).showHideBottomLayout(false);
-                dosomething_fragment_chatbox_messagebox.requestFocus();
+                if (blink_time != null) {
+
+                    blink_time.cancel();
+
+
+                    blink_time = null;
+
+                }
+                splashAnimation_chat.stop();
+                sharedPrefrences.setWalkThroughchat(getActivity(), "true");
+
             }
         });
         dosomething_fragment_chat_box_personname.setText(sharedPrefrences.getFriendFirstName(getActivity()));

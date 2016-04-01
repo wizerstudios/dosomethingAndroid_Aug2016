@@ -35,7 +35,39 @@ public class MyApplication extends Application {
     DoSomethingStatus doSomethingStatus;
     UserProfileImage1_Fragment userProfileImage1_fragment;
     UserProfileImage2_Fragment userProfileImage2_fragment;
+
+
     UserProfileImage3_Fragment userProfileImage3_fragment;
+    Profile_image_one_fragment profile_image_viewpager_dots_one;
+    Profile_image_two_fragment profile_image_two_fragment;
+    Profile_image_three_fragment profile_image_three_fragment;
+
+
+    public Profile_image_one_fragment getProfile_image_one_fragment() {
+        return profile_image_viewpager_dots_one;
+    }
+
+    public void setProfile_image_one_fragment(Profile_image_one_fragment profile_image_viewpager_dots_one) {
+        this.profile_image_viewpager_dots_one = profile_image_viewpager_dots_one;
+    }
+
+
+    public Profile_image_two_fragment getProfile_image_two_fragment() {
+        return profile_image_two_fragment;
+    }
+
+    public void setProfile_image_two_fragment(Profile_image_two_fragment profile_image_two_fragment) {
+        this.profile_image_two_fragment = profile_image_two_fragment;
+    }
+
+
+    public Profile_image_three_fragment getProfile_image_three_fragment() {
+        return profile_image_three_fragment;
+    }
+
+    public void setProfile_image_three_fragment(Profile_image_three_fragment profile_image_three_fragment) {
+        this.profile_image_three_fragment = profile_image_three_fragment;
+    }
 
     public UserProfileImage3_Fragment getUserProfileImage3_fragment() {
         return userProfileImage3_fragment;

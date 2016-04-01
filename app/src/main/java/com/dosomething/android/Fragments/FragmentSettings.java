@@ -40,6 +40,7 @@ import com.google.android.gms.analytics.Tracker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static android.content.Context.AUDIO_SERVICE;
@@ -57,7 +58,8 @@ public class FragmentSettings extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private Bundle hobbiesBundle;
+    private ArrayList<Integer> bundle_list= new ArrayList<>();;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -468,6 +470,10 @@ public class FragmentSettings extends Fragment {
                 operation = "logout";
                 new Logout().execute();
                 ((MyApplication) getActivity().getApplication()).getActivityBeans().clear();
+                ((MyApplication) getActivity().getApplication()).getRecreation_hobbies().clear();
+                ((MyApplication) getActivity().getApplication()).getPets_hobbies().clear();
+                ((MyApplication) getActivity().getApplication()).getFood_hobbies().clear();
+                ((MyApplication) getActivity().getApplication()).getArts_hobbies().clear();
                 relativelayout_alertdialog_logout.setVisibility(View.GONE);
                 Intent intent = new Intent(getActivity(), SplashActivity.class);
                 startActivity(intent);
@@ -837,6 +843,10 @@ public class FragmentSettings extends Fragment {
 
                                     } else if (json_content.getString("Message").equalsIgnoreCase("Delete success")) {
 //                                    pd.dismiss();
+                                        ((MyApplication) getActivity().getApplication()).getRecreation_hobbies().clear();
+                                        ((MyApplication) getActivity().getApplication()).getPets_hobbies().clear();
+                                        ((MyApplication) getActivity().getApplication()).getFood_hobbies().clear();
+                                        ((MyApplication) getActivity().getApplication()).getArts_hobbies().clear();
                                         Intent intent = new Intent(getActivity(), SplashActivity.class);
                                         startActivity(intent);
                                         getActivity().finish();

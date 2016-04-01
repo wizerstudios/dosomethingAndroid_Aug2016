@@ -68,6 +68,8 @@ import com.dosomething.android.CommonClasses.Jsonfunctions;
 import com.dosomething.android.CommonClasses.NetworkCheck;
 import com.dosomething.android.CommonClasses.SharedPrefrences;
 import com.dosomething.android.CommonClasses.TransparentProgressDialog;
+import com.dosomething.android.Fragments.UserProfileImage2_Fragment;
+import com.dosomething.android.Fragments.UserProfileImage3_Fragment;
 import com.google.android.gms.analytics.Tracker;
 
 import org.apache.http.HttpResponse;
@@ -115,7 +117,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
             profile_page_imageview_camera,
             profile_page_imageview_profile_image,
             profile_page_imageview_hobbies,
-            grid_layout_profile_imageview_hobbies,profile_image_autoincrease,
+            grid_layout_profile_imageview_hobbies, profile_image_autoincrease,
             profile_Cam;
     AccountHandle handle = null;
     RelativeLayout dosomething_account_confirmation_alert;
@@ -139,7 +141,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
             profile_page_textview_email,
             profile_page_textview_password,
             profile_page_textview_title_notification,
-            profile_page_textview_notification_message, profile_page_textview_notification_sound, profile_page_textview_notification_vibration,settings_page_textview_notification_match,
+            profile_page_textview_notification_message, profile_page_textview_notification_sound, profile_page_textview_notification_vibration, settings_page_textview_notification_match,
             profile_page_textview_datepicker,
             profile_page_textview_male,
             profile_page_textview_female,
@@ -179,7 +181,8 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
     CheckBox profile_page_checkbox_notification_message;
     CheckBox profilepage_checkbox_notifiacation_match;
     private PagerAdapter mPagerAdapter;
-    private List<ImageView> dots;
+    private List<ImageView> dots = new ArrayList<>();
+    ;
     Context mContext;
     private final static int NUM_PAGES = 3;
     ViewPager pager;
@@ -271,8 +274,8 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
     private Dialog dialog_createAccount;
     private String showpassword;
     private String profile_update_response;
-RelativeLayout layout_walkthrough_profile;
-RelativeLayout layout_walkthrough_profilesave;
+    RelativeLayout layout_walkthrough_profile;
+    RelativeLayout layout_walkthrough_profilesave;
     ImageView image_walkthrough_account_profilesave;
     ImageView image_walkthrough_account_profile;
     ImageView walkthrough_profile_imageView;
@@ -282,17 +285,17 @@ RelativeLayout layout_walkthrough_profilesave;
     private Timer blink_time;
     private Timer blink_time_save;
     private Tracker mTracker;
+    List<android.support.v4.app.Fragment> fragments = new Vector<android.support.v4.app.Fragment>();
+    private boolean popup = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_do_somethingprofile);
-        try
-        {
+        try {
             MyApplication application = (MyApplication) getApplication();
             mTracker = application.getDefaultTracker();
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 //        overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
@@ -380,14 +383,57 @@ RelativeLayout layout_walkthrough_profilesave;
 
 
         this.initialisePaging();
+        dots.clear();
+        viewpagerdots.removeAllViews();
         addDots();
-        selectDot(0);
+        selectDot(pager.getCurrentItem());
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(dosomething_profile_mainlayout.getWindowToken(), 0);
 
+        if (!sharedPrefrences.getProfilePicture1(context).equals("")) {
+            fragments.add(android.support.v4.app.Fragment.instantiate(context, UserProfileImage2_Fragment.class.getName()));
+            mPagerAdapter.notifyDataSetChanged();
+            dots.clear();
+            viewpagerdots.removeAllViews();
+            addDots();
+
+        }
+        if (!sharedPrefrences.getProfilePicture2(context).equals("")) {
+            fragments.add(android.support.v4.app.Fragment.instantiate(context, UserProfileImage3_Fragment.class.getName()));
+            mPagerAdapter.notifyDataSetChanged();
+            dots.clear();
+            viewpagerdots.removeAllViews();
+            addDots();
+
+        }
 
 
+        profile_image_autoincrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (fragments.size() == 1) {
+                    fragments.add(android.support.v4.app.Fragment.instantiate(context, Profile_image_two_fragment.class.getName()));
+                    mPagerAdapter.notifyDataSetChanged();
+                    dots.clear();
+                    viewpagerdots.removeAllViews();
+                    popup = true;
+                    addDots();
 
+
+                } else if (fragments.size() == 2) {
+                    fragments.add(android.support.v4.app.Fragment.instantiate(context, Profile_image_three_fragment.class.getName()));
+                    mPagerAdapter.notifyDataSetChanged();
+                    dots.clear();
+                    viewpagerdots.removeAllViews();
+                    popup = true;
+                    addDots();
+
+
+                }
+
+
+            }
+        });
 
 
         // bundle value check condition
@@ -429,7 +475,6 @@ RelativeLayout layout_walkthrough_profilesave;
                 profile_page_imageview_hobbies.setVisibility(View.GONE);
                 bundle = getIntent().getExtras();
                 Log.d("GGGGGGGGGGG", "HHHHHHHHHHHHHelse1");
-
 
 
                 if (name.get(0) == R.drawable.pluis_icon) {
@@ -585,7 +630,7 @@ RelativeLayout layout_walkthrough_profilesave;
                 profile_page_textview_female.setEnabled(false);
 
             }
-            if (!sharedPrefrences.getDateOfbirth(context).equals("")&& !profile_page_textview_datepicker.getText().toString().equals("DD / MM / YYYY")) {
+            if (!sharedPrefrences.getDateOfbirth(context).equals("") && !profile_page_textview_datepicker.getText().toString().equals("DD / MM / YYYY")) {
                 profile_page_textview_datepicker.setTextColor(getResources().getColor(R.color.text_grey));
                 profile_page_textview_datepicker.setClickable(false);
                 profile_page_textview_datepicker.setEnabled(false);
@@ -790,7 +835,6 @@ RelativeLayout layout_walkthrough_profilesave;
                 }
 
 
-
                 profileId = sharedPrefrences.getProfileID(context);
                 Log.d("oooo", profileId);
                 String text = profile_page_edittext_firstname.getText().toString();
@@ -873,7 +917,6 @@ RelativeLayout layout_walkthrough_profilesave;
             public void onClick(View v) {
 
 
-
                 if (profile_page_edittext_firstname.getText().length() == 0) {
 
 
@@ -886,8 +929,6 @@ RelativeLayout layout_walkthrough_profilesave;
                         }
                     });
                     dialog.show();
-
-
 
 
                 } else if (profile_page_edittext_lastname.getText().length() == 0) {
@@ -904,9 +945,6 @@ RelativeLayout layout_walkthrough_profilesave;
                     dialog.show();
 
 
-
-
-
                 } else if (profile_page_edittext_about_you.getText().length() == 0) {
 
 
@@ -919,8 +957,6 @@ RelativeLayout layout_walkthrough_profilesave;
                         }
                     });
                     dialog.show();
-
-
 
 
                 } else if (profile_page_textview_datepicker.getText().equals("DD / MM / YYYY")) {
@@ -940,7 +976,6 @@ RelativeLayout layout_walkthrough_profilesave;
                 } else if (sharedPrefrences.getGender(context).equals("")) {
 
 
-
                     status_textview_availablenow.setText("Please Choose your Gender");
                     status_textview_accept_check.setText("Dismiss");
                     status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
@@ -952,11 +987,8 @@ RelativeLayout layout_walkthrough_profilesave;
                     dialog.show();
 
 
-
-
                 } else if (!sharedPrefrences.getLoginType(context).equals("Facebook")) {
                     if (profile_page_edittext_password.getText().length() == 0) {
-
 
 
                         status_textview_availablenow.setText("Please Enter password to register");
@@ -968,8 +1000,6 @@ RelativeLayout layout_walkthrough_profilesave;
                             }
                         });
                         dialog.show();
-
-
 
 
                     } else {
@@ -1090,7 +1120,7 @@ RelativeLayout layout_walkthrough_profilesave;
                     String image_url = sharedPrefrences.getProfilePicture2(context);
                     image_url = image_url.replace(" ", "");
                     if (image_url != null && !image_url.equals("")) {
-                        file3 =new File(Environment.getExternalStorageDirectory(),
+                        file3 = new File(Environment.getExternalStorageDirectory(),
                                 getResources().getString(R.string.app_name) + "profile_image2" + ".jpg");
                     }
                 } catch (Exception e) {
@@ -1104,7 +1134,6 @@ RelativeLayout layout_walkthrough_profilesave;
             Log.v("jason url=======>", String.valueOf(params));
         }
     }
-
 
 
     private void uploadProfilePicture(final File file1,
@@ -1136,7 +1165,6 @@ RelativeLayout layout_walkthrough_profilesave;
             }
         }.execute();
     }
-
 
 
     public void postImageWebservice(
@@ -1211,8 +1239,7 @@ RelativeLayout layout_walkthrough_profilesave;
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            try
-            {
+            try {
                 Iterator myVeryOwnIterator = post_params.keySet().iterator();
                 while (myVeryOwnIterator.hasNext()) {
                     String key = (String) myVeryOwnIterator.next();
@@ -1242,15 +1269,14 @@ RelativeLayout layout_walkthrough_profilesave;
                 }
                 String sResponse = sb.toString();
                 Log.d("Responce", "====" + sResponse);
-                profile_update_response =  sResponse;
+                profile_update_response = sResponse;
             } catch (Exception e) {
                 Log.e(e.getClass().getName(), e.getMessage(), e);
                 e.printStackTrace();
             }
-            }catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -1264,103 +1290,81 @@ RelativeLayout layout_walkthrough_profilesave;
                         JSONArray sportsArray = json_content.getJSONArray("userDetails");
                         JSONObject firstSport = sportsArray.getJSONObject(0);
                         String SessionId;
-                        if(firstSport.has("SessionId"))
-                        {
+                        if (firstSport.has("SessionId")) {
                             SessionId = firstSport.getString("SessionId");
 
-                        }else
-                        {
-                            SessionId="";
+                        } else {
+                            SessionId = "";
                         }
                         String user_id;
-                        if(firstSport.has("user_id"))
-                        {
+                        if (firstSport.has("user_id")) {
                             user_id = firstSport.getString("user_id");
 
-                        }else
-                        {
-                            user_id="";
+                        } else {
+                            user_id = "";
                         }
                         String image1;
-                        if(firstSport.has("image1"))
-                        {
-                             image1 = firstSport.getString("image1");
+                        if (firstSport.has("image1")) {
+                            image1 = firstSport.getString("image1");
 
-                        }else
-                        {
-                            image1="";
+                        } else {
+                            image1 = "";
                         }
                         String image2;
-                        if(firstSport.has("image2"))
-                        {
+                        if (firstSport.has("image2")) {
                             image2 = firstSport.getString("image2");
-                        }else
-                        {
-                            image2="";
+                        } else {
+                            image2 = "";
                         }
 
                         String image3;
-                      if(firstSport.has("image3"))
-                      {
-                          image3 = firstSport.getString("image3");
+                        if (firstSport.has("image3")) {
+                            image3 = firstSport.getString("image3");
 
-                      }else
-                      {
-                          image3="";
-                      }
+                        } else {
+                            image3 = "";
+                        }
                         String notification_message;
-                        if(firstSport.has("notification_message"))
-                        {
+                        if (firstSport.has("notification_message")) {
                             notification_message = firstSport.getString("notification_message");
 
-                        }else
-                        {
-                            notification_message="";
+                        } else {
+                            notification_message = "";
                         }
                         String notification_sound;
-                        if(firstSport.has("notification_sound"))
-                        {
+                        if (firstSport.has("notification_sound")) {
                             notification_sound = firstSport.getString("notification_sound");
 
-                        }else
-                        {
-                            notification_sound="";
+                        } else {
+                            notification_sound = "";
                         }
                         String notification_vibration;
-                        if(firstSport.has("notification_vibration"))
-                        {
+                        if (firstSport.has("notification_vibration")) {
                             notification_vibration = firstSport.getString("notification_vibration");
 
-                        }else
-                        {
-                            notification_vibration="";
+                        } else {
+                            notification_vibration = "";
                         }
                         String notification_match;
-                        if(firstSport.has("isMatch"))
-                        {
+                        if (firstSport.has("isMatch")) {
                             notification_match = firstSport.getString("isMatch");
 
-                        }else
-                        {
-                            notification_match="";
+                        } else {
+                            notification_match = "";
                         }
                         String registervia;
-                        if(firstSport.has("registervia"))
-                        {
+                        if (firstSport.has("registervia")) {
                             registervia = firstSport.getString("registervia");
 
-                        }else
-                        {
-                            registervia="";
+                        } else {
+                            registervia = "";
                         }
 
-                        if(firstSport.has("showpassword"))
-                        {
+                        if (firstSport.has("showpassword")) {
                             showpassword = firstSport.getString("showpassword");
 
-                        }else
-                        {
-                            showpassword="";
+                        } else {
+                            showpassword = "";
                         }
 
                         sharedPrefrences.setShowPassword(context, showpassword);
@@ -1394,6 +1398,11 @@ RelativeLayout layout_walkthrough_profilesave;
                         sharedPrefrences.setFBProfilePicture(context, "");
                         progress_bar.dismiss();
                         splashAnimation.stop();
+
+                        Calendar c = Calendar.getInstance();
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy",Locale.US);
+                        String formattedDate = df.format(c.getTime());
+                        sharedPrefrences.setDeviceDate(context, formattedDate);
                         Intent i = new Intent(DoSomethingprofile.this, DoSomethingStatus.class);
                         startActivity(i);
                         finish();
@@ -1407,8 +1416,6 @@ RelativeLayout layout_walkthrough_profilesave;
             } else if (json_content.getString("status").equalsIgnoreCase("error")) {
 
 
-
-
                 progress_bar.dismiss();
 
                 splashAnimation.stop();
@@ -1420,10 +1427,6 @@ RelativeLayout layout_walkthrough_profilesave;
             e.printStackTrace();
         }
     }
-
-
-
-
 
 
     public void photoCb(String url, String json, AjaxStatus status) {
@@ -1621,10 +1624,8 @@ RelativeLayout layout_walkthrough_profilesave;
 
     private void initialisePaging() {
 
-        List<android.support.v4.app.Fragment> fragments = new Vector<android.support.v4.app.Fragment>();
+
         fragments.add(android.support.v4.app.Fragment.instantiate(this, Profile_image_one_fragment.class.getName()));
-        fragments.add(android.support.v4.app.Fragment.instantiate(this, Profile_image_two_fragment.class.getName()));
-        fragments.add(android.support.v4.app.Fragment.instantiate(this, Profile_image_three_fragment.class.getName()));
         this.mPagerAdapter = new PagerAdapter(super.getSupportFragmentManager(), fragments);
         pager = (ViewPager) super.findViewById(R.id.pager);
         pager.setAdapter(this.mPagerAdapter);
@@ -1633,9 +1634,8 @@ RelativeLayout layout_walkthrough_profilesave;
     }
 
     public void addDots() {
-        dots = new ArrayList<>();
         Log.d("num_pages", "______" + NUM_PAGES);
-        for (int i = 0; i < NUM_PAGES; i++) {
+        for (int i = 0; i < fragments.size(); i++) {
             ImageView dot = new ImageView(this);
             dot.setImageDrawable(getResources().getDrawable(R.drawable.dot1));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -1646,6 +1646,13 @@ RelativeLayout layout_walkthrough_profilesave;
             viewpagerdots.addView(dot, params);
             dots.add(dot);
         }
+
+
+        if (popup) {
+            pager.setCurrentItem(pager.getCurrentItem() + 1, true);
+        }
+
+
         pager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1658,6 +1665,7 @@ RelativeLayout layout_walkthrough_profilesave;
         pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                popup = false;
             }
 
             @Override
@@ -1669,13 +1677,30 @@ RelativeLayout layout_walkthrough_profilesave;
 
             @Override
             public void onPageScrollStateChanged(int state) {
+                if (popup) {
+                    switch (pager.getCurrentItem() + 1) {
+                        case 2:
+                            if (((MyApplication) getApplication()).getProfile_image_two_fragment() != null) {
+                                ((MyApplication) getApplication()).getProfile_image_two_fragment().showImageSelectionAlert();
+                            }
+
+                            break;
+                        case 3:
+                            if (((MyApplication) getApplication()).getProfile_image_three_fragment() != null) {
+                                ((MyApplication) getApplication()).getProfile_image_three_fragment().showImageSelectionAlert();
+                            }
+
+                            break;
+
+                    }
+                }
             }
         });
     }
 
     public void selectDot(int idx) {
         Resources res = getResources();
-        for (int i = 0; i < NUM_PAGES; i++) {
+        for (int i = 0; i < fragments.size(); i++) {
             System.out.println("dots_pos..." + idx);
             int drawableId = (i == idx) ? (R.drawable.dot1) : (R.drawable.dot1_active);
             Drawable drawable = res.getDrawable(drawableId);
@@ -1743,10 +1768,10 @@ RelativeLayout layout_walkthrough_profilesave;
         image_walkthrough_account_profile = (ImageView) findViewById(R.id.image_walkthrough_account_profile);
         walkthrough_profile_imageView = (ImageView) findViewById(R.id.walkthrough_profile_imageView);
         walkthrough_profilesave_ImageView = (ImageView) findViewById(R.id.walkthrough_profilesave_ImageView);
-        walkthrough_account_create_TextView=(TextView)findViewById(R.id.walkthrough_account_create_TextView);
-        walkthrough_profilesave_TextView=(TextView)findViewById(R.id.walkthrough_profilesave_TextView);
-        layout_walkthrough_profile=(RelativeLayout) findViewById(R.id.layout_walkthrough_profile);
-        layout_walkthrough_profilesave=(RelativeLayout) findViewById(R.id.layout_walkthrough_profilesave);
+        walkthrough_account_create_TextView = (TextView) findViewById(R.id.walkthrough_account_create_TextView);
+        walkthrough_profilesave_TextView = (TextView) findViewById(R.id.walkthrough_profilesave_TextView);
+        layout_walkthrough_profile = (RelativeLayout) findViewById(R.id.layout_walkthrough_profile);
+        layout_walkthrough_profilesave = (RelativeLayout) findViewById(R.id.layout_walkthrough_profilesave);
         dosomething_profile_mainlayout = (LinearLayout) findViewById(R.id.dosomething_profile_mainlayout);
         profile_page_layout_notification_vibration = (LinearLayout) findViewById(R.id.profile_page_layout_notification_vibration);
         profile_page_layout_notification_sound = (LinearLayout) findViewById(R.id.profile_page_layout_notification_sound);
@@ -1817,8 +1842,6 @@ RelativeLayout layout_walkthrough_profilesave;
         dosomething_account_confirmation_yes = (TextView) dialog_createAccount.findViewById(R.id.dosomething_account_confirmation_yes);
 
 
-
-
 //        profile_page_edittext_firstname.setText(sharedPreferences.getFirstName(context));
 //        profile_page_edittext_lastname.setText(sharedPreferences.getLastname(context));
 //        if (sharedPreferences.getGender(context).equals("Male")) {
@@ -1869,6 +1892,7 @@ RelativeLayout layout_walkthrough_profilesave;
                 profile_page_imageview_profile_image.setImageBitmap(conv_bm);
 
             } else {
+                assert data != null;
                 final Bitmap photo = (Bitmap) data.getExtras().get("data");
                 Bitmap resized = Bitmap.createScaledBitmap(photo, 200, 200, true);
                 Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 10);
@@ -2400,8 +2424,7 @@ RelativeLayout layout_walkthrough_profilesave;
                     }
                 }
 
-                try
-                {
+                try {
                     hobbies_append_id = new StringBuilder();
                     for (Integer string : hobbies_id) {
 //                    for (int i=0;i<hobbies_id.size();i++){
@@ -2421,8 +2444,7 @@ RelativeLayout layout_walkthrough_profilesave;
 //                }
                     Log.d("OOOOOOOOOO", "JJJJJrl" + hobbies_append_id);
 
-                }catch (Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -2481,35 +2503,29 @@ RelativeLayout layout_walkthrough_profilesave;
     protected void onResume() {
         super.onResume();
 
-        if(sharedPrefrences.getWalkThroughprofile(context).equals("false"))
-        {
+        if (sharedPrefrences.getWalkThroughprofile(context).equals("false")) {
             layout_walkthrough_profile.setVisibility(View.VISIBLE);
             blink_time = new Timer();
             blink_time.schedule(new Blink_progress(), 0, 340);
             splashAnimation_walkthroughprofile.start();
-            sharedPrefrences.setWalkThroughProfile(context,"true");
+            sharedPrefrences.setWalkThroughProfile(context, "true");
 
-        }else
-        {
-            if(sharedPrefrences.getWalkThroughProfilesave(context).equals("false"))
-            {
+        } else {
+            if (sharedPrefrences.getWalkThroughProfilesave(context).equals("false")) {
                 layout_walkthrough_profilesave.setVisibility(View.VISIBLE);
                 blink_time_save = new Timer();
                 blink_time_save.schedule(new Blink_progress_save(), 0, 340);
                 splashAnimation_walkthroughsave.start();
-                sharedPrefrences.setWalkThroughProfilesave(context,"true");
+                sharedPrefrences.setWalkThroughProfilesave(context, "true");
             }
         }
-
-
-
 
 
         layout_walkthrough_profilesave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 layout_walkthrough_profilesave.setVisibility(View.GONE);
-                sharedPrefrences.setWalkThroughProfilesave(context,"true");
+                sharedPrefrences.setWalkThroughProfilesave(context, "true");
             }
         });
 
@@ -2526,115 +2542,8 @@ RelativeLayout layout_walkthrough_profilesave;
 
                 }
                 layout_walkthrough_profilesave.setVisibility(View.GONE);
-                sharedPrefrences.setWalkThroughProfilesave(context,"true");
-                if (profile_page_edittext_firstname.getText().length() == 0) {
+                sharedPrefrences.setWalkThroughProfilesave(context, "true");
 
-
-                    status_textview_availablenow.setText("Please Enter your First name");
-                    status_textview_accept_check.setText("Dismiss");
-                    status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
-
-
-
-
-                } else if (profile_page_edittext_lastname.getText().length() == 0) {
-
-
-                    status_textview_availablenow.setText("Please Enter your Last name");
-                    status_textview_accept_check.setText("Dismiss");
-                    status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
-
-
-
-
-
-                } else if (profile_page_edittext_about_you.getText().length() == 0) {
-
-
-                    status_textview_availablenow.setText("Say Something About you!!!");
-                    status_textview_accept_check.setText("Dismiss");
-                    status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
-
-
-
-
-                } else if (profile_page_textview_datepicker.getText().equals("DD / MM / YYYY")) {
-
-
-                    status_textview_availablenow.setText("Please Enter your Birthday");
-                    status_textview_accept_check.setText("Dismiss");
-                    status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
-
-
-                } else if (sharedPrefrences.getGender(context).equals("")) {
-
-
-
-                    status_textview_availablenow.setText("Please Choose your Gender");
-                    status_textview_accept_check.setText("Dismiss");
-                    status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
-
-
-
-
-                } else if (!sharedPrefrences.getLoginType(context).equals("Facebook")) {
-                    if (profile_page_edittext_password.getText().length() == 0) {
-
-
-
-                        status_textview_availablenow.setText("Please Enter password to register");
-                        status_textview_accept_check.setText("Dismiss");
-                        status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
-                        dialog.show();
-
-
-
-
-                    } else {
-
-                        dialog_createAccount.show();
-
-                    }
-                } else {
-                    dialog_createAccount.show();
-
-
-                }
 
             }
         });
@@ -2653,122 +2562,14 @@ RelativeLayout layout_walkthrough_profilesave;
                 }
                 splashAnimation_walkthroughprofile.stop();
                 layout_walkthrough_profile.setVisibility(View.GONE);
-                sharedPrefrences.setWalkThroughProfile(context,"true");
-                if (profile_page_edittext_firstname.getText().length() == 0) {
-
-
-                    status_textview_availablenow.setText("Please Enter your First name");
-                    status_textview_accept_check.setText("Dismiss");
-                    status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
-
-
-
-
-                } else if (profile_page_edittext_lastname.getText().length() == 0) {
-
-
-                    status_textview_availablenow.setText("Please Enter your Last name");
-                    status_textview_accept_check.setText("Dismiss");
-                    status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
-
-
-
-
-
-                } else if (profile_page_edittext_about_you.getText().length() == 0) {
-
-
-                    status_textview_availablenow.setText("Say Something About you!!!");
-                    status_textview_accept_check.setText("Dismiss");
-                    status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
-
-
-
-
-                } else if (profile_page_textview_datepicker.getText().equals("DD / MM / YYYY")) {
-
-
-                    status_textview_availablenow.setText("Please Enter your Birthday");
-                    status_textview_accept_check.setText("Dismiss");
-                    status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
-
-
-                } else if (sharedPrefrences.getGender(context).equals("")) {
-
-
-
-                    status_textview_availablenow.setText("Please Choose your Gender");
-                    status_textview_accept_check.setText("Dismiss");
-                    status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.show();
-
-
-
-
-                } else if (!sharedPrefrences.getLoginType(context).equals("Facebook")) {
-                    if (profile_page_edittext_password.getText().length() == 0) {
-
-
-
-                        status_textview_availablenow.setText("Please Enter password to register");
-                        status_textview_accept_check.setText("Dismiss");
-                        status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
-                        dialog.show();
-
-
-
-
-                    } else {
-
-                        dialog_createAccount.show();
-
-                    }
-                } else {
-                    dialog_createAccount.show();
-
-
-                }
+                sharedPrefrences.setWalkThroughProfile(context, "true");
             }
         });
         layout_walkthrough_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 layout_walkthrough_profile.setVisibility(View.GONE);
-                sharedPrefrences.setWalkThroughProfile(context,"true");
+                sharedPrefrences.setWalkThroughProfile(context, "true");
             }
         });
 

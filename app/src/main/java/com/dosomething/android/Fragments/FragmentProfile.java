@@ -206,7 +206,7 @@ public class FragmentProfile extends Fragment {
     List<android.support.v4.app.Fragment> fragments = new Vector<Fragment>();
     UserProfileImage1_Fragment userProfileImage1_fragment;
     private ArrayList<ImageView> dots;
-
+boolean popup=false;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -300,25 +300,48 @@ public class FragmentProfile extends Fragment {
         pd = new TransparentProgressDialog(getActivity(), getResources().getDrawable(R.drawable.loading));
 
         String date = sharedPrefrences.getDateOfbirth(getActivity());
+        SimpleDateFormat input = new SimpleDateFormat("dd/MM/yyyy",Locale.US);
+        SimpleDateFormat output = new SimpleDateFormat("dd / MM / yyyy",Locale.US);
+        try {
+            Log.d("tripDate", date);
+            Date oneWayTripDate = input.parse(date);                 // parse input
+            String tripDate = output.format(oneWayTripDate);// format output
+            Log.d("tripDate", tripDate);
+            sharedPrefrences.setDateofBirth(getActivity(), tripDate);
+            fragment_profile_page_textview_datepicker.setText(sharedPrefrences.getDateOfbirth(getActivity()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (getActivity() != null) {
+            if (sharedPrefrences.getRegistervia(getActivity()).equals("facebook")) {
+                if (sharedPrefrences.getShowPassword(getActivity()).equals("no")) {
+                    fragment_profile_page_textview_title_account.setVisibility(View.GONE);
+                    dosomething_account_login_via_email.setVisibility(View.GONE);
+                }
+
+                dosomething_login_via_imageview.setImageDrawable(getResources().getDrawable(R.drawable.fb_login_icon));
+                dosomething_login_via_textview.setText("You are connected via Facebook");
+
+            }
+            fragment_profile_page_edittext_firstname.setText(sharedPrefrences.getFirstName(getActivity()));
+            fragment_profile_page_edittext_lastname.setText(sharedPrefrences.getLastname(getActivity()));
+            fragment_profile_page_edittext_gender.setText(sharedPrefrences.getGender(getActivity()));
+            fragment_profile_page_edittext_about_you.setText(sharedPrefrences.getAbout(getActivity()));
+            fragment_profile_page_edittext_email.setText(sharedPrefrences.getEMAIl(getActivity()));
+//        fragment_profile_page_edittext_password.setText(sharedPrefrences.getpassword(getActivity()));
+            sessionid = sharedPrefrences.getSessionid(getActivity());
+            profile_user_id = sharedPrefrences.getUserId(getActivity());
+            Log.d("profile_user_id", sharedPrefrences.getUserId(getActivity()));
 
 
-//                    String date ="29/07/13";
-//        SimpleDateFormat input = new SimpleDateFormat("dd/MM/yyyy");
-//        SimpleDateFormat output = new SimpleDateFormat("dd / MM / yyyy");
-//        try {
-//            Log.d("tripDate", date);
-//            oneWayTripDate = input.parse(date);                 // parse input
-//            tripDate = output.format(oneWayTripDate);// format output
-//            Log.d("tripDate", tripDate);
-//            dob = tripDate;
-//
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-        dots.clear();
-        fragment_viewpager_dots.removeAllViews();
-        selectDot(fragment_pager.getCurrentItem());
-        addDots();
+            new AsynDataClass().execute();
+        }
+
+
+
+
+
+
         if (fragments.size() == 3) {
             fragment_profile_image_autoincrease.setClickable(false);
         }
@@ -344,7 +367,7 @@ public class FragmentProfile extends Fragment {
                     fragment_pager.setOffscreenPageLimit(3);
                     dots.clear();
                     fragment_viewpager_dots.removeAllViews();
-
+                    popup=true;
                     addDots();
 
                 } else if (fragments.size() == 1)
@@ -355,8 +378,10 @@ public class FragmentProfile extends Fragment {
                     mPagerAdapter.notifyDataSetChanged();
                     dots.clear();
                     fragment_viewpager_dots.removeAllViews();
-
+                    popup=true;
                     addDots();
+
+
 
 
                 } else if (fragments.size() == 2) {
@@ -365,8 +390,9 @@ public class FragmentProfile extends Fragment {
                     mPagerAdapter.notifyDataSetChanged();
                     dots.clear();
                     fragment_viewpager_dots.removeAllViews();
-
+                    popup=true;
                     addDots();
+
 
                 }
 
@@ -374,31 +400,6 @@ public class FragmentProfile extends Fragment {
         });
 
 
-        if (getActivity() != null) {
-            if (sharedPrefrences.getRegistervia(getActivity()).equals("facebook")) {
-                if (sharedPrefrences.getShowPassword(getActivity()).equals("no")) {
-                    fragment_profile_page_textview_title_account.setVisibility(View.GONE);
-                    dosomething_account_login_via_email.setVisibility(View.GONE);
-                }
-
-                dosomething_login_via_imageview.setImageDrawable(getResources().getDrawable(R.drawable.fb_login_icon));
-                dosomething_login_via_textview.setText("You are connected via Facebook");
-
-            }
-            fragment_profile_page_edittext_firstname.setText(sharedPrefrences.getFirstName(getActivity()));
-            fragment_profile_page_edittext_lastname.setText(sharedPrefrences.getLastname(getActivity()));
-            fragment_profile_page_edittext_gender.setText(sharedPrefrences.getGender(getActivity()));
-            fragment_profile_page_textview_datepicker.setText(date);
-            fragment_profile_page_edittext_about_you.setText(sharedPrefrences.getAbout(getActivity()));
-            fragment_profile_page_edittext_email.setText(sharedPrefrences.getEMAIl(getActivity()));
-//        fragment_profile_page_edittext_password.setText(sharedPrefrences.getpassword(getActivity()));
-            sessionid = sharedPrefrences.getSessionid(getActivity());
-            profile_user_id = sharedPrefrences.getUserId(getActivity());
-            Log.d("profile_user_id", sharedPrefrences.getUserId(getActivity()));
-
-
-            new AsynDataClass().execute();
-        }
 
 
 ////////////////////////////////////////Hobbies/////////////////////////////////////////////////////
@@ -719,26 +720,13 @@ public class FragmentProfile extends Fragment {
                 fragment_viewpager_dots.addView(dot, params);
                 dots.add(dot);
                 Log.d("num_dots2", "______" + dots.size());
-            }
-            fragment_pager.setCurrentItem(fragment_pager.getCurrentItem() + 1, true);
 
-            switch (fragments.size())
+            }
+            if(popup)
             {
-                case 2:
-                    if(((MyApplication)getActivity().getApplication()).getUserProfileImage2_fragment()!=null)
-                    {
-                        ((MyApplication)getActivity().getApplication()).getUserProfileImage2_fragment().showImageSelectionAlert();
-                    }
-
-                    break;
-                case 3:
-                    if(((MyApplication)getActivity().getApplication()).getUserProfileImage3_fragment()!=null)
-                    {
-                        ((MyApplication)getActivity().getApplication()).getUserProfileImage3_fragment().showImageSelectionAlert();
-                    }
-
-                    break;
+                fragment_pager.setCurrentItem(fragment_pager.getCurrentItem() + 1, true);
             }
+
 
 
         }catch (Exception e)
@@ -752,6 +740,11 @@ public class FragmentProfile extends Fragment {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+                popup=false;
+
+
+
+
             }
 
             @Override
@@ -763,6 +756,28 @@ public class FragmentProfile extends Fragment {
 
             @Override
             public void onPageScrollStateChanged(int state) {
+                if(popup)
+                {
+                    switch (fragment_pager.getCurrentItem()+1)
+                    {
+                        case 2:
+                            if(((MyApplication)getActivity().getApplication()).getUserProfileImage2_fragment()!=null)
+                            {
+                                ((MyApplication)getActivity().getApplication()).getUserProfileImage2_fragment().showImageSelectionAlert();
+                            }
+
+                            break;
+                        case 3:
+                            if(((MyApplication)getActivity().getApplication()).getUserProfileImage3_fragment()!=null)
+                            {
+                                ((MyApplication)getActivity().getApplication()).getUserProfileImage3_fragment().showImageSelectionAlert();
+                            }
+
+                            break;
+
+                    }
+                }
+
             }
         });
     }
@@ -776,6 +791,10 @@ public class FragmentProfile extends Fragment {
             drawable.setBounds(0, 0, 0, 0);
             dots.get(i).setImageDrawable(drawable);
         }
+
+
+
+
     }
 
 
@@ -1136,18 +1155,17 @@ public class FragmentProfile extends Fragment {
 
 
                         }
-
-
-
                         fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage1_Fragment.class.getName()));
                         mPagerAdapter = new PagerAdapter(getChildFragmentManager(), fragments);
                         fragment_pager.setAdapter(mPagerAdapter);
                         fragment_pager.setOffscreenPageLimit(3);
-
                         dots.clear();
                         fragment_viewpager_dots.removeAllViews();
-
                         addDots();
+                        selectDot(fragment_pager.getCurrentItem());
+
+
+
 
                         if (!sharedPrefrences.getProfilePicture1(getActivity()).equals("")) {
                             fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage2_Fragment.class.getName()));
@@ -1159,6 +1177,7 @@ public class FragmentProfile extends Fragment {
                             addDots();
 
                         }
+
                         if (!sharedPrefrences.getProfilePicture2(getActivity()).equals("")) {
                             fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage3_Fragment.class.getName()));
                             mPagerAdapter.notifyDataSetChanged();
@@ -1176,19 +1195,17 @@ public class FragmentProfile extends Fragment {
 
                         if (getActivity() != null) {
                             sharedPrefrences.setPassword(getActivity(), password);
-                            sharedPrefrences.setDateofBirth(getActivity(), date_of_birth);
-                            String date = sharedPrefrences.getDateOfbirth(getActivity());
+                            String date = date_of_birth;
 //                    String date ="29/07/13";
-                            SimpleDateFormat input = new SimpleDateFormat("dd/MM/yyyy");
-                            SimpleDateFormat output = new SimpleDateFormat("dd / MM / yyyy");
+                            SimpleDateFormat input = new SimpleDateFormat("dd/MM/yyyy",Locale.US);
+                            SimpleDateFormat output = new SimpleDateFormat("dd / MM / yyyy",Locale.US);
                             try {
                                 Log.d("tripDate", date);
                                 oneWayTripDate = input.parse(date);                 // parse input
                                 tripDate = output.format(oneWayTripDate);// format output
                                 Log.d("tripDate", tripDate);
-                                dob = tripDate;
-                                fragment_profile_page_textview_datepicker.setText(dob);
                                 sharedPrefrences.setDateofBirth(getActivity(), tripDate);
+                                fragment_profile_page_textview_datepicker.setText(sharedPrefrences.getDateOfbirth(getActivity()));
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
@@ -1288,8 +1305,8 @@ public class FragmentProfile extends Fragment {
                         fragment_profile_page_textview_datepicker.setText(dateViewFormatter.format(choosen.getTime()));
                         String date = fragment_profile_page_textview_datepicker.getText().toString();
 //                    String date ="29/07/13";
-                        SimpleDateFormat input = new SimpleDateFormat("dd / MM / yyyy");
-                        SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd");
+                        SimpleDateFormat input = new SimpleDateFormat("dd / MM / yyyy",Locale.US);
+                        SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
                         try {
                             Log.d("tripDate", date);
                             oneWayTripDate = input.parse(date);                 // parse input

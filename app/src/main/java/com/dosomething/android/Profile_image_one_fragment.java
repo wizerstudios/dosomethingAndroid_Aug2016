@@ -19,7 +19,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
@@ -44,9 +43,7 @@ import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -106,7 +103,7 @@ public class Profile_image_one_fragment extends android.support.v4.app.Fragment 
         dosomething_alert_pick_image_textview_gallery = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_gallery);
         dosomething_alert_pick_image_textview_camera = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_camera);
         dosomething_alert_pick_image_textview_remove=(TextView)dialog.findViewById(R.id.dosomething_alert_pick_image_textview_remove);
-
+        ((MyApplication)getActivity().getApplication()).setProfile_image_one_fragment(this);
         try {
             if (!sharedPrefrences.getProfileImageBitmap1(getActivity()).equals("")) {
 
@@ -114,7 +111,7 @@ public class Profile_image_one_fragment extends android.support.v4.app.Fragment 
                 Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
                 Bitmap conv_bm = getCroppedBitmap(bitmap);
                 profile_image_one_page_imageview_profile_image.setImageBitmap(conv_bm);
-                profile_image_one_imageview_camera_inside.setVisibility(View.VISIBLE);
+                profile_image_one_imageview_camera_inside.setVisibility(View.GONE);
                 profile_image_one_imageview_camera_outside.setVisibility(View.GONE);
                 profile_image_viewpager_dots_one.profile_Image_one();
             } else {
@@ -131,7 +128,7 @@ public class Profile_image_one_fragment extends android.support.v4.app.Fragment 
                                 Bitmap resized = Bitmap.createScaledBitmap(bm, 200, 200, true);
                                 Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 40);
                                 iv.setImageBitmap(conv_bm);
-                                profile_image_one_imageview_camera_inside.setVisibility(View.VISIBLE);
+                                profile_image_one_imageview_camera_inside.setVisibility(View.GONE);
                                 profile_image_one_imageview_camera_outside.setVisibility(View.GONE);
                                 profile_image_viewpager_dots_one.profile_Image_one();
 
@@ -156,83 +153,7 @@ public class Profile_image_one_fragment extends android.support.v4.app.Fragment 
 
 
 
-                dosomething_alert_pick_image_textview_gallery.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                       /* Intent intent = new Intent();
-
-                        intent.setType("image*//*");
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-
-                        startActivityForResult(Intent.createChooser(intent, "Complete action using"), PICK_FROM_FILE);
-
-                        dialog.dismiss();*/
-
-                        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(i, PICK_FROM_FILE);
-
-
-                        /*Intent intent = new Intent(
-                                Intent.ACTION_GET_CONTENT,
-                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        intent.setType("image*//*");
-                        startActivityForResult(
-                                Intent.createChooser(intent, "Choose an image"),
-                                PICK_FROM_FILE);*/
-                        dialog.dismiss();
-                    }
-                });
-
-                dosomething_alert_pick_image_textview_remove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        profile_image_one_page_imageview_profile_image.setImageResource(R.drawable.profile_noimg);
-                        profile_image_one_imageview_camera_inside.setVisibility(View.GONE);
-                        profile_image_one_imageview_camera_outside.setVisibility(View.VISIBLE);
-                        dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
-                        sharedPrefrences.setFBProfilePicture(getActivity(), "");
-                        sharedPrefrences.setProfileImageBitmap1(getActivity(), "");
-                        sharedPrefrences.setProfilePicture(getActivity(), "");
-                        dialog.dismiss();
-                    }
-                });
-                dosomething_alert_pick_image_textview_camera.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        /*Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                        mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
-                                getResources().getString(R.string.app_name) + "profie_image" + ".jpg"));
-
-                        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
-
-                        try {
-                            intent.putExtra("return-data", true);
-
-                            startActivityForResult(intent, PICK_FROM_CAMERA);
-                        } catch (ActivityNotFoundException e) {
-                            e.printStackTrace();
-                        }
-
-
-                        dialog.dismiss();*/
-
-
-
-
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                        mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
-                                "crop.jpg"));
-                        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
-                        startActivityForResult(intent, PICK_FROM_CAMERA);
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
-
+                showImageSelectionAlert();
 
 
             }
@@ -244,9 +165,28 @@ public class Profile_image_one_fragment extends android.support.v4.app.Fragment 
 
 
 
-                dosomething_alert_pick_image_textview_gallery.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                showImageSelectionAlert();
+
+
+
+
+
+
+
+
+
+            }
+        });
+        return view;
+    }
+
+
+
+    public void showImageSelectionAlert()
+    {
+        dosomething_alert_pick_image_textview_gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
                       /*  Intent intent = new Intent();
 
@@ -258,8 +198,8 @@ public class Profile_image_one_fragment extends android.support.v4.app.Fragment 
                         dialog.dismiss();*/
 
 
-                        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(i, PICK_FROM_FILE);
+                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, PICK_FROM_FILE);
 
                         /*Intent intent = new Intent(
                                 Intent.ACTION_GET_CONTENT,
@@ -268,27 +208,27 @@ public class Profile_image_one_fragment extends android.support.v4.app.Fragment 
                         startActivityForResult(
                                 Intent.createChooser(intent, "Choose an image"),
                                 PICK_FROM_FILE);*/
-                        dialog.dismiss();
-                    }
-                });
-                dosomething_alert_pick_image_textview_remove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        profile_image_one_page_imageview_profile_image.setImageResource(R.drawable.profile_noimg);
-                        profile_image_one_imageview_camera_inside.setVisibility(View.GONE);
-                        profile_image_one_imageview_camera_outside.setVisibility(View.VISIBLE);
-                        dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
-                        sharedPrefrences.setFBProfilePicture(getActivity(), "");
-                        sharedPrefrences.setProfileImageBitmap1(getActivity(), "");
-                        sharedPrefrences.setProfilePicture(getActivity(), "");
-                        dialog.dismiss();
+                dialog.dismiss();
+            }
+        });
+        dosomething_alert_pick_image_textview_remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                profile_image_one_page_imageview_profile_image.setImageResource(R.drawable.profile_noimg);
+                profile_image_one_imageview_camera_inside.setVisibility(View.GONE);
+                profile_image_one_imageview_camera_outside.setVisibility(View.GONE);
+                dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
+                sharedPrefrences.setFBProfilePicture(getActivity(), "");
+                sharedPrefrences.setProfileImageBitmap1(getActivity(), "");
+                sharedPrefrences.setProfilePicture(getActivity(), "");
+                dialog.dismiss();
 
-                    }
-                });
+            }
+        });
 
-                dosomething_alert_pick_image_textview_camera.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+        dosomething_alert_pick_image_textview_camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                        /* Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
                         mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
@@ -308,33 +248,25 @@ public class Profile_image_one_fragment extends android.support.v4.app.Fragment 
                         dialog.dismiss();*/
 
 
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
 
-                            mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
-                                    "crop.jpg"));
-                        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
-                        startActivityForResult(intent, PICK_FROM_CAMERA);
-                        dialog.dismiss();
-
-
-                    }
-                });
-
-                dialog.show();
-
-
-
-
-
-
-
+                mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
+                        "crop.jpg"));
+                intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+                startActivityForResult(intent, PICK_FROM_CAMERA);
+                dialog.dismiss();
 
 
             }
         });
-        return view;
+
+        dialog.show();
     }
+
+
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -373,7 +305,7 @@ public class Profile_image_one_fragment extends android.support.v4.app.Fragment 
                             Bitmap resized = Bitmap.createScaledBitmap(photo, 1080, 1080, true);
                             Bitmap conv_bm1 = getCroppedBitmap(photo);
                             profile_image_one_page_imageview_profile_image.setImageBitmap(conv_bm1);
-                            profile_image_one_imageview_camera_inside.setVisibility(View.VISIBLE);
+                            profile_image_one_imageview_camera_inside.setVisibility(View.GONE);
                             profile_image_one_imageview_camera_outside.setVisibility(View.GONE);
                             dosomething_alert_pick_image_textview_remove.setVisibility(View.VISIBLE);
                             profile_image_viewpager_dots_one.profile_Image_one();
@@ -689,77 +621,13 @@ public class Profile_image_one_fragment extends android.support.v4.app.Fragment 
 
     }
 
-    public class LoadImageFromURL extends AsyncTask<String, Void, Bitmap> {
-
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            // TODO Auto-generated method stub
-
-            try {
-                URL url = new URL(sharedPrefrences.getFBProfilePicture(getActivity()));
-                InputStream is = url.openConnection().getInputStream();
-                Bitmap bitMap = BitmapFactory.decodeStream(is);
-                Bitmap resized = Bitmap.createScaledBitmap(bitMap, 200, 200, true);
-                return getRoundedRectanguleBitmap(resized, 10);
-
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            return null;
-
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            // TODO Auto-generated method stub
-            super.onPostExecute(result);
-            profile_image_one_page_imageview_profile_image.setImageBitmap(result);
-            profile_image_one_imageview_camera_inside.setVisibility(View.VISIBLE);
-            profile_image_one_imageview_camera_outside.setVisibility(View.GONE);
-            profile_image_viewpager_dots_one.profile_Image_one();
-        }
-
-    }
 
     @Override
     public void onResume() {
         super.onResume();
     }
 
-    public class LoadImageFromURL1 extends AsyncTask<String, Void, Bitmap> {
 
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            // TODO Auto-generated method stub
-
-            try {
-                URL url = new URL(sharedPrefrences.getProfilePicture(getActivity()));
-                InputStream is = url.openConnection().getInputStream();
-                Bitmap bitMap = BitmapFactory.decodeStream(is);
-                Bitmap resized = Bitmap.createScaledBitmap(bitMap, 200, 200, true);
-                return getRoundedRectanguleBitmap(resized, 10);
-
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            return null;
-
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            // TODO Auto-generated method stub
-            super.onPostExecute(result);
-            profile_image_one_page_imageview_profile_image.setImageBitmap(result);
-            profile_image_one_page_imageview_profile_image.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            profile_image_one_imageview_camera_inside.setVisibility(View.VISIBLE);
-            profile_image_one_imageview_camera_outside.setVisibility(View.GONE);
-            profile_image_viewpager_dots_one.profile_Image_one();
-        }
-
-    }
 
     public Bitmap getCroppedBitmap(Bitmap bitmap) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);

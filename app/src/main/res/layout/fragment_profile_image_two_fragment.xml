@@ -51,6 +51,7 @@
         </RelativeLayout>
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/profile_image_two_imageview_camera_outside"
             android:layout_width="40dp"
             android:layout_height="40dp"

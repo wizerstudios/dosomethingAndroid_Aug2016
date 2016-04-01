@@ -87,6 +87,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.zip.Inflater;
@@ -298,8 +299,8 @@ public class DoSomethingStatus extends AppCompatActivity {
                         if (!dosomething_save_click_action.equals("clickfalse")) {
                             String date = sharedPreferences.getDateOfbirth(context);
 //                    String date ="29/07/13";
-                            SimpleDateFormat input = new SimpleDateFormat("dd / MM / yyyy");
-                            SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd");
+                            SimpleDateFormat input = new SimpleDateFormat("dd / MM / yyyy", Locale.US);
+                            SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
 
                             try {
                                 Log.d("tripDate", date);
@@ -755,6 +756,7 @@ public class DoSomethingStatus extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sharedPreferences.setPushType(context, "");
+                sharedPreferences.setChatAutoUpdate(context, "true");
                 ((MyApplication) getApplication()).getListFilterBeans().clear();
                 ((MyApplication)getApplication()).setCount(0);
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -811,6 +813,7 @@ public class DoSomethingStatus extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sharedPreferences.setPushType(context, "");
+                sharedPreferences.setChatAutoUpdate(context,"true");
                 ((MyApplication) getApplication()).getListFilterBeans().clear();
                 ((MyApplication) getApplication()).setanInt(0);
                 ((MyApplication)getApplication()).setCount(0);
@@ -854,6 +857,7 @@ public class DoSomethingStatus extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context)) {
+                    sharedPreferences.setChatAutoUpdate(context,"true");
                     sharedPreferences.setPushType(context, "");
                     ((MyApplication) getApplication()).getListFilterBeans().clear();
                     ((MyApplication) getApplication()).setanInt(0);
@@ -897,6 +901,7 @@ public class DoSomethingStatus extends AppCompatActivity {
         status_layout_pin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sharedPreferences.setChatAutoUpdate(context,"true");
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(status_layout_pin.getWindowToken(), 0);
                 settext("YES");
@@ -976,6 +981,7 @@ public class DoSomethingStatus extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sharedPreferences.setPushType(context, "");
+                sharedPreferences.setChatAutoUpdate(context,"false");
                 ((MyApplication) getApplication()).getListFilterBeans().clear();
                 ((MyApplication) getApplication()).setanInt(0);
                 ((MyApplication)getApplication()).setCount(0);
@@ -2438,7 +2444,11 @@ public class DoSomethingStatus extends AppCompatActivity {
                             CharSequence s = DateFormat.format("yyyy-MM-dd HH:mm:ss", d.getTime());
                             datetime = String.valueOf(s);
                             Log.d("date and time", datetime);
-                            new ChatHistory().execute();
+                            if(!sharedPreferences.getSessionid(context).equals(""))
+                            {
+                                new ChatHistory().execute();
+                            }
+
                         }
 
 
@@ -3020,6 +3030,87 @@ public void slideToChat(boolean b)
 }
 
 
+
+    public void dosomethingNearmepopup(boolean b) {
+        if (click_action12) {
+            if (b) {
+                sharedPreferences.setChatAutoUpdate(context, "true");
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(status_layout_pin.getWindowToken(), 0);
+                settext("YES");
+                if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context))
+
+                {
+                    final LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+                    if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        final Dialog dialog = new Dialog(context);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        dialog.setContentView(R.layout.dosomething_alert_save_changes);
+                        TextView status_textview_save = (TextView) dialog.findViewById(R.id.status_textview_save);
+                        TextView alert_textview_save = (TextView) dialog.findViewById(R.id.alert_textview_save);
+                        TextView alert_textview_save_cancel = (TextView) dialog.findViewById(R.id.alert_textview_save_cancel);
+                        status_textview_save.setText("Your GPS seems to be disabled, do you want to enable it?");
+                        alert_textview_save.setText("Yes");
+                        alert_textview_save_cancel.setText("No");
+                        alert_textview_save.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+
+                                context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
+                        alert_textview_save_cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
+
+                    } else {
+                        if (sharedPreferences.getBoolean(context).equals("false")) {
+                            settext("YES");
+                            sharedPreferences.setDosomething_filterImage_Visibility(context, "Yes");
+                            sharedPreferences.setFilterGender(context, "");
+                            sharedPreferences.setFilterAvailable(context, "");
+                            sharedPreferences.setFilterStatus(context, "");
+                            sharedPreferences.setFilterDistance(context, "");
+                            sharedPreferences.setFilterAge(context, "");
+                            status_ImageView_pin.setImageDrawable(getResources().getDrawable(R.drawable.pin_active));
+                            status_ImageView_chat.setImageDrawable(getResources().getDrawable(R.drawable.chat));
+                            status_ImageView_profile.setImageDrawable(getResources().getDrawable(R.drawable.profile_icon));
+                            status_ImageView_setting.setImageDrawable(getResources().getDrawable(R.drawable.setting));
+                            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+
+                            somethingNearMe = new DoSomethingNearMe();
+//                        fragmentTransaction.setCustomAnimations(R.anim.slide_out, R.anim.slide_out);
+
+                            activity_dosomething_textview_toolbar_save.setVisibility(View.GONE);
+                            activity_dosomething_imageview_filter_icon.setVisibility(View.VISIBLE);
+                            fragmentTransaction.replace(R.id.detail_fragment, somethingNearMe);
+                            fragmentTransaction.commit();
+                            click_action15 = false;
+                            click_action14 = false;
+                            click_action12 = true;
+                            click_action13 = false;
+                        } else {
+//                        fadeIn_alertdialogSave();
+                            dialog_savechanges.show();
+                        }
+                    }
+
+
+                } else {
+                    NetworkCheck.alertdialog(context);
+                }
+            }
+        }
+    }
 
 
 }
