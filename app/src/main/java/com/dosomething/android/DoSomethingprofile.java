@@ -325,6 +325,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+
         pd = new TransparentProgressDialog(context, getResources().getDrawable(R.drawable.loading));
 
         /*image_relative=(RelativeLayout)findViewById(R.id.image_relative);
@@ -855,8 +856,8 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                 hobbies = String.valueOf(hobbies_append_id);
                 String date = profile_page_textview_datepicker.getText().toString();
                 sharedPrefrences.setDateofBirth(context, date);
-                SimpleDateFormat input = new SimpleDateFormat("dd / MM / yyyy");
-                SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat input = new SimpleDateFormat("dd / MM / yyyy",Locale.US);
+                SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
                 try {
                     Log.d("tripDate", date);
                     oneWayTripDate = input.parse(date);                 // parse input
@@ -1764,7 +1765,6 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
     private void assign_declaration() {
 //        profile_page_imageview_camera = (ImageView) findViewById(R.id.profile_page_imageview_camera);
         profile_image_autoincrease = (ImageView) findViewById(R.id.profile_image_autoincrease);
-        image_walkthrough_account_profilesave = (ImageView) findViewById(R.id.image_walkthrough_account_profilesave);
         image_walkthrough_account_profile = (ImageView) findViewById(R.id.image_walkthrough_account_profile);
         walkthrough_profile_imageView = (ImageView) findViewById(R.id.walkthrough_profile_imageView);
         walkthrough_profilesave_ImageView = (ImageView) findViewById(R.id.walkthrough_profilesave_ImageView);
@@ -1877,15 +1877,11 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                 // Get the cursor
                 Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
                 // Move to first row
+                assert cursor != null;
                 cursor.moveToFirst();
-
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 imgDecodableString = cursor.getString(columnIndex);
                 cursor.close();
-//                DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-//                int width = displayMetrics.widthPixels;
-//                int height = displayMetrics.heightPixels;
-                // Set the Image in ImageView after decoding the String
                 Bitmap bm = BitmapFactory.decodeFile(imgDecodableString);
                 Bitmap resized = Bitmap.createScaledBitmap(bm, 200, 200, true);
                 Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 10);
@@ -1897,14 +1893,12 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                 Bitmap resized = Bitmap.createScaledBitmap(photo, 200, 200, true);
                 Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 10);
                 profile_page_imageview_profile_image.setImageBitmap(conv_bm);
-//                saveToInternalSorage(photo);
             }
 
 
         } catch (Exception e) {
             e.printStackTrace();
-//            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
-//                    .show();
+
         }
 
     }
@@ -1984,7 +1978,6 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
         datePicker.setMaxDate(maxdate.getTimeInMillis());
 
 
-//        dialogBuilder.setTitle(Html.fromHtml("<font color='#09998c'>Select your DOB</font>"));
         final Calendar choosenDate = Calendar.getInstance();
         int year = choosenDate.get(Calendar.YEAR);
         int month = choosenDate.get(Calendar.MONTH);
@@ -2071,24 +2064,18 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View grid;
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             if (convertView == null) {
-                grid = new View(context);
-                grid = inflater.inflate(R.layout.grid_layout_profile, null);
-                grid_layout_profile_textview_name = (TextView) grid.findViewById(R.id.grid_layout_profile_textview_name);
-                grid_layout_profile_imageview_hobbies = (ImageView) grid.findViewById(R.id.grid_layout_profile_imageview_hobbies);
-                //hobbies_image.add(String.valueOf(R.drawable.pluis_icon));
-                //hobbies_name.add("");
-                //hobbies_image.add(position + 1, (int)String.valueOf(R.drawable.pluis_icon));
-                //hobbies_name.add(position + 1, String.valueOf(R.drawable.pluis_icon));
+                convertView = inflater.inflate(R.layout.grid_layout_profile, parent,false);
+                grid_layout_profile_textview_name = (TextView) convertView.findViewById(R.id.grid_layout_profile_textview_name);
+                grid_layout_profile_imageview_hobbies = (ImageView) convertView.findViewById(R.id.grid_layout_profile_imageview_hobbies);
+
 
                 grid_layout_profile_textview_name.setText(hobbies_name.get(position));
                 Log.d("QWERTY", "--------------->>>>>" + hobbies_name.get(position));
                 Log.d("QWERTYY", "--------------->>>>>" + hobbies_image.get(position));
-//                grid_layout_imageview_hobbies.setImageResource(hobbies_image.get(position));
                 aQuery.id(grid_layout_profile_imageview_hobbies).image(hobbies_image.get(position), true, true, 0, 0, new BitmapAjaxCallback() {
                     @Override
                     public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
@@ -2102,104 +2089,9 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
 
                 grid_layout_profile_imageview_hobbies.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-            } else {
-                grid = (View) convertView;
             }
-            return grid;
+            return convertView;
         }
-    }
-
-    public class AsyncProfileData extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            if (NetworkCheck.isNetworkAvailable(context) && NetworkCheck.isWifiAvailable(context)) {
-                HashMap<String, Object> profiledata = new HashMap<>();
-                profiledata.put(TAG_FIRSTNAME, firstname);
-                profiledata.put(TAG_LASTNAME, lastname);
-                profiledata.put(TAG_DATEOFBIRTH, dob);
-                profiledata.put(TAG_PROFILEIMAGE1, profileImage1);
-                profiledata.put(TAG_PROFILEIMAGE2, profileImage2);
-                profiledata.put(TAG_PROFILEIMAGE3, profileImage3);
-                profiledata.put(TAG_GENDER, gender);
-                profiledata.put(TAG_ABOUT, about);
-                profiledata.put(TAG_HOBBIES, hobbies);
-                profiledata.put(TAG_LATITUDE, latitude);
-                profiledata.put(TAG_LONGTITUDE, longitude);
-                profiledata.put(TAG_NOTIFICATIONMESSAGE, notification);
-                profiledata.put(TAG_SESSIONID, sessionId);
-
-
-                json_string = jsonfunctions.postToURL(getString(R.string.dosomething_apilink_string_updateprofile), profiledata);
-                Log.v("jasonupdate=======>", String.valueOf(profiledata));
-
-                try {
-                    json_object = new JSONObject(json_string);
-                    json_content = json_object.getJSONObject("updateprofile");
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-                        }
-                    });
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
-        protected void onPostExecute(Void result) {
-            //TODO Auto-generated method stub
-            super.onPostExecute(result);
-            try {
-
-                if (NetworkCheck.isNetworkAvailable(context) && NetworkCheck.isWifiAvailable(context)) {
-                    try {
-                        if (json_object.has("updateprofile")) {
-                            if (json_content.getString("status").equalsIgnoreCase("success")) {
-                                JSONArray sportsArray = json_content.getJSONArray("userDetails");
-                                JSONObject firstSport = sportsArray.getJSONObject(0);
-                                String SessionId = firstSport.getString("SessionId");
-//                                sharedPreferences.setSessionid(context, SessionId);
-//                                Log.v("SessionId =======>", SessionId);
-                                Intent intent = new Intent(DoSomethingprofile.this, DoSomethingStatus.class);
-                                startActivity(intent);
-                                finish();
-                            } else if (json_content.getString("status").equalsIgnoreCase("failed")) {
-                                AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-                                dialog.setMessage(context.getResources().getString(R.string.profile_error));
-                                dialog.setPositiveButton(context.getResources().getString(R.string.dismiss), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                                        // TODO Auto-generated method stub
-
-                                    }
-                                });
-
-                                dialog.show();
-
-                            }
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 
 
@@ -2212,22 +2104,17 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            pDialog = new ProgressDialog(DoSomethingprofile.this);
-//            pDialog.setMessage("Loading......");
-//            pDialog.setCancelable(false);
-//            pDialog.show();
+
         }
 
         protected String doInBackground(String... params) {
             try {
                 String tv1 = sharedPrefrences.getSessionid(DoSomethingprofile.this);
-//                url = "http://wiztestinghost.com/dosomething/dosomethinglist?";
-                HashMap<String, Object> map = new HashMap<String, Object>();
+                HashMap<String, Object> map = new HashMap<>();
                 map.put("sessionid", tv1);
                 response = jsonfunctions.postToURL(getString(R.string.dosomething_apilink_string_gethobbies), map);
                 opj = new JSONObject(response);
                 Log.v("response_goods", response);
-//                pDialog.dismiss();
                 JSONObject dosumthng = opj.getJSONObject("gethobbies");
                 if (dosumthng.getString("status").equalsIgnoreCase("success")) {
                     content = dosumthng.getJSONArray("list");
@@ -2250,7 +2137,6 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                                     Log.d("List1", "........");
                                     hobbies_array_arts.add(new Arts_hobbies(hobbies_id, category_id, name, image, image_active, false));
                                     Log.d("EEEEEEEE", "DDDDDDDD" + hobbies_array_arts);
-//                                   hobbies_image_arts.add(image);
                                 }
                             }
                         } else if (details.getInt("categories_id") == 2) {
@@ -2266,7 +2152,6 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                                     Log.d("List2", "........");
                                     hobbies_array_food.add(new Food_hobbies(hobbies_id, category_id, name, image, image_active, false));
                                     Log.d("EEEEEEEE", "FFFFFFFFF" + hobbies_array_food);
-//                                    hobbies_image_food.add(image);
                                 }
                             }
                         } else if (details.getInt("categories_id") == 3) {
@@ -2282,7 +2167,6 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                                     Log.d("List3", "........");
                                     hobbies_array_pets.add(new Pets_hobbies(hobbies_id, category_id, name, image, image_active, false));
                                     Log.d("EEEEEEEE", "AAAAAAAA" + hobbies_array_pets);
-//                                    hobbies_image_pets.add(image);
                                 }
                             }
                         } else if (details.getInt("categories_id") == 4) {
@@ -2298,7 +2182,6 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                                     Log.d("List4", "........");
                                     hobbies_array_recreation.add(new Recreation_hobbies(hobbies_id, category_id, name, image, image_active, false));
                                     Log.d("EEEEEEEE", "DDDDDDDD" + hobbies_array_recreation);
-//                                    hobbies_image_recreation.add(image);
                                 }
                             }
                         }
@@ -2308,18 +2191,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                         Log.d("hobbies_array_rec", "........" + hobbies_array_recreation);
 
 
-//                        String ActiveImage = details.getString("ActiveImage");
-//                        String InactiveImage = details.getString("InactiveImage");
-
-
-//                        hobbies_list.add(new ImageBan(Id, name, ActiveImage, InactiveImage));
-//                        hobbies_list.add(Id, name);
-//                        Log.d("img_list.size()", String.valueOf(hobbies_list.size()));
-//                        Log.d("List", String.valueOf(hobbies_list));
                     }
-
-                } else {
-
 
                 }
             } catch (JSONException e) {
@@ -2340,10 +2212,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                     hobbies_list_arts_image.add(myClass.getImag_inActive_arts());
 
                     Log.d("ARTS", "HHHHAAAA1" + hobbies_list_arts + "--" + hobbies_list_arts_name + "--" + hobbies_list_arts_image);
-//                    Toast.makeText(getApplicationContext(),"VALUE",Toast.LENGTH_LONG).show();
                 }
-            } else {
-//                Toast.makeText(getApplicationContext(), "EMPTYa", Toast.LENGTH_LONG).show();
             }
             if (!hobbies_array_food.isEmpty()) {
                 for (Food_hobbies myClass : hobbies_array_food) {
@@ -2351,10 +2220,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                     hobbies_list_food_name.add(myClass.getImage_name_food());
                     hobbies_list_food_image.add(myClass.getImag_inActive_food());
                     Log.d("ARTS", "HHHHAAAA2" + hobbies_list_food + "--" + hobbies_list_food_name + "--" + hobbies_list_food_image);
-//                    Toast.makeText(getApplicationContext(),"VALUE",Toast.LENGTH_LONG).show();
                 }
-            } else {
-//                Toast.makeText(getApplicationContext(), "EMPTYf", Toast.LENGTH_LONG).show();
             }
             if (!hobbies_array_pets.isEmpty()) {
                 for (Pets_hobbies myClass : hobbies_array_pets) {
@@ -2362,10 +2228,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                     hobbies_list_pets_name.add(myClass.getImage_name_pets());
                     hobbies_list_pets_image.add(myClass.getImag_inActive_pets());
                     Log.d("ARTS", "HHHHAAAA3" + hobbies_array_pets + "--" + hobbies_list_pets_name + "--" + hobbies_list_pets_image);
-//                    Toast.makeText(getApplicationContext(),"VALUE",Toast.LENGTH_LONG).show();
                 }
-            } else {
-//                Toast.makeText(getApplicationContext(), "EMPTYp", Toast.LENGTH_LONG).show();
             }
             if (!hobbies_array_recreation.isEmpty()) {
                 for (Recreation_hobbies myClass : hobbies_array_recreation) {
@@ -2373,17 +2236,11 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                     hobbies_list_recreation_name.add(myClass.getImage_name_recreation());
                     hobbies_list_recreation_image.add(myClass.getImag_inActive_recreation());
                     Log.d("ARTS", "HHHHAAAA3" + hobbies_list_recreation + "--" + hobbies_list_recreation_name + "--" + hobbies_list_recreation_image);
-//                    Toast.makeText(getApplicationContext(),"VALUE",Toast.LENGTH_LONG).show();
                 }
-            } else {
-//                Toast.makeText(getApplicationContext(), "EMPTYr", Toast.LENGTH_LONG).show();
             }
             if (hobbies_list.size() >= 1) {
                 for (int i = 0; i < hobbies_list_arts.size(); i++) {
-//            Log.d("ARTS", "LISTyyy"+hobbies_array_arts.get(i).getImage_id_arts());
-//            hobbies_list_arts.add(hobbies_array_arts.get(i).getImage_id_arts());
                     Log.d("ARTS", "LIST" + hobbies_list_arts);
-//                    Log.d("ARTS","AAAA"+hobbies_list.get(i));
                     if (hobbies_list.contains(hobbies_list_arts.get(i))) {
                         hobbies_name.add(hobbies_list_arts_name.get(i));
                         hobbies_image.add(hobbies_list_arts_image.get(i));
@@ -2427,62 +2284,24 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                 try {
                     hobbies_append_id = new StringBuilder();
                     for (Integer string : hobbies_id) {
-//                    for (int i=0;i<hobbies_id.size();i++){
                         hobbies_append_id.append(",");
                         hobbies_append_id.append(string);
 
-//                        hobbies_append_id.replace(hobbies_id.size()-1,0,"(,)*$");
                     }
                     Log.d("OOOOOOOOOO", "JJJJJrf" + hobbies_append_id);
                     hobbies_append_id.deleteCharAt(0);
 
-//                }
-//                hobbies_append_id = hobbies_append_id.replaceAll(" ,$", "");
-//                System.out.println(hobbies_append_id);
-//                if (hobbies_append_id.endsWith(",")) {
-//                    names = names.substring(0, names.length() - 1);
-//                }
+
+
                     Log.d("OOOOOOOOOO", "JJJJJrl" + hobbies_append_id);
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-
-//                for (int i=0;i<=hobbies_list.size();i++){
-////            Log.d("ARTS", "LISTyyy"+hobbies_array_food.get(i).getImage_id_food());
-////            hobbies_list_food.add(hobbies_array_food.get(i).getImage_id_food());
-//                    Log.d("FOOD", "LIST" + hobbies_list_food);
-//                    if (hobbies_list_food.contains(hobbies_list.get(i))){
-//                        hobbies_name.add(hobbies_array_food.get(i).getImage_name_food());
-//                        hobbies_image.add(hobbies_array_food.get(i).getImag_inActive_food());
-//                    }
-//                }
-//                for (int i=0;i<=hobbies_list.size();i++){
-////            Log.d("ARTS", "LISTyyy"+hobbies_array_pets.get(i).getImage_id_pets());
-////            hobbies_list_pets.add(hobbies_array_pets.get(i).getImage_id_pets());
-//                    Log.d("PETS", "LIST" + hobbies_list_pets);
-//                    if (hobbies_list_pets.contains(hobbies_list.get(i))){
-//                        hobbies_name.add(hobbies_array_pets.get(i).getImage_name_pets());
-//                        hobbies_image.add(hobbies_array_pets.get(i).getImag_inActive_pets());
-//                    }
-//                }
-//
-//                for (int i=0;i<=hobbies_list.size();i++){
-////            Log.d("ARTS", "LISTyyy"+hobbies_array_recreation.get(i).getImage_id_recreation());
-////            hobbies_list_recreation.add(hobbies_array_recreation.get(i).getImage_id_recreation());
-//                    Log.d("RECREATION", "LIST" + hobbies_list_recreation);
-//                    if (hobbies_list_recreation.contains(hobbies_list.get(i))){
-//                        hobbies_name.add(hobbies_array_recreation.get(i).getImage_name_recreation());
-//                        hobbies_image.add(hobbies_array_recreation.get(i).getImag_inActive_recreation());
-//                    }
-//                }
-//                hobbies_name.add("");
-//                hobbies_image.add(String.valueOf(R.drawable.pluis_icon));
             } else {
                 hobbies_name.add("SAMPLE");
                 hobbies_image.add("http://indiawebcoders.com//mobileapps//dosomething//uploads//hobbies//bbq.png");
-//                Toast.makeText(getApplicationContext(), "Bundle empty", Toast.LENGTH_LONG).show();
             }
             Log.d("KKKK", "JJJJJ" + hobbies_image + "--" + hobbies_name);
             hobbies_image.add(String.valueOf(R.drawable.pluis_icon));
@@ -2495,9 +2314,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
     }
 
 
-    public void facebookAccountValidation(Boolean aBoolean) {
 
-    }
 
     @Override
     protected void onResume() {
@@ -2584,20 +2401,16 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
             profile_page_textview_datepicker.setText("DD / MM / YYYY");
 
         }
-// else if(sharedPrefrences.getDateOfbirth(context).equals(sharedPrefrences.getDateOfbirth(context)))
-//        {
-//            profile_page_textview_datepicker.setText(sharedPrefrences.getDateOfbirth(context));
-//
-//        }
+
 
 
         else {
-            SimpleDateFormat input = new SimpleDateFormat("MM/dd/yyyy");
-            SimpleDateFormat output = new SimpleDateFormat("dd / MM / yyyy");
+            SimpleDateFormat input = new SimpleDateFormat("MM/dd/yyyy",Locale.US);
+            SimpleDateFormat output = new SimpleDateFormat("dd / MM / yyyy",Locale.US);
             try {
                 Log.d("tripDate", sharedPrefrences.getDateOfbirth(context));
                 oneWayTripDate = input.parse(sharedPrefrences.getDateOfbirth(context));                 // parse input
-                tripDate = output.format(oneWayTripDate);// format output
+                tripDate = output.format(oneWayTripDate);
                 Log.d("tripDate", tripDate);
                 dob = tripDate;
                 tripDate = sharedPrefrences.setDateofBirth(context, tripDate);
@@ -2613,213 +2426,10 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
         profile_page_edittext_email.setText(text2);
         String text = sharedPrefrences.getpassword(context);
         profile_page_edittext_password.setText(text);
-//        hobbies_list.clear();
-//        name.clear();
-//        bundle = getIntent().getExtras();
-////        bundle.getStringArrayList("array_bundle_hobbies_name");
-//        bundle.getIntegerArrayList("array_bundle_hobbies_image");
-////        bundle.getIntegerArrayList("array_bundle_hobbies_image");
-//
-//        hobbies_list.addAll(bundle.getIntegerArrayList("array_bundle_hobbies_image"));
-//        name.addAll(bundle.getIntegerArrayList("array_bundle_hobbies_image"));
-//        Log.d("GGGGGGGGGGG", "HHHHHHHHHHHHH"+bundle);
-
-
-//        if (name.get(0)== R.drawable.pluis_icon) {
-//            Log.d("GGGGGGGGGGG","HHHHHHHHHHHHHelseif");
-//            profile_page_imageview_hobbies.setVisibility(View.VISIBLE);
-//            profile_page_gridview_hobbies.setVisibility(View.GONE);
-//            profile_page_imageview_hobbies.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    name.clear();
-//                    Intent i = new Intent(DoSomethingprofile.this, DoSomethingHobbies.class);
-////                            bundle.putStringArrayList("array_bundle_hobbies_name", name);
-//                    bundle.putIntegerArrayList("array_bundle_hobbies_image", hobbies_list);
-////                            i.putStringArrayListExtra("array_bundle_hobbies_name", name);
-//                    Log.d(";;;;;;;", ":::::::::::" + name);
-//                    i.putIntegerArrayListExtra("array_bundle_hobbies_image", hobbies_list);
-//                    startActivity(i);
-//                }
-//            });
-//        } else {
-//            Log.d("GGGGGGGGGGG","HHHHHHHHHHHHHelseelse");
-//            //custom grid view
-//            profile_page_imageview_hobbies.setVisibility(View.GONE);
-//            profile_page_gridview_hobbies.setVisibility(View.VISIBLE);
-//
-//            new Goodsin_Background().execute();
-//
-//        }
     }
 
 
-    private class AsynDataClass extends AsyncTask<String, String, String> {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // Showing progress dialog
-//            pDialog = new ProgressDialog(DoSomeThingCreateAccount.this);
-//            pDialog.setMessage("Please wait...");
-//            pDialog.setCancelable(false);
-//            pDialog.show();
-            pd.show();
-        }
-
-        @Override
-        protected String doInBackground(String... voids) {
-            if (NetworkCheck.isWifiAvailable(context) || NetworkCheck.isNetworkAvailable(context)) {
-
-
-                HashMap<String, Object> params = new HashMap<String, Object>();
-                params.put(TAG_TYPE, type);
-                params.put(TAG_PROFILEID, profileId);
-                params.put(TAG_FIRSTNAME, firstname);
-                params.put(TAG_LASTNAME, lastname);
-                params.put(TAG_GENDER, gender);
-                params.put(TAG_DATEOFBIRTH, dob);
-                params.put(TAG_EMAIL, email);
-                params.put(TAG_PASSWORD, password);
-                params.put(TAG_HOBBIES, hobbies);
-                params.put(TAG_LATITUDE, latitude);
-                params.put(TAG_LONGTITUDE, longitude);
-                params.put(TAG_ABOUT, about);
-                params.put(TAG_DEVICE, device);
-                params.put(TAG_DEVICEID, deviceid);
-                params.put(TAG_NOTIFICATIONMESSAGE, notification_message);
-                params.put(TAG_NOTIFICATIONSOUND, notification_sound);
-                params.put(TAG_NOTIFICATIONVIBRATION, notification_vibration);
-
-                File file;
-                try {
-                    String image_url = sharedPrefrences.getProfilePicture(context);
-                    image_url = image_url.replace(" ", "");
-                    if (image_url == null || image_url.equals("")) {
-                        Log.d("BITMAP===>", "NULL");
-                        Log.d("null", sharedPrefrences.getProfilePicture(context));
-                    } else {
-                        file = new File(sharedPrefrences.getProfilePicture(context));
-                        Log.d("PATH====>", sharedPrefrences.getProfilePicture(context));
-                        params.put(TAG_PROFILEIMAGE1, file);
-                    }
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                File file2;
-                try {
-                    String image_url = sharedPrefrences.getProfilePicture1(context);
-                    image_url = image_url.replace(" ", "");
-                    if (image_url == null || image_url.equals("")) {
-                        Log.d("BITMAP===>", "NULL");
-                        Log.d("null", sharedPrefrences.getProfilePicture1(context));
-                    } else {
-                        file2 = new File(sharedPrefrences.getProfilePicture1(context));
-                        Log.d("PATH====>", sharedPrefrences.getProfilePicture1(context));
-                        params.put(TAG_PROFILEIMAGE2, file2);
-                    }
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                File file3;
-                try {
-                    String image_url = sharedPrefrences.getProfilePicture2(context);
-                    image_url = image_url.replace(" ", "");
-                    if (image_url == null || image_url.equals("")) {
-                        Log.d("BITMAP===>", "NULL");
-                        Log.d("null", sharedPrefrences.getProfilePicture2(context));
-                    } else {
-                        file3 = new File(sharedPrefrences.getProfilePicture2(context));
-                        Log.d("PATH====>", sharedPrefrences.getProfilePicture2(context));
-                        params.put(TAG_PROFILEIMAGE2, file3);
-                    }
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-//                params.put(TAG_PROFILEIMAGE1, profileImage1);
-//                params.put(TAG_PROFILEIMAGE2, profileImage2);
-//                params.put(TAG_PROFILEIMAGE3, profileImage3);
-
-
-//                BitmapFactory.Options bmOptions1 = new BitmapFactory.Options();
-//                Bitmap bitmap1 = BitmapFactory.decodeFile(sharedPrefrences.getProfilePicture1(context), bmOptions1);
-//                json_string = jsonfunctions.postImageWebservice(url, params, bitmap1, TAG_PROFILEIMAGE2);
-//                BitmapFactory.Options bmOptions2 = new BitmapFactory.Options();
-//                Bitmap bitmap2 = BitmapFactory.decodeFile(sharedPrefrences.getProfilePicture2(context), bmOptions2);
-//                json_string = jsonfunctions.postImageWebservice(url, params, bitmap2, TAG_PROFILEIMAGE3);
-                aQuery.auth(handle).ajax(getString(R.string.dosomething_apilink_string_register), params, JSONObject.class, this, "photoCb");
-//                json_string = jsonfunctions.postToURL(url, params);
-
-//
-                Log.v("jason url=======>", String.valueOf(params));
-
-
-//                try {
-//                    json_object = new JSONObject(json_string);
-//                    json_content = json_object.getJSONObject("register");
-//                    if (json_object.has("register")) {
-//                        if (json_content.getString("status").equalsIgnoreCase("success")) {
-//                            if (json_content.getString("Message").equalsIgnoreCase("Registred Successfully")) {
-//                                JSONArray sportsArray = json_content.getJSONArray("userDetails");
-//                                JSONObject firstSport = sportsArray.getJSONObject(0);
-//                                String SessionId = firstSport.getString("SessionId");
-//                                String user_id = firstSport.getString("user_id");
-//                                sharedPrefrences.setSessionid(context, SessionId);
-//                                sharedPrefrences.setUserId(context, user_id);
-//                                Intent i = new Intent(DoSomethingprofile.this, DoSomethingStatus.class);
-//                                startActivity(i);
-//                                finish();
-//                            }
-//                        } else if (json_content.getString("status").equalsIgnoreCase("failed")) {
-////                            pDialog.dismiss();
-//                            pd.dismiss();
-////                            pDialog = new ProgressDialog(DoSomeThingCreateAccount.this);
-////                            pDialog.setMessage("Email id already exist");
-////                            pDialog.show();
-//                            pd.show();
-////                        AlertDialog dialogBuilder =new AlertDialog.Builder(getApplicationContext()).create();
-////                        dialogBuilder.setTitle("Info");
-////                        dialogBuilder.setMessage("Failed to login");
-////                        dialogBuilder.setButton(DialogInterface.BUTTON_POSITIVE, "Dismiss", new DialogInterface.OnClickListener() {
-////                            @Override
-////                            public void onClick(DialogInterface dialog, int which) {
-////                                dialog.dismiss();
-////                            }
-////                        });
-////                        dialogBuilder.show();
-//                        }
-//                    } else if (json_content.getString("status").equalsIgnoreCase("error")) {
-////                        pDialog.dismiss();
-//                        pd.dismiss();
-//
-//                    }
-//                } catch (JSONException e) {
-//                    System.out.println("TEST...INTERNET_DISCONNECT...EXPECTION");
-//                    e.printStackTrace();
-//                    return "ERROR_IN_CODE";
-//                }
-            }
-            return null;
-        }
-
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            // Dismiss the progress dialog
-//            if (pDialog.isShowing())
-//                pDialog.dismiss();
-            System.out.println("TEST...POST EXECUTE...UNUSED..." + result);
-            if (result != null && result.equals("ERROR_IN_CODE")) {
-                NetworkCheck.alertdialog(context);
-            } else {
-
-            }
-        }
-    }
 
     @Override
     protected void onPause() {

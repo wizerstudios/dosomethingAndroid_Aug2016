@@ -93,21 +93,20 @@ public class GCMIntentService extends GCMBaseIntentService {
 
                     String type = intent.getExtras().getString("push_type");
 
+                    assert type != null;
                     if (type.equals("chat")) {
                         sharedPrefrences.setPushType(context,"chat");
-                        String string = message;
-                        assert string != null;
-                        String[] parts = string.split(" ");
+                        assert message != null;
+                        String[] parts = message.split(" ");
                         String part = parts[4];
                         sharedPrefrences.setFriendFirstname(context, part);
                     } else if (type.equals("sendrequest")) {
                         sharedPrefrences.setPushType(context,"sendrequest");
-
-                        String string = message;
-                        assert string != null;
-                        String[] parts = string.split(" ");
+                        assert message != null;
+                        String[] parts = message.split(" ");
                         String part = parts[6];
                         sharedPrefrences.setFriendFirstname(context, part);
+
                     }
 
                 }
@@ -132,6 +131,7 @@ public class GCMIntentService extends GCMBaseIntentService {
                 }
 
 
+                assert message != null;
                 if (message.length() == 0)
                     message = "";
             } catch (Exception e) {

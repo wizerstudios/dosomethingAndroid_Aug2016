@@ -128,7 +128,7 @@ public class MyService extends Service implements LocationListener,
             public void run() {
                 isForeground(context, getPackageName());
             }
-        }, 1000 * 10);
+        }, 1000 * 30);
 
         cd = new WIFIInternetConnectionDetector();
         isConnectionExist = WIFIInternetConnectionDetector.isConnected(context);

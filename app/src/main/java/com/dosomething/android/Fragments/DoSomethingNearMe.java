@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -34,7 +33,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -1342,141 +1340,6 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
         }
     }
 
-    private class ImageAdapter implements ListAdapter {
-
-        public ImageAdapter(DoSomethingNearMe doSomethingNearMe) {
-
-        }
-
-        @Override
-        public boolean areAllItemsEnabled() {
-            return false;
-        }
-
-        @Override
-        public boolean isEnabled(int position) {
-            return false;
-        }
-
-        @Override
-        public void registerDataSetObserver(DataSetObserver observer) {
-
-        }
-
-        @Override
-        public void unregisterDataSetObserver(DataSetObserver observer) {
-
-        }
-
-        @Override
-        public int getCount() {
-            return 40;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return false;
-        }
-
-        class Holder {
-            LinearLayout activity_something_doSomething_profile;
-            ImageView activity_dosomething_imageview_nearme_chong;
-            ImageView activity_dosomething_imageview_nearme_imageview_online;
-            TextView activity_dosomething_textview_nearme_name;
-            TextView activity_dosomething_nearme_textview_request;
-            TextView activity_dosomething_imageview_nearme_textview_now;
-            TextView activity_dosomething_imageview_nearme_textview_distance;
-            LinearLayout activity_dosomething_nearme_ralativelayout;
-        }
-
-        @SuppressLint("ViewHolder")
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            final Holder holder = new Holder();
-            convertView = inflater.inflate(R.layout.activity_nearme_profile, parent, false);
-            holder.activity_something_doSomething_profile = (LinearLayout) convertView.findViewById(R.id.activity_something_doSomething_profile);
-            holder.activity_dosomething_imageview_nearme_chong = (ImageView) convertView.findViewById(R.id.activity_dosomething_imageview_nearme_chong);
-            holder.activity_dosomething_imageview_nearme_imageview_online = (ImageView) convertView.findViewById(R.id.activity_dosomething_imageview_nearme_imageview_online);
-            holder.activity_dosomething_textview_nearme_name = (TextView) convertView.findViewById(R.id.activity_dosomething_textview_nearme_name);
-            holder.activity_dosomething_nearme_textview_request = (TextView) convertView.findViewById(R.id.activity_dosomething_nearme_textview_request);
-            holder.activity_dosomething_imageview_nearme_textview_now = (TextView) convertView.findViewById(R.id.activity_dosomething_imageview_nearme_textview_now);
-            holder.activity_dosomething_imageview_nearme_textview_distance = (TextView) convertView.findViewById(R.id.activity_dosomething_imageview_nearme_textview_distance);
-            holder.activity_dosomething_nearme_ralativelayout = (LinearLayout) convertView.findViewById(R.id.activity_dosomething_nearme_ralativelayout);
-            holder.activity_dosomething_textview_nearme_name.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Patron-Bold.ttf"));
-            holder.activity_dosomething_nearme_textview_request.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Patron-Bold.ttf"));
-            holder.activity_dosomething_imageview_nearme_textview_now.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Patron-Bold.ttf"));
-            holder.activity_dosomething_imageview_nearme_textview_distance.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Patron-Bold.ttf"));
-            switch (position) {
-                case 0:
-
-                    break;
-                case 1:
-                    holder.activity_dosomething_imageview_nearme_chong.setImageDrawable(getResources().getDrawable(R.drawable.profile_noimg));
-                    holder.activity_dosomething_textview_nearme_name.setText("Zoe Tay");
-                    holder.activity_dosomething_nearme_ralativelayout.setBackgroundDrawable(getResources().getDrawable(R.drawable.send_request));
-                    holder.activity_dosomething_nearme_textview_request.setText("Sent Request");
-                    holder.activity_dosomething_nearme_textview_request.setTextColor(getResources().getColor(R.color.white));
-                    holder.activity_dosomething_imageview_nearme_textview_now.setVisibility(View.GONE);
-                    holder.activity_dosomething_imageview_nearme_imageview_online.setVisibility(View.GONE);
-                    break;
-                case 2:
-                    holder.activity_dosomething_imageview_nearme_chong.setImageDrawable(getResources().getDrawable(R.drawable.profile_noimg));
-                    holder.activity_dosomething_textview_nearme_name.setText("Felicia Chin");
-                    holder.activity_dosomething_nearme_ralativelayout.setBackgroundDrawable(getResources().getDrawable(R.drawable.send_request));
-                    holder.activity_dosomething_nearme_textview_request.setText("Sent Request");
-                    holder.activity_dosomething_nearme_textview_request.setTextColor(getResources().getColor(R.color.white));
-                    holder.activity_dosomething_imageview_nearme_textview_now.setVisibility(View.GONE);
-                    holder.activity_dosomething_imageview_nearme_imageview_online.setVisibility(View.GONE);
-
-                    break;
-                case 3:
-                    holder.activity_dosomething_imageview_nearme_chong.setImageDrawable(getResources().getDrawable(R.drawable.profile_noimg));
-                    holder.activity_dosomething_textview_nearme_name.setText("Yuna");
-                    break;
-                case 4:
-                    holder.activity_dosomething_imageview_nearme_chong.setImageDrawable(getResources().getDrawable(R.drawable.profile_noimg));
-                    holder.activity_dosomething_textview_nearme_name.setText("Taylor Schilling");
-                    break;
-                case 5:
-                    holder.activity_dosomething_imageview_nearme_chong.setImageDrawable(getResources().getDrawable(R.drawable.profile_noimg));
-                    holder.activity_dosomething_textview_nearme_name.setText("Gal Gadot");
-                    holder.activity_dosomething_nearme_ralativelayout.setBackgroundDrawable(getResources().getDrawable(R.drawable.send_request));
-                    holder.activity_dosomething_nearme_textview_request.setText("Sent Request");
-                    holder.activity_dosomething_nearme_textview_request.setTextColor(getResources().getColor(R.color.white));
-                    holder.activity_dosomething_imageview_nearme_textview_now.setVisibility(View.GONE);
-                    holder.activity_dosomething_imageview_nearme_imageview_online.setVisibility(View.GONE);
-                    break;
-            }
-            return convertView;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return 0;
-        }
-
-        @Override
-        public int getViewTypeCount() {
-            return 40;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
-        }
-
-    }
 
 
     class ProfileViewAdapter extends RecyclerView.Adapter<ProfileViewAdapter.DataObjectHolder> {

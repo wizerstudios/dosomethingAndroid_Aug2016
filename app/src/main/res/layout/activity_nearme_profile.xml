@@ -35,8 +35,6 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="center"
-            android:src="@drawable/loader"
-
             />
         <FrameLayout
             android:id="@+id/activity_dosomething_layout_nearme_chong"

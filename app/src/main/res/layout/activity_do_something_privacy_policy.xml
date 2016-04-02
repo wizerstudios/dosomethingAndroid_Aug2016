@@ -3,19 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context="com.dosomething.android.DoSomethingPrivacyPolicy">
+    <include
+        android:id="@+id/toolbar_home"
+        layout="@layout/logo_bar" />
+<LinearLayout
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:gravity="center"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.dosomething.android.DoSomethingPrivacyPolicy">
-
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="center"
-        android:src="@drawable/menu_btn" />
+        android:src="@drawable/home_button" />
 
     <TextView
         android:id="@+id/dosmething_privacypolicy_textview"
@@ -25,4 +33,12 @@
         android:gravity="center"
         android:text="# Copyrights Reserved"
         android:textColor="@color/red" />
+</LinearLayout>
+
+    <WebView
+        android:id="@+id/dosomething_privacypolicy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </WebView>
 </LinearLayout>

@@ -217,30 +217,6 @@
             android:src="@drawable/button_load"/>
     </RelativeLayout>
     <RelativeLayout
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:scaleType="centerCrop"
-            android:src="@drawable/walkthrough_nearme"
-            android:id="@+id/image_walkthrough_account_profile"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </RelativeLayout>
-    <RelativeLayout
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:scaleType="centerCrop"
-            android:src="@drawable/walkthrough_match"
-            android:id="@+id/image_walkthrough_account_match"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </RelativeLayout>
-    <RelativeLayout
         android:id="@+id/layout_walkthrough_profile"
         android:background="@color/lite_blacktrans"
         android:visibility="gone"

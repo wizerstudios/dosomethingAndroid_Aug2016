@@ -1,12 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dosomething_profile_mainlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/dosomething_profile_mainlayout"
     android:background="@color/background_color"
     android:orientation="vertical"
     tools:context="com.ocs.hi.com.Profile_Page">
-
 
 
     <RelativeLayout
@@ -16,10 +15,11 @@
         <include
             android:id="@+id/toolbar_home"
             layout="@layout/custom_toolbar" />
+
         <RelativeLayout
-            android:layout_below="@+id/toolbar_home"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar_home">
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -60,26 +60,27 @@
                                 android:orientation="vertical">
 
 
-                                        <android.support.v4.view.ViewPager
-                                            xmlns:android="http://schemas.android.com/apk/res/android"
-                                            android:id="@+id/pager"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
-                                            android:layout_weight="1"
-                                            android:gravity="top|center" />
+                                <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+                                    android:id="@+id/pager"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="top|center" />
 
 
                                 <LinearLayout
-                                    android:layout_marginBottom="8dp"
+                                    android:layout_width="match_parent"
                                     android:layout_height="58dp"
                                     android:layout_gravity="center"
-                                    android:gravity="center"
+                                    android:layout_marginBottom="8dp"
                                     android:layout_weight="1"
-                                    android:layout_width="match_parent">
+                                    android:gravity="center">
+
                                     <RelativeLayout
 
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content">
+
                                         <LinearLayout
                                             android:id="@+id/viewpager_dots"
                                             android:layout_width="match_parent"
@@ -87,16 +88,17 @@
                                             android:layout_gravity="center"
                                             android:layout_weight="1"
                                             android:gravity="center"
-                                            android:orientation="horizontal"/>
+                                            android:orientation="horizontal" />
+
                                         <ImageView
-                                            android:scaleType="centerCrop"
                                             android:id="@+id/profile_image_autoincrease"
-                                            android:layout_alignParentRight="true"
-                                            android:layout_alignParentEnd="true"
-                                            android:layout_alignParentBottom="true"
                                             android:layout_width="48dp"
                                             android:layout_height="48dp"
-                                            android:src="@drawable/camera_icon"/>
+                                            android:layout_alignParentBottom="true"
+                                            android:layout_alignParentEnd="true"
+                                            android:layout_alignParentRight="true"
+                                            android:scaleType="centerCrop"
+                                            android:src="@drawable/camera_icon" />
                                     </RelativeLayout>
 
                                 </LinearLayout>
@@ -298,9 +300,9 @@
                                         android:layout_height="48dp"
                                         android:layout_weight="1"
                                         android:background="@color/white"
+                                        android:capitalize="sentences"
                                         android:hint="@string/profile_page_edittext_about_you"
                                         android:maxLines="3"
-                                        android:capitalize="sentences"
                                         android:paddingLeft="8dp"
                                         android:textColor="@color/hint_color"
                                         android:textColorHint="@color/hint_color"
@@ -521,8 +523,6 @@
                                 </LinearLayout>
 
 
-
-
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -558,10 +558,10 @@
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:visibility="gone"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
+                                    android:orientation="horizontal"
+                                    android:visibility="gone">
 
                                     <TextView
                                         android:id="@+id/profile_page_textview_notification_vibration"
@@ -591,6 +591,7 @@
 
                                 </LinearLayout>
                             </LinearLayout>
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -678,8 +679,8 @@
                         android:id="@+id/dosomething_account_confirmation_yes"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@android:color/white"
                         android:layout_weight="1"
+                        android:background="@android:color/white"
                         android:gravity="center"
                         android:text="Create"
                         android:textColor="@color/red" />
@@ -687,128 +688,89 @@
 
             </LinearLayout>
         </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/image_relative"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:visibility="gone"
-                android:id="@+id/image"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerInParent="true"
-                android:layout_centerVertical="true"
-                android:indeterminateOnly="false"
-                android:indeterminate="true"
-                />
-        </RelativeLayout>
-
 
         <RelativeLayout
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:scaleType="fitXY"
-                android:src="@drawable/walkthrough_profile"
-                android:id="@+id/image_walkthrough_account_profile"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:background="@drawable/walkthrough_profilesave"
-                android:id="@+id/image_walkthrough_account_profilesave"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:visibility="gone"
             android:id="@+id/layout_walkthrough_profile"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <LinearLayout
-                android:background="@color/lite_blacktrans"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="290dp"/>
-            <LinearLayout
-                android:background="@color/lite_blacktrans"
-                android:layout_alignParentBottom="true"
-                android:layout_width="16dp"
-                android:layout_height="290dp"/>
+                android:layout_marginBottom="290dp"
+                android:background="@color/lite_blacktrans" />
 
             <LinearLayout
-                android:background="@color/lite_blacktrans"
+                android:layout_width="16dp"
+                android:layout_height="290dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/lite_blacktrans" />
+
+            <LinearLayout
+                android:layout_width="16dp"
+                android:layout_height="290dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_width="16dp"
-                android:layout_height="290dp"/>
+                android:background="@color/lite_blacktrans" />
 
 
             <ImageView
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="18dp"
                 android:id="@+id/walkthrough_profile_imageView"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="18dp"
+                android:layout_marginTop="16dp" />
+
             <TextView
                 android:id="@+id/walkthrough_account_create_TextView"
-                android:background="@drawable/walkthrough_border"
                 android:layout_width="210dp"
                 android:layout_height="70dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:text="Fill in your info below"
                 android:layout_below="@+id/walkthrough_account_create_imageView"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="120dp" />
+                android:layout_gravity="center"
+                android:layout_marginTop="120dp"
+                android:background="@drawable/walkthrough_border"
+                android:gravity="center"
+                android:text="Fill in your info below"
+                android:textColor="@color/white" />
         </RelativeLayout>
 
-<RelativeLayout
-    android:visibility="gone"
-    android:id="@+id/layout_walkthrough_profilesave"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <ImageView
-        android:scaleType="fitXY"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/walkthrough_profilesave"/>
-    <ImageView
-        android:id="@+id/walkthrough_profilesave_ImageView"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="18dp"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"/>
+        <RelativeLayout
+            android:id="@+id/layout_walkthrough_profilesave"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
-    <TextView
-        android:id="@+id/walkthrough_profilesave_TextView"
-        android:background="@drawable/walkthrough_border"
-        android:layout_width="210dp"
-        android:layout_height="70dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:text="Once all information are filled in\nJust hit 'Create'"
-        android:layout_centerInParent="true"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/walkthrough_profilesave" />
 
-</RelativeLayout>
+            <ImageView
+                android:id="@+id/walkthrough_profilesave_ImageView"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="18dp"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/walkthrough_profilesave_TextView"
+                android:layout_width="210dp"
+                android:layout_height="70dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:background="@drawable/walkthrough_border"
+                android:gravity="center"
+                android:text="Once all information are filled in\nJust hit 'Create'"
+                android:textColor="@color/white" />
+
+        </RelativeLayout>
 
 
     </RelativeLayout>

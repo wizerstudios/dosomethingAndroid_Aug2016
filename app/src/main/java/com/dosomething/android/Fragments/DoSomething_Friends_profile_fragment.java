@@ -1623,7 +1623,7 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
                 Intent i = new Intent(getActivity(), DoSomeThingLogin.class);
                 startActivity(i);
                 getActivity().finish();
-                pd.dismiss();
+
             }
         }
 

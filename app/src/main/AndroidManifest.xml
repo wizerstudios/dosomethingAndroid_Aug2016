@@ -111,12 +111,20 @@
         <service
             android:name=".MyService"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true">
         </service>
 
-        <activity android:name=".DoSomethingPrivacyPolicy" >
+        <activity android:name=".DoSomethingPrivacyPolicy">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dosomething.android.DoSomethingPrivacyPolicy" >
+            </meta-data>
         </activity>
         <activity android:name=".DoSomethingTermsofUse" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.dosomething.android.DoSomethingTermsofUse" >
+            </meta-data>
         </activity>
 
         <meta-data
