@@ -645,8 +645,8 @@ RelativeLayout layout_walkthrough_account_create;
 
             }
 
-            return null;
 
+            return null;
         }
 
 
@@ -654,7 +654,7 @@ RelativeLayout layout_walkthrough_account_create;
 
         public int getCount() {
 
-            // Show 3 total pages.
+            // Show 5 total pages.
 
             return 5;
 
@@ -782,9 +782,9 @@ RelativeLayout layout_walkthrough_account_create;
          * number.
          */
 
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+        public static Splash2 newInstance(int sectionNumber) {
 
-            PlaceholderFragment fragment = new PlaceholderFragment();
+            Splash2 fragment = new Splash2();
 
             Bundle args = new Bundle();
 
@@ -849,9 +849,9 @@ RelativeLayout layout_walkthrough_account_create;
          * number.
          */
 
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+        public static Splash3 newInstance(int sectionNumber) {
 
-            PlaceholderFragment fragment = new PlaceholderFragment();
+            Splash3 fragment = new Splash3();
 
             Bundle args = new Bundle();
 
@@ -915,9 +915,9 @@ RelativeLayout layout_walkthrough_account_create;
          * number.
          */
 
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+        public static Splash4 newInstance(int sectionNumber) {
 
-            PlaceholderFragment fragment = new PlaceholderFragment();
+            Splash4 fragment = new Splash4();
 
             Bundle args = new Bundle();
 
@@ -981,9 +981,9 @@ RelativeLayout layout_walkthrough_account_create;
          * number.
          */
 
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+        public static Splash5 newInstance(int sectionNumber) {
 
-            PlaceholderFragment fragment = new PlaceholderFragment();
+            Splash5 fragment = new Splash5();
 
             Bundle args = new Bundle();
 

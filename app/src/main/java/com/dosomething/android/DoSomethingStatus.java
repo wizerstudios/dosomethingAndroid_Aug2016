@@ -94,13 +94,14 @@ import java.util.zip.Inflater;
 
 public class DoSomethingStatus extends AppCompatActivity {
     private static final int RESULT_LOAD_IMG = 1;
-    private static final String TAG_PROFILEUSERID = "profile_user_id";
-    private static final String TAG_TIME = "datetime";
+
     LinearLayout status_layout_pin;
     LinearLayout status_layout_menu;
     LinearLayout status_layout_chat;
     LinearLayout status_layout_profile;
     LinearLayout status_layout_settings;
+    private static final String TAG_PROFILEUSERID = "profile_user_id";
+    private static final String TAG_TIME = "datetime";
     private static final String TAG_DATEOFBIRTH = "dob";
     private static final String TAG_PROFILEIMAGE1 = "profileImage1";
     private static final String TAG_PROFILEIMAGE2 = "profileImage2";
@@ -132,8 +133,7 @@ public class DoSomethingStatus extends AppCompatActivity {
     SlidingMenu menu;
     Context context;
     int check = 0;
-    private static String url = "http://wiztestinghost.com/dosomething/nearestusers?";
-    private static String urlupdate = "http://wiztestinghost.com/dosomething/updateprofile?";
+    private static String url;
     private static final String TAG_SESSIONID = "sessionid";
     private static final String TAG_LATITUDE = "latitude";
     private static final String TAG_LONGITUDE = "longitude";
@@ -275,6 +275,7 @@ public class DoSomethingStatus extends AppCompatActivity {
         try {
             ActionBar mActionBar = getSupportActionBar();
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.red)));
+            assert mActionBar != null;
             mActionBar.setDisplayShowHomeEnabled(false);
             mActionBar.setDisplayShowTitleEnabled(false);
             LayoutInflater mInflater = LayoutInflater.from(this);
@@ -371,8 +372,8 @@ public class DoSomethingStatus extends AppCompatActivity {
         linearlayout_age = (LinearLayout) findViewById(R.id.linearlayout_age);
         linearlayout_distance = (LinearLayout) findViewById(R.id.linearlayout_distance);
 
-        rangebar_age = new RangeSeekBar<Integer>(this);
-        rangebar_distance = new RangeSeekBar<Integer>(this);
+        rangebar_age = new RangeSeekBar<>(this);
+        rangebar_distance = new RangeSeekBar<>(this);
         // Set the range
         rangebar_age.setRangeValues(18, 80);
         rangebar_age.setSelectedMinValue(18);
@@ -2042,128 +2043,6 @@ public class DoSomethingStatus extends AppCompatActivity {
 
     }
 
-    class Goodsin_Background extends AsyncTask<String, String, String> {
-        JSONObject opj;
-        JSONArray content, hobbieslist;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//            pDialog = new ProgressDialog(DoSomethingHobbies.this);
-//            pDialog.setMessage("Loading......");
-//            pDialog.setCancelable(false);
-//            pDialog.show();
-        }
-
-        protected String doInBackground(String... params) {
-            response = jsonfunctions.getJSONfromURL(urlImageStatus);
-            JSONObject json = new JSONObject();
-            try {
-                String tv1 = sharedPreferences.getSessionid(context);
-//                url = "http://wiztestinghost.com/dosomething/dosomethinglist?";
-                HashMap<String, Object> map = new HashMap<String, Object>();
-                map.put("sessionid", tv1);
-                response = jsonfunctions.postToURL(getString(R.string.dosomething_apilink_string_gethobbies), map);
-                opj = new JSONObject(response);
-                Log.v("response_goods", response);
-                JSONObject dosumthng = opj.getJSONObject("gethobbies");
-                if (dosumthng.getString("status").equalsIgnoreCase("success")) {
-                    content = dosumthng.getJSONArray("list");
-                    for (int i = 0; i < content.length(); i++) {
-                        JSONObject details = content.getJSONObject(i);
-                        int Id = details.getInt("categories_id");
-                        Log.v("categories_id", String.valueOf(Id));
-                        Log.d("List", "........" + Id);
-                        if (details.getInt("categories_id") == 1) {
-                            if (details.getString("name").equalsIgnoreCase("Arts")) {
-                                hobbieslist = details.getJSONArray("hobbieslist");
-                                for (int j = 0; j < hobbieslist.length(); j++) {
-                                    JSONObject values = hobbieslist.getJSONObject(j);
-                                    int hobbies_id = values.getInt("hobbies_id");
-                                    int category_id = values.getInt("category_id");
-                                    String name = values.getString("name");
-                                    Log.d("NAMEEEEEEE", ",,,," + name);
-                                    String image = values.getString("image");
-                                    String image_active = values.getString("image_active");
-                                    Log.d("List1", "........");
-
-
-//                                   hobbies_image_arts.add(image);
-                                }
-                            }
-                        } else if (details.getInt("categories_id") == 2) {
-                            if (details.getString("name").equalsIgnoreCase("Food")) {
-                                hobbieslist = details.getJSONArray("hobbieslist");
-                                for (int j = 0; j < hobbieslist.length(); j++) {
-                                    JSONObject values = hobbieslist.getJSONObject(j);
-                                    int hobbies_id = values.getInt("hobbies_id");
-                                    int category_id = values.getInt("category_id");
-                                    String name = values.getString("name");
-                                    String image = values.getString("image");
-                                    String image_active = values.getString("image_active");
-                                    Log.d("List2", "........");
-
-
-//                                    hobbies_image_food.add(image);
-                                }
-                            }
-                        } else if (details.getInt("categories_id") == 3) {
-                            if (details.getString("name").equalsIgnoreCase("Pets")) {
-                                hobbieslist = details.getJSONArray("hobbieslist");
-                                for (int j = 0; j < hobbieslist.length(); j++) {
-                                    JSONObject values = hobbieslist.getJSONObject(j);
-                                    int hobbies_id = values.getInt("hobbies_id");
-                                    int category_id = values.getInt("category_id");
-                                    String name = values.getString("name");
-                                    String image = values.getString("image");
-                                    String image_active = values.getString("image_active");
-                                    Log.d("List3", "........");
-
-
-//                                    hobbies_image_pets.add(image);
-                                }
-                            }
-                        } else if (details.getInt("categories_id") == 4) {
-                            if (details.getString("name").equalsIgnoreCase("Recreation")) {
-                                hobbieslist = details.getJSONArray("hobbieslist");
-                                for (int j = 0; j < hobbieslist.length(); j++) {
-                                    JSONObject values = hobbieslist.getJSONObject(j);
-                                    int hobbies_id = values.getInt("hobbies_id");
-                                    int category_id = values.getInt("category_id");
-                                    String name = values.getString("name");
-                                    String image = values.getString("image");
-                                    String image_active = values.getString("image_active");
-                                    Log.d("List4", "........");
-
-
-//                                    hobbies_image_recreation.add(image);
-                                }
-                            }
-                        }
-
-
-//                        String ActiveImage = details.getString("ActiveImage");
-//                        String InactiveImage = details.getString("InactiveImage");
-
-
-//                        hobbies_list.add(new ImageBan(Id, name, ActiveImage, InactiveImage));
-//                        hobbies_list.add(Id, name);
-//                        Log.d("img_list.size()", String.valueOf(hobbies_list.size()));
-//                        Log.d("List", String.valueOf(hobbies_list));
-                    }
-
-                } else {
-
-
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-
-        }
-    }
-
 
     private class AsynProfileClass extends AsyncTask<Void, Void, Void> {
 
@@ -2212,7 +2091,7 @@ public class DoSomethingStatus extends AppCompatActivity {
                     String urlgetUser = "http://wiztestinghost.com/dosomething/getuserdetails?";
                     json_string = jsonfunctions.postToURL(getString(R.string.dosomething_apilink_string_getuserdetails), paramsfb);
 
-                    Log.v("jason url=======>", sessionid);
+                    Log.v("jason url===>", sessionid);
 
                     try {
 
@@ -2774,7 +2653,6 @@ public void profileRefresh(boolean refresh)
 
 
                         somethingNearMe = new DoSomethingNearMe();
-//                        fragmentTransaction.setCustomAnimations(R.anim.slide_out, R.anim.slide_out);
 
                         activity_dosomething_textview_toolbar_save.setVisibility(View.GONE);
                         activity_dosomething_imageview_filter_icon.setVisibility(View.VISIBLE);
@@ -2846,9 +2724,6 @@ public void profileRefresh(boolean refresh)
 
                     if (json_content.getString("status").equalsIgnoreCase("success")) {
 
-//                            pDialog.dismiss();
-
-
                         JSONObject userlistobject = json_content.getJSONObject("userDetails");
 
                         user_id = userlistobject.getInt("user_id");
@@ -2885,13 +2760,11 @@ public void profileRefresh(boolean refresh)
 
                         status = "";
 
-//                            pDialog.dismiss();
 
                     } else if (json_content.getString("status").equalsIgnoreCase("error")) {
 
                         status = "";
 
-//                            pDialog.dismiss();
 
                     }
 

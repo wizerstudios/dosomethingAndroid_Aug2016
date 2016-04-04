@@ -1081,8 +1081,6 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                             @Override
                                             public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
                                                 if (status.getCode() == 200) {
-//                            Bitmap resized = Bitmap.createScaledBitmap(bm, 200, 200, true);
-//                            Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 40);
                                                     iv.setImageBitmap(bm);
 
 
@@ -1095,8 +1093,6 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                             @Override
                                             public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
                                                 if (status.getCode() == 200) {
-//                            Bitmap resized = Bitmap.createScaledBitmap(bm, 200, 200, true);
-//                            Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 40);
                                                     iv.setImageBitmap(bm);
 
 
@@ -1107,8 +1103,6 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                             @Override
                                             public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
                                                 if (status.getCode() == 200) {
-//                            Bitmap resized = Bitmap.createScaledBitmap(bm, 200, 200, true);
-//                            Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 40);
                                                     iv.setImageBitmap(bm);
 
 
@@ -1132,8 +1126,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                             @Override
                             public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
                                 if (status.getCode() == 200) {
-//                    Bitmap resized = Bitmap.createScaledBitmap(bm, 200, 200, true);
-//                    Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 40);
+
                                     iv.setImageBitmap(bm);
                                 }
                             }
@@ -1142,8 +1135,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                             @Override
                             public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
                                 if (status.getCode() == 200) {
-//                    Bitmap resized = Bitmap.createScaledBitmap(bm, 200, 200, true);
-//                    Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 40);
+
                                     iv.setImageBitmap(bm);
                                 }
                             }
@@ -1152,8 +1144,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                             @Override
                             public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
                                 if (status.getCode() == 200) {
-//                    Bitmap resized = Bitmap.createScaledBitmap(bm, 200, 200, true);
-//                    Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 40);
+
                                     iv.setImageBitmap(bm);
 
 
@@ -1172,8 +1163,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                             @Override
                             public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
                                 if (status.getCode() == 200) {
-//                    Bitmap resized = Bitmap.createScaledBitmap(bm, 200, 200, true);
-//                    Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 40);
+
                                     iv.setImageBitmap(bm);
 
 
@@ -1184,8 +1174,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                             @Override
                             public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
                                 if (status.getCode() == 200) {
-//                    Bitmap resized = Bitmap.createScaledBitmap(bm, 200, 200, true);
-//                    Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 40);
+
                                     iv.setImageBitmap(bm);
 
 
@@ -1196,8 +1185,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                             @Override
                             public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
                                 if (status.getCode() == 200) {
-//                    Bitmap resized = Bitmap.createScaledBitmap(bm, 200, 200, true);
-//                    Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 40);
+
                                     iv.setImageBitmap(bm);
 
 
@@ -1223,8 +1211,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                             @Override
                                             public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
                                                 if (status.getCode() == 200) {
-//                            Bitmap resized = Bitmap.createScaledBitmap(bm, 200, 200, true);
-//                            Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 40);
+
                                                     iv.setImageBitmap(bm);
 
 
@@ -1237,8 +1224,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                             @Override
                                             public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
                                                 if (status.getCode() == 200) {
-//                            Bitmap resized = Bitmap.createScaledBitmap(bm, 200, 200, true);
-//                            Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 40);
+
                                                     iv.setImageBitmap(bm);
 
 
@@ -1249,8 +1235,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                             @Override
                                             public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
                                                 if (status.getCode() == 200) {
-//                            Bitmap resized = Bitmap.createScaledBitmap(bm, 200, 200, true);
-//                            Bitmap conv_bm = getRoundedRectanguleBitmap(resized, 40);
+
                                                     iv.setImageBitmap(bm);
 
 

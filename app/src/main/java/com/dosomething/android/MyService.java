@@ -482,6 +482,7 @@ public class MyService extends Service implements LocationListener,
             try {
                 json_object_updateposition = new JSONObject(json_string_updateposition);
                 json_content_updateposition = json_object_updateposition.getJSONObject("onlinestatus");
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -499,6 +500,7 @@ public class MyService extends Service implements LocationListener,
                 if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context)) {
                     try {
                         if (json_object_updateposition.has("onlinestatus")) {
+
                             if (json_content_updateposition.getString("status").equalsIgnoreCase("success")) {
 
                             } else if (json_content_updateposition.getString("status").equalsIgnoreCase("InvalidSession")) {

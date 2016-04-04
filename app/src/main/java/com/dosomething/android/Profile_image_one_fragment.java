@@ -287,7 +287,6 @@ public class Profile_image_one_fragment extends android.support.v4.app.Fragment 
                 if (data != null) {
                     mImageCaptureUri = data.getData();
                     Log.d("dosomething_creste_acc", "mImageCaptureUri" + mImageCaptureUri);
-
                     cropCapturedImage();
                 }
 
