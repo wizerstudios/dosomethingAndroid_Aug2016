@@ -1678,7 +1678,7 @@ public class FragmentStatus extends Fragment {
             status_textview_onlythree.setText("At least 1 activity\nmust be selected");
         }else
         {
-            status_textview_onlythree.setText("ONLY 3 ACTIVITES\nCAN BE SELECTED");
+            status_textview_onlythree.setText("ONLY 3 ACTIVITIES\nCAN BE SELECTED");
         }
         relativelayout_alertdialog_only_three.setVisibility(View.VISIBLE);
 

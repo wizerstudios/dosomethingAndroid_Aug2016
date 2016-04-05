@@ -2,9 +2,7 @@ package com.dosomething.android.Fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -26,8 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -63,9 +59,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -649,13 +643,7 @@ boolean popup=false;
                 }
             }
         });
-        fragment_profile_page_textview_datepicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-//                datepickerdialog();
-            }
-        });
         return view;
     }
 
@@ -1209,26 +1197,7 @@ boolean popup=false;
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
-//                    if (!image1_thumb.equals("http://wiztestinghost.com/dosomething/uploads/profile/profile-noimage.jpg")) {
 
-
-//                    } else {
-//                        sharedPrefrences.setProfilePicture(getActivity(), image1);
-//                    }
-
-//                    if (!image2_thumb.equals("http://wiztestinghost.com/dosomething/uploads/profile/profile-noimage.jpg")) {
-
-//                    } else {
-//                        sharedPrefrences.setProfilePicture1(getActivity(), image2);
-//
-//                    }
-
-//                    if (!image3_thumb.equals("http://wiztestinghost.com/dosomething/uploads/profile/profile-noimage.jpg")) {
-
-//                    } else {
-//                        sharedPrefrences.setProfilePicture2(getActivity(), image3);
-//
-//                    }
 
 
                             Log.d("image1", sharedPrefrences.getProfilePicture(getActivity()));
@@ -1256,98 +1225,7 @@ boolean popup=false;
 
     }
 
-    private void datepickerdialog() {
 
-        @SuppressWarnings("RedundantCast") LayoutInflater inflater = (LayoutInflater) getLayoutInflater(getArguments());
-        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-        @SuppressLint("InflateParams") View customView = inflater.inflate(R.layout.datepicker, null);
-        dialogBuilder.setView(customView);
-        final Calendar now = Calendar.getInstance();
-        final DatePicker datePicker = (DatePicker) customView.findViewById(R.id.datepicker_dateofbirth);
-        final SimpleDateFormat dateViewFormatter = new SimpleDateFormat("dd / MM / yyyy", Locale.US);
-        final SimpleDateFormat formatter = new SimpleDateFormat("dd / MM / yyyy", Locale.US);
-        Calendar minDate = Calendar.getInstance();
-        Calendar maxdate = Calendar.getInstance();
-        maxdate.add(Calendar.YEAR, 100);
-        try {
-            minDate.setTime(formatter.parse("01 / 01 / 1900"));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        datePicker.setMinDate(minDate.getTimeInMillis());
-        datePicker.setMaxDate(maxdate.getTimeInMillis());
-//        dialogBuilder.setTitle(Html.fromHtml("<font color='#09998c'>Select your DOB</font>"));
-        final Calendar choosenDate = Calendar.getInstance();
-        int year = choosenDate.get(Calendar.YEAR);
-        int month = choosenDate.get(Calendar.MONTH);
-        int day = choosenDate.get(Calendar.DAY_OF_MONTH);
-
-        try {
-            choosenDateFromUI = formatter.parse(fragment_profile_page_textview_datepicker.getText().toString());
-            choosenDate.setTime(choosenDateFromUI);
-            year = choosenDate.get(Calendar.YEAR);
-            month = choosenDate.get(Calendar.MONTH);
-            day = choosenDate.get(Calendar.DAY_OF_MONTH);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Calendar dateToDisplay = Calendar.getInstance();
-        dateToDisplay.set(year, month, day);
-        dialogBuilder.setPositiveButton(
-                "Choose",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.d("*****", "-------" + choosenDateFromUI + "--" + choosenDate);
-                        Calendar choosen = Calendar.getInstance();
-                        choosen.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
-
-                        fragment_profile_page_textview_datepicker.setText(dateViewFormatter.format(choosen.getTime()));
-                        String date = fragment_profile_page_textview_datepicker.getText().toString();
-//                    String date ="29/07/13";
-                        SimpleDateFormat input = new SimpleDateFormat("dd / MM / yyyy",Locale.US);
-                        SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
-                        try {
-                            Log.d("tripDate", date);
-                            oneWayTripDate = input.parse(date);                 // parse input
-                            tripDate = output.format(oneWayTripDate);// format output
-                            Log.d("tripDate", tripDate);
-                            dob = tripDate;
-                            sharedPrefrences.setDateofBirth(getActivity(), tripDate);
-                            sharedPrefrences.setBooleam(getActivity(), "");
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        dialog.dismiss();
-                    }
-                }
-        );
-        final AlertDialog dialog = dialogBuilder.create();
-
-        datePicker.init(year, month, day, new DatePicker.OnDateChangedListener() {
-                    @SuppressWarnings("RedundantCast")
-                    public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        Calendar choosenDate = Calendar.getInstance();
-                        choosenDate.set(year, monthOfYear, dayOfMonth);
-                        Calendar mindate = new GregorianCalendar();
-                        mindate.add(Calendar.YEAR, 0);
-                        if (mindate.before(choosenDate)) {
-                            ((Button) dialog.getButton(AlertDialog.BUTTON_POSITIVE)).setEnabled(false);
-                        } else {
-                            ((Button) dialog.getButton(AlertDialog.BUTTON_POSITIVE)).setEnabled(true);
-                            ((Button) dialog.getButton(AlertDialog.BUTTON_POSITIVE)).setTextColor(getResources().getColor(R.color.red));
-                        }
-                    }
-                }
-        );
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface arg0) {
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.red));
-            }
-        });
-        dialog.show();
-    }
 
     private void text_font_typeface() {
         Typeface patron_bold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Patron-Bold.ttf");

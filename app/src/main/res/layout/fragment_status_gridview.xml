@@ -331,7 +331,7 @@
                     android:layout_gravity="bottom"
                     android:background="@color/red"
                     android:gravity="center"
-                    android:text="Cancel All Activites ?"
+                    android:text="Cancel All Activities ?"
                     android:textColor="@color/white" />
 
             </LinearLayout>
