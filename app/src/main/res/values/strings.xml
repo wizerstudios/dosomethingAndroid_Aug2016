@@ -67,6 +67,7 @@
     <string name="dosomething_apilink_string_deleteconversation">http://wiztestinghost.com/dosomething/deleteconversation?</string>
     <string name="dosomething_apilink_string_onlinestatus">http://wiztestinghost.com/dosomething/onlinestatus?</string>-->
 
+    <string name="dosomething_apilink_string_push">http://mobileapp.dosomethingapp.com/push/android.php?</string>
     <string name="dosomething_apilink_string_register">http://mobileapp.dosomethingapp.com/register?</string>
     <string name="dosomething_apilink_string_signin">http://mobileapp.dosomethingapp.com/signin?</string>
     <string name="dosomething_apilink_string_checkuser">http://mobileapp.dosomethingapp.com/checkuser?</string>

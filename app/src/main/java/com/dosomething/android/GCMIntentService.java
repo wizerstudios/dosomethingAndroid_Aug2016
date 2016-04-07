@@ -189,7 +189,7 @@ public class GCMIntentService extends GCMBaseIntentService {
                 String result = "";
                 try {
                     HttpClient httpClient = new DefaultHttpClient();
-                    String URL = "http://indiawebcoders.com/mobileapps/dosomething/push/android.php?" + "device_id" + "=" + regId;
+                    String URL = getString(R.string.dosomething_apilink_string_push) + "device_id" + "=" + regId;
                     String devName = Build.SERIAL;
                     if (devName == null || devName.length() == 0)
                         devName = "" + System.currentTimeMillis();
