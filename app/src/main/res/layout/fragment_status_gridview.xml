@@ -138,7 +138,7 @@
                     android:layout_gravity="center"
                     android:background="@color/red"
                     android:gravity="center"
-                    android:text="ONLY 3 ACTIVITES                                   CAN BE SELECTED"
+                    android:text="ONLY 3 ACTIVITIES                                   CAN BE SELECTED"
                     android:textColor="@color/white"
                     android:textSize="14dp" />
 
@@ -456,7 +456,7 @@
         android:layout_marginBottom="80dp"
         android:background="@drawable/walkthrough_border"
         android:gravity="center"
-        android:text="Select any 3 activites"
+        android:text="Select any 3 Activities"
         android:textColor="@color/white" />
 </RelativeLayout>
 

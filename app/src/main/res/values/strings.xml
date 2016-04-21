@@ -238,7 +238,7 @@
     <string name="Cancel">Cancel</string>
     <string name="dosomething_splashactivity_string_createanaccount">Create an Account</string>
     <string name="dosomething_splashactivity_string_signin">Sign In</string>
-    <string name="account_create_confirmation"><![CDATA[By Clicking Create, you agree to the Terms \n of Use & Privacy policy?]]></string>
+    <string name="account_create_confirmation"><![CDATA[By clicking \"create\", you agree to the \"Terms \n of Use\" and \"Privacy Policy\"]]></string>
 
 
     <!--Range Bar section-->

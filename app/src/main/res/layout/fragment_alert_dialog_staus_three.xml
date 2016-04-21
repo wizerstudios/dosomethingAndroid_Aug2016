@@ -20,7 +20,7 @@
             android:layout_gravity="center"
             android:background="@color/red"
             android:gravity="center"
-            android:text="ONLY 3 ACTIVITES                                   CAN BE SELECTED"
+            android:text="ONLY 3 ACTIVITIES                                   CAN BE SELECTED"
             android:textColor="@color/white"
             android:textSize="14dp" />
 
