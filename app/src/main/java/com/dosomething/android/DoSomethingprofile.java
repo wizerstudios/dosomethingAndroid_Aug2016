@@ -187,8 +187,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
     private final static int NUM_PAGES = 3;
     ViewPager pager;
     LinearLayout viewpagerdots;
-    private static String urlupdate = "http://wiztestinghost.com/dosomething/updateprofile?";
-    private static String url = "http://wiztestinghost.com/dosomething/register?";
+    private static String url="";
     private static final String TAG_TYPE = "type";
     private static final String TAG_FIRSTNAME = "first_name";
     private static final String TAG_LASTNAME = "last_name";
