@@ -13,10 +13,9 @@ import com.dosomething.android.Beanclasses.ImageBan;
 
 import java.util.ArrayList;
 
-/**
- * Created by hi on 10/31/2015.
- */
-public class DBAdapter {
+
+public class DBAdapter
+    {
     private static final String TAG = "DBAdapter";
     private static final String DATABASE_NAME = "DoSomethingDatabase";
     private static final String DATABASE_TABLE = "DoSomethingStatus";
@@ -40,71 +39,81 @@ public class DBAdapter {
     private DatabaseHelper DBHelper;
     private SQLiteDatabase db;
 
-    public DBAdapter(Context ctx) {
+    public DBAdapter(Context ctx)
+        {
         DBHelper = new DatabaseHelper(ctx);
-    }
-
-    private static class DatabaseHelper extends SQLiteOpenHelper {
-        DatabaseHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
+    private static class DatabaseHelper extends SQLiteOpenHelper
+        {
+        DatabaseHelper(Context context)
+            {
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+            }
+
         @Override
-        public void onCreate(SQLiteDatabase db) {
-            try {
+        public void onCreate(SQLiteDatabase db)
+            {
+            try
+                {
                 db.execSQL(DATABASE_CREATE_STATUS);
                 db.execSQL(DATABASE_CREATE_HOBBIES);
-            } catch (SQLException e) {
+                }
+            catch (SQLException e)
+                {
                 e.printStackTrace();
+                }
+            }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+            {
+            Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
+            db.execSQL("DROP TABLE IF EXISTS DoSomethingStatus");
+            onCreate(db);
             }
         }
 
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-                    + newVersion + ", which will destroy all old data");
-            db.execSQL("DROP TABLE IF EXISTS DoSomethingStatus");
-            onCreate(db);
-        }
-
-    }
-
     //---opens the database---
-    public DBAdapter open() throws SQLException {
+    public DBAdapter open() throws SQLException
+        {
         db = DBHelper.getWritableDatabase();
         return this;
-    }
+        }
 
     //---closes the database---
-    public void close() {
+    public void close()
+        {
         DBHelper.close();
-    }
+        }
 
-    public int getStatusCount() {
+    public int getStatusCount()
+        {
         String countQuery = "SELECT  * FROM " + DATABASE_TABLE;
         SQLiteDatabase db = DBHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM DoSomethingStatus", null);
         int cnt = cursor.getCount();
         cursor.close();
         return cnt;
-    }
+        }
 
-    public int getHobbiesCount() {
+    public int getHobbiesCount()
+        {
         String countQuery = "SELECT  * FROM " + DATABASE_TABLE_HOBBIES;
         SQLiteDatabase db = DBHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM DoSomethingHobbies", null);
         int cnt = cursor.getCount();
         cursor.close();
         return cnt;
-    }
+        }
 
-    public void delete() {
+    public void delete()
+        {
         db.execSQL("delete from "+ DATABASE_TABLE);;
+        }
 
-    }
-
-
-    public void addStatus(ImageBan bean) {
+    public void addStatus(ImageBan bean)
+        {
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         open();
         ContentValues values = new ContentValues();
@@ -112,23 +121,13 @@ public class DBAdapter {
         values.put(KEY_IMAGENAME, bean.getImage_name());
         values.put(KEY_IMAGEACTIVEURL, bean.getImag_Active());
         values.put(KEY_IMAGEINACTIVEURL, bean.getImag_inActive());
-//        String sqlQuery = "SELECT * FROM " + DATABASE_TABLE;
-//        Log.d("sqlQuery", "__________________" + sqlQuery);
         db.insert(DATABASE_TABLE, null, values);
-//        Cursor c = db.rawQuery(sqlQuery, null);
-//        if (c != null && c.getCount() != 0)
-//        {
-//
-//        }
-//        else
-//        {
-//            db.insert(DATABASE_TABLE, null, values);
-//        }
         db.close(); // Closing database connection
-    }
+        }
 
 
-    public void addHobbies(DosomethingHobbies dosomethingHobbies) {
+    public void addHobbies(DosomethingHobbies dosomethingHobbies)
+        {
         SQLiteDatabase db = DBHelper.getWritableDatabase();
         open();
         ContentValues values = new ContentValues();
@@ -137,48 +136,38 @@ public class DBAdapter {
         values.put(KEY_HOBBIESIMAGENAME, dosomethingHobbies.getImage_name());
         values.put(KEY_HOBBIESIMAGEACTIVEURL, dosomethingHobbies.getImag_Active());
         values.put(KEY_HOBBIESIMAGEINACTIVEURL, dosomethingHobbies.getImag_inActive());
-//        String sqlQuery = "SELECT * FROM " + DATABASE_TABLE;
-//        Log.d("sqlQuery", "__________________" + sqlQuery);
         db.insert(DATABASE_TABLE_HOBBIES, null, values);
-//        Cursor c = db.rawQuery(sqlQuery, null);
-//        if (c != null && c.getCount() != 0)
-//        {
-//
-//        }
-//        else
-//        {
-//            db.insert(DATABASE_TABLE, null, values);
-//        }
         db.close(); // Closing database connection
-    }
+        }
 
-    public ArrayList<ImageBan> getStatusImages() {
+    public ArrayList<ImageBan> getStatusImages()
+        {
         ArrayList<ImageBan> status_list = new ArrayList<ImageBan>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + DATABASE_TABLE;
-
         SQLiteDatabase db = DBHelper.getWritableDatabase();
-
-
         Cursor cursor = db.rawQuery("SELECT * FROM DoSomethingStatus", null);
-
-        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst())
+            {
             cursor.moveToFirst();
-            try {
+            try
+                {
                 ImageBan statusimagelist = new ImageBan();
                 statusimagelist.setImage_id(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(KEY_IMAGEID))));
                 statusimagelist.setImage_name(cursor.getString(cursor.getColumnIndexOrThrow(KEY_IMAGENAME)));
                 statusimagelist.setImag_Active(cursor.getString(cursor.getColumnIndexOrThrow(KEY_IMAGEACTIVEURL)));
                 statusimagelist.setImag_inActive(cursor.getString(cursor.getColumnIndexOrThrow(KEY_IMAGEINACTIVEURL)));
-
-                // Adding contact to list
                 status_list.add(statusimagelist);
-            } catch (Exception e) {
+                }
+            catch (Exception e)
+                {
                 e.printStackTrace();
-            }
+                }
 
-            while (cursor.moveToNext()) {
-                try {
+            while (cursor.moveToNext())
+                {
+                try
+                    {
                     ImageBan statusimagelist = new ImageBan();
                     statusimagelist.setImage_id(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(KEY_IMAGEID))));
                     statusimagelist.setImage_name(cursor.getString(cursor.getColumnIndexOrThrow(KEY_IMAGENAME)));
@@ -186,151 +175,155 @@ public class DBAdapter {
                     statusimagelist.setImag_inActive(cursor.getString(cursor.getColumnIndexOrThrow(KEY_IMAGEINACTIVEURL)));
 
                     status_list.add(statusimagelist);
-                } catch (Exception e) {
+                    }
+                catch (Exception e)
+                    {
                     e.printStackTrace();
+                    }
                 }
             }
-        } else {
+        else
+            {
             Log.d(DATABASE_TABLE, "null");
-        }
-        if (cursor != null && !cursor.isClosed()) {
+            }
+        if (cursor != null && !cursor.isClosed())
+            {
             cursor.close();
+            }
+        return status_list;
         }
 
-        // return contact list
-        return status_list;
-    }
-
-    public ArrayList<ImageBan> getStatusActiveImages() {
+    public ArrayList<ImageBan> getStatusActiveImages()
+        {
         ArrayList<ImageBan> status_list = new ArrayList<ImageBan>();
-        // Select All Query
         String selectQuery = "SELECT  * FROM " + DATABASE_TABLE;
-
         SQLiteDatabase db = DBHelper.getWritableDatabase();
-
-
         Cursor cursor = db.rawQuery("SELECT * FROM DoSomethingStatus", null);
-
-        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst())
+            {
             cursor.moveToFirst();
-            try {
+            try
+                {
                 ImageBan statusimagelist = new ImageBan();
                 statusimagelist.setImage_id(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(KEY_IMAGEID))));
                 statusimagelist.setImage_name(cursor.getString(cursor.getColumnIndexOrThrow(KEY_IMAGENAME)));
                 statusimagelist.setImag_Active(cursor.getString(cursor.getColumnIndexOrThrow(KEY_IMAGEACTIVEURL)));
                 statusimagelist.setImag_inActive(cursor.getString(cursor.getColumnIndexOrThrow(KEY_IMAGEINACTIVEURL)));
-
-                // Adding contact to list
                 status_list.add(statusimagelist);
-            } catch (Exception e) {
+                }
+            catch (Exception e)
+                {
                 e.printStackTrace();
-            }
-
-            while (cursor.moveToNext()) {
-                try {
+                }
+            while (cursor.moveToNext())
+                {
+                try
+                    {
                     ImageBan statusimagelist = new ImageBan();
                     statusimagelist.setImage_id(Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(KEY_IMAGEID))));
                     statusimagelist.setImage_name(cursor.getString(cursor.getColumnIndexOrThrow(KEY_IMAGENAME)));
                     statusimagelist.setImag_Active(cursor.getString(cursor.getColumnIndexOrThrow(KEY_IMAGEACTIVEURL)));
                     statusimagelist.setImag_inActive(cursor.getString(cursor.getColumnIndexOrThrow(KEY_IMAGEINACTIVEURL)));
-
                     status_list.add(statusimagelist);
-                } catch (Exception e) {
+                    }
+                catch (Exception e)
+                    {
                     e.printStackTrace();
+                    }
                 }
             }
-        } else {
+        else
+            {
             Log.d(DATABASE_TABLE, "null");
-        }
-        if (cursor != null && !cursor.isClosed()) {
+            }
+        if (cursor != null && !cursor.isClosed())
+            {
             cursor.close();
+            }
+        return status_list;
         }
 
-        // return contact list
-        return status_list;
-    }
 
-
-    public ArrayList<DosomethingHobbies> getHObbiesImages(int hobbies_id) {
+    public ArrayList<DosomethingHobbies> getHObbiesImages(int hobbies_id)
+        {
         ArrayList<DosomethingHobbies> dosomethingHobbies = new ArrayList<DosomethingHobbies>();
-        // Select All Query
         Cursor cursor1 = db.query(true, DATABASE_TABLE_HOBBIES, new String[]{KEY_HOBBIESIMAGEINACTIVEURL,KEY_HOBBIESIMAGENAME}, KEY_HOBBIESIMAGEID + "=" + hobbies_id, null, null, null, null, null, null);
-
         SQLiteDatabase db = DBHelper.getWritableDatabase();
-
-
         Cursor cursor = db.rawQuery(" select image,name from DoSomethingHobbies where " + KEY_HOBBIESIMAGEID + "='" + hobbies_id + "'", null);
-
-        if (cursor1 != null && cursor1.getCount() > 0 && cursor1.moveToFirst()) {
+        if (cursor1 != null && cursor1.getCount() > 0 && cursor1.moveToFirst())
+            {
             cursor1.moveToFirst();
-            try {
+            try
+                {
                 DosomethingHobbies statusimagelist = new DosomethingHobbies();
                 statusimagelist.setImage_id(Integer.parseInt(cursor1.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESIMAGEID))));
                 statusimagelist.setCategory_id(Integer.parseInt(cursor1.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESCATEGORYID))));
                 statusimagelist.setImage_name(cursor1.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESIMAGENAME)));
                 statusimagelist.setImag_Active(cursor1.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESIMAGEACTIVEURL)));
                 statusimagelist.setImag_inActive(cursor1.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESIMAGEINACTIVEURL)));
-
-                // Adding contact to list
                 dosomethingHobbies.add(statusimagelist);
-            } catch (Exception e) {
+                }
+            catch (Exception e)
+                {
                 e.printStackTrace();
-            }
-
-            while (cursor1.moveToNext()) {
-                try {
+                }
+            while (cursor1.moveToNext())
+                {
+                try
+                    {
                     DosomethingHobbies statusimagelist = new DosomethingHobbies();
                     statusimagelist.setImage_id(Integer.parseInt(cursor1.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESIMAGEID))));
                     statusimagelist.setCategory_id(Integer.parseInt(cursor.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESCATEGORYID))));
                     statusimagelist.setImage_name(cursor1.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESIMAGENAME)));
                     statusimagelist.setImag_Active(cursor1.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESIMAGEACTIVEURL)));
                     statusimagelist.setImag_inActive(cursor1.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESIMAGEINACTIVEURL)));
-
                     dosomethingHobbies.add(statusimagelist);
-                } catch (Exception e) {
+                    }
+                catch (Exception e)
+                    {
                     e.printStackTrace();
+                    }
                 }
             }
-        } else {
+        else
+            {
             Log.d(DATABASE_TABLE_HOBBIES, "null");
-        }
-        if (cursor1 != null && !cursor1.isClosed()) {
+            }
+        if (cursor1 != null && !cursor1.isClosed())
+            {
             cursor1.close();
+            }
+        return dosomethingHobbies;
         }
 
-        // return contact list
-        return dosomethingHobbies;
-    }
-
-
-    public ArrayList<DosomethingHobbies> getHobbiesActiveImages(int hobbies_id) {
+    public ArrayList<DosomethingHobbies> getHobbiesActiveImages(int hobbies_id)
+        {
         ArrayList<DosomethingHobbies> dosomethingHobbies = new ArrayList<DosomethingHobbies>();
-        // Select All Query
         Cursor cursor1 = db.query(true, DATABASE_TABLE_HOBBIES, new String[]{KEY_HOBBIESIMAGEACTIVEURL,KEY_HOBBIESIMAGENAME}, KEY_HOBBIESIMAGEID + "=" + hobbies_id, null, null, null, null, null, null);
-
         SQLiteDatabase db = DBHelper.getWritableDatabase();
-
-
         Cursor cursor = db.rawQuery(" select image_active,name from DoSomethingHobbies where " + KEY_HOBBIESIMAGEID + "='" + hobbies_id + "'", null);
-
-        if (cursor1 != null && cursor1.getCount() > 0 && cursor1.moveToFirst()) {
+        if (cursor1 != null && cursor1.getCount() > 0 && cursor1.moveToFirst())
+            {
             cursor1.moveToFirst();
-            try {
+            try
+                {
                 DosomethingHobbies statusimagelist = new DosomethingHobbies();
                 statusimagelist.setImage_id(Integer.parseInt(cursor1.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESIMAGEID))));
                 statusimagelist.setCategory_id(Integer.parseInt(cursor1.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESCATEGORYID))));
                 statusimagelist.setImage_name(cursor1.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESIMAGENAME)));
                 statusimagelist.setImag_Active(cursor1.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESIMAGEACTIVEURL)));
                 statusimagelist.setImag_inActive(cursor1.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESIMAGEINACTIVEURL)));
-
                 // Adding contact to list
                 dosomethingHobbies.add(statusimagelist);
-            } catch (Exception e) {
+                }
+            catch (Exception e)
+                {
                 e.printStackTrace();
-            }
-
-            while (cursor1.moveToNext()) {
-                try {
+                }
+            while (cursor1.moveToNext())
+                {
+                try
+                    {
                     DosomethingHobbies statusimagelist = new DosomethingHobbies();
                     statusimagelist.setImage_id(Integer.parseInt(cursor1.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESIMAGEID))));
                     statusimagelist.setCategory_id(Integer.parseInt(cursor.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESCATEGORYID))));
@@ -339,19 +332,23 @@ public class DBAdapter {
                     statusimagelist.setImag_inActive(cursor1.getString(cursor1.getColumnIndexOrThrow(KEY_HOBBIESIMAGEINACTIVEURL)));
 
                     dosomethingHobbies.add(statusimagelist);
-                } catch (Exception e) {
+                    }
+                catch (Exception e)
+                    {
                     e.printStackTrace();
+                    }
                 }
             }
-        } else {
+        else
+            {
             Log.d(DATABASE_TABLE_HOBBIES, "null");
-        }
-        if (cursor1 != null && !cursor1.isClosed()) {
+            }
+        if (cursor1 != null && !cursor1.isClosed())
+            {
             cursor1.close();
-        }
-
-        // return contact list
+            }
         return dosomethingHobbies;
+        }
     }
 
-}
+// Adhamsheriff 2016_04_29
