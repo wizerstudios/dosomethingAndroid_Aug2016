@@ -245,6 +245,7 @@ FragmentProfile fragmentProfile;
         this.listFilterBeans = listFilterBeans;
     }
 
+    
     @Override
     public void onCreate() {
         super.onCreate();
