@@ -185,6 +185,7 @@ TextView walkthrough_hobbies_TextView;
 //        splashAnimation = (AnimationDrawable) kbv.getBackground();
         progress_bar = new Dialog(DoSomethingHobbies.this);
         progress_bar.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        progress_bar.requestWindowFeature(Window.FEATURE_NO_TITLE);
         progress_bar.setContentView(R.layout.progress_bar);
         progress_bar_imageview = (ImageView) progress_bar.findViewById(R.id.progress_bar_imageview);
         progress_bar_imageview.setBackgroundResource(R.drawable.progress_drawable);

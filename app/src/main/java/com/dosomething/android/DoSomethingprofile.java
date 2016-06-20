@@ -68,8 +68,6 @@ import com.dosomething.android.CommonClasses.Jsonfunctions;
 import com.dosomething.android.CommonClasses.NetworkCheck;
 import com.dosomething.android.CommonClasses.SharedPrefrences;
 import com.dosomething.android.CommonClasses.TransparentProgressDialog;
-import com.dosomething.android.Fragments.UserProfileImage2_Fragment;
-import com.dosomething.android.Fragments.UserProfileImage3_Fragment;
 import com.google.android.gms.analytics.Tracker;
 
 import org.apache.http.HttpResponse;
@@ -180,14 +178,14 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
     CheckBox profile_page_checkbox_notification_sound;
     CheckBox profile_page_checkbox_notification_message;
     CheckBox profilepage_checkbox_notifiacation_match;
-    private PagerAdapter mPagerAdapter;
-    private List<ImageView> dots = new ArrayList<>();
+    public static PagerAdapter mPagerAdapter;
+    public static List<ImageView> dots = new ArrayList<>();
     ;
     Context mContext;
     private final static int NUM_PAGES = 3;
     ViewPager pager;
-    LinearLayout viewpagerdots;
-    private static String url="";
+    public static LinearLayout viewpagerdots;
+    private static String url = "";
     private static final String TAG_TYPE = "type";
     private static final String TAG_FIRSTNAME = "first_name";
     private static final String TAG_LASTNAME = "last_name";
@@ -245,7 +243,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
 //    ArrayList<String> hobbies_image_recreation;
 
     int selectedposition;
-    SharedPrefrences sharedPrefrences;
+    public static SharedPrefrences sharedPrefrences;
     Jsonfunctions jsonfunctions;
     private ProgressDialog pDialog;
 
@@ -284,8 +282,9 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
     private Timer blink_time;
     private Timer blink_time_save;
     private Tracker mTracker;
-    List<android.support.v4.app.Fragment> fragments = new Vector<android.support.v4.app.Fragment>();
-    private boolean popup = false;
+    public static List<android.support.v4.app.Fragment> fragments = new Vector<android.support.v4.app.Fragment>();
+    public static boolean popup = false;
+    public static boolean removeView = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -380,18 +379,21 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
         Log.d("ARTS", "AAAAHHHH" + hobbies_list);
         aQuery = new AQuery(DoSomethingprofile.this);
         assign_declaration();
-
-
-        this.initialisePaging();
+        fragments.clear();
+        fragments.add(android.support.v4.app.Fragment.instantiate(context, Profile_image_one_fragment.class.getName()));
+        mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), fragments);
+        pager.setAdapter(mPagerAdapter);
+        pager.setOffscreenPageLimit(3);
         dots.clear();
         viewpagerdots.removeAllViews();
         addDots();
-        selectDot(pager.getCurrentItem());
+        selectDot(0);
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(dosomething_profile_mainlayout.getWindowToken(), 0);
 
+
         if (!sharedPrefrences.getProfilePicture1(context).equals("")) {
-            fragments.add(android.support.v4.app.Fragment.instantiate(context, UserProfileImage2_Fragment.class.getName()));
+            fragments.add(android.support.v4.app.Fragment.instantiate(context, Profile_image_two_fragment.class.getName()));
             mPagerAdapter.notifyDataSetChanged();
             dots.clear();
             viewpagerdots.removeAllViews();
@@ -399,7 +401,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
 
         }
         if (!sharedPrefrences.getProfilePicture2(context).equals("")) {
-            fragments.add(android.support.v4.app.Fragment.instantiate(context, UserProfileImage3_Fragment.class.getName()));
+            fragments.add(android.support.v4.app.Fragment.instantiate(context, Profile_image_three_fragment.class.getName()));
             mPagerAdapter.notifyDataSetChanged();
             dots.clear();
             viewpagerdots.removeAllViews();
@@ -412,21 +414,25 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
             @Override
             public void onClick(View v) {
                 if (fragments.size() == 1) {
-                    fragments.add(android.support.v4.app.Fragment.instantiate(context, Profile_image_two_fragment.class.getName()));
-                    mPagerAdapter.notifyDataSetChanged();
-                    dots.clear();
-                    viewpagerdots.removeAllViews();
-                    popup = true;
-                    addDots();
+                    if (!sharedPrefrences.getProfilePicture(context).equals("")) {
+                        fragments.add(android.support.v4.app.Fragment.instantiate(context, Profile_image_two_fragment.class.getName()));
+                        mPagerAdapter.notifyDataSetChanged();
+                        dots.clear();
+                        viewpagerdots.removeAllViews();
+                        popup = true;
+                        addDots();
+                    }
 
 
                 } else if (fragments.size() == 2) {
-                    fragments.add(android.support.v4.app.Fragment.instantiate(context, Profile_image_three_fragment.class.getName()));
-                    mPagerAdapter.notifyDataSetChanged();
-                    dots.clear();
-                    viewpagerdots.removeAllViews();
-                    popup = true;
-                    addDots();
+                    if (!sharedPrefrences.getProfilePicture1(context).equals("")) {
+                        fragments.add(android.support.v4.app.Fragment.instantiate(context, Profile_image_three_fragment.class.getName()));
+                        mPagerAdapter.notifyDataSetChanged();
+                        dots.clear();
+                        viewpagerdots.removeAllViews();
+                        popup = true;
+                        addDots();
+                    }
 
 
                 }
@@ -855,8 +861,8 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                 hobbies = String.valueOf(hobbies_append_id);
                 String date = profile_page_textview_datepicker.getText().toString();
                 sharedPrefrences.setDateofBirth(context, date);
-                SimpleDateFormat input = new SimpleDateFormat("dd / MM / yyyy",Locale.US);
-                SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
+                SimpleDateFormat input = new SimpleDateFormat("dd / MM / yyyy", Locale.US);
+                SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
                 try {
                     Log.d("tripDate", date);
                     oneWayTripDate = input.parse(date);                 // parse input
@@ -1400,7 +1406,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                         splashAnimation.stop();
 
                         Calendar c = Calendar.getInstance();
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy",Locale.US);
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
                         String formattedDate = df.format(c.getTime());
                         sharedPrefrences.setDeviceDate(context, formattedDate);
                         Intent i = new Intent(DoSomethingprofile.this, DoSomethingStatus.class);
@@ -1539,6 +1545,88 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
     }
 
 
+    public void addimageSlide() {
+        try {
+            if (fragments != null) {
+                if (fragments.size() == 2) {
+                    if (fragments.get(1) != null)
+                        if (!sharedPrefrences.getProfilePicture1(context).equals("")) {
+                            if (sharedPrefrences.getProfilePicture(context).equals("")) {
+                                sharedPrefrences.setProfilePicture(context, sharedPrefrences.getProfilePicture1(context));
+                                sharedPrefrences.setProfilePicture1(context, "");
+                            }
+
+                            if (sharedPrefrences.getProfileImageBitmap1(context).equals("")) {
+                                sharedPrefrences.setProfileImageBitmap1(context, sharedPrefrences.getProfileImageBitmap2(context));
+                                sharedPrefrences.setProfileImageBitmap2(context, "");
+
+                            }
+
+                        }
+
+
+                    this.getSupportFragmentManager().beginTransaction().remove(fragments.get(1)).commit();
+                    fragments.remove(1);
+                    mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), fragments);
+                    pager.setAdapter(mPagerAdapter);
+                    dots.clear();
+                    viewpagerdots.removeAllViews();
+                    addDots();
+                    selectDot(0);
+
+
+                } else if (fragments.size() == 3) {
+
+                    if (fragments.get(2) != null)
+
+                        if (!sharedPrefrences.getProfilePicture1(context).equals("")) {
+                            if (sharedPrefrences.getProfilePicture(context).equals("")) {
+                                sharedPrefrences.setProfilePicture(context, sharedPrefrences.getProfilePicture1(context));
+                                sharedPrefrences.setProfilePicture1(context, "");
+                            }
+
+                            if (sharedPrefrences.getProfileImageBitmap1(context).equals("")) {
+                                sharedPrefrences.setProfileImageBitmap1(context, sharedPrefrences.getProfileImageBitmap2(context));
+                                sharedPrefrences.setProfileImageBitmap2(context, "");
+
+                            }
+
+                        }
+
+                    if (!sharedPrefrences.getProfilePicture2(context).equals("")) {
+                        if (sharedPrefrences.getProfilePicture1(context).equals("")) {
+                            sharedPrefrences.setProfilePicture1(context, sharedPrefrences.getProfilePicture2(context));
+                            sharedPrefrences.setProfilePicture2(context, "");
+                        }
+                        if (sharedPrefrences.getProfileImageBitmap2(context).equals("")) {
+                            sharedPrefrences.setProfileImageBitmap2(context, sharedPrefrences.getProfileImageBitmap3(context));
+                            sharedPrefrences.setProfileImageBitmap3(context, "");
+
+                        }
+
+                    }
+                    this.getSupportFragmentManager().beginTransaction().remove(fragments.get(2)).commit();
+
+
+                    //            mPagerAdapter.destroyItem(pager, 2, android.support.v4.app.Fragment.instantiate(context, Profile_image_three_fragment.class.getName()));
+                    fragments.remove(2);
+                    mPagerAdapter = new PagerAdapter(getSupportFragmentManager(), fragments);
+                    pager.setAdapter(mPagerAdapter);
+                    dots.clear();
+                    viewpagerdots.removeAllViews();
+                    addDots();
+                    selectDot(0);
+
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
     ////////////To assign the font typeface//////////////////
 
     private void text_font_typeface() {
@@ -1613,12 +1701,12 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
 
         @Override
         public android.support.v4.app.Fragment getItem(int position) {
-            return this.fragments.get(position);
+            return fragments.get(position);
         }
 
         @Override
         public int getCount() {
-            return this.fragments.size();
+            return fragments.size();
         }
     }
 
@@ -1627,7 +1715,6 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
 
         fragments.add(android.support.v4.app.Fragment.instantiate(this, Profile_image_one_fragment.class.getName()));
         this.mPagerAdapter = new PagerAdapter(super.getSupportFragmentManager(), fragments);
-        pager = (ViewPager) super.findViewById(R.id.pager);
         pager.setAdapter(this.mPagerAdapter);
         pager.setOffscreenPageLimit(3);
 
@@ -1680,15 +1767,19 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                 if (popup) {
                     switch (pager.getCurrentItem() + 1) {
                         case 2:
+
                             if (((MyApplication) getApplication()).getProfile_image_two_fragment() != null) {
                                 ((MyApplication) getApplication()).getProfile_image_two_fragment().showImageSelectionAlert();
                             }
 
+
                             break;
                         case 3:
+
                             if (((MyApplication) getApplication()).getProfile_image_three_fragment() != null) {
                                 ((MyApplication) getApplication()).getProfile_image_three_fragment().showImageSelectionAlert();
                             }
+
 
                             break;
 
@@ -1803,7 +1894,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
         profile_page_textview_male = (TextView) findViewById(R.id.profile_page_textview_male);
         profile_page_textview_female = (TextView) findViewById(R.id.profile_page_textview_female);
         custom_toolbar_textview_save = (TextView) findViewById(R.id.custom_toolbar_textview_save);
-
+        pager = (ViewPager) findViewById(R.id.pager);
         profile_page_button_policy = (Button) findViewById(R.id.profile_page_button_policy);
         profile_page_button_terms = (Button) findViewById(R.id.profile_page_button_terms);
 
@@ -1822,6 +1913,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
         dosomething_account_confirmation_yes = (TextView) findViewById(R.id.dosomething_account_confirmation_yes);*/
         progress_bar = new Dialog(DoSomethingprofile.this);
         progress_bar.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        progress_bar.requestWindowFeature(Window.FEATURE_NO_TITLE);
         progress_bar.setContentView(R.layout.progress_bar);
         ImageView progress_bar_imageview = (ImageView) progress_bar.findViewById(R.id.progress_bar_imageview);
         progress_bar_imageview.setBackgroundResource(R.drawable.progress_drawable);
@@ -1829,6 +1921,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
         progress_bar.setCancelable(false);
         dialog = new Dialog(DoSomethingprofile.this);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.alert_dialog);
         status_textview_availablenow = (TextView) dialog.findViewById(R.id.status_textview_availablenow);
         status_textview_accept_check = (TextView) dialog.findViewById(R.id.status_textview_accept_check);
@@ -1967,7 +2060,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
         final SimpleDateFormat formatter = new SimpleDateFormat("dd / MM / yyyy", Locale.US);
         Calendar minDate = Calendar.getInstance();
         Calendar maxdate = Calendar.getInstance();
-        maxdate.add(Calendar.YEAR, 100);
+        maxdate.add(Calendar.YEAR, -18);
         try {
             minDate.setTime(formatter.parse("01 / 01 / 1900"));
         } catch (ParseException e) {
@@ -2067,7 +2160,7 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             if (convertView == null) {
-                convertView = inflater.inflate(R.layout.grid_layout_profile, parent,false);
+                convertView = inflater.inflate(R.layout.grid_layout_profile, parent, false);
                 grid_layout_profile_textview_name = (TextView) convertView.findViewById(R.id.grid_layout_profile_textview_name);
                 grid_layout_profile_imageview_hobbies = (ImageView) convertView.findViewById(R.id.grid_layout_profile_imageview_hobbies);
 
@@ -2291,7 +2384,6 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
                     hobbies_append_id.deleteCharAt(0);
 
 
-
                     Log.d("OOOOOOOOOO", "JJJJJrl" + hobbies_append_id);
 
                 } catch (Exception e) {
@@ -2311,8 +2403,6 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
 
         }
     }
-
-
 
 
     @Override
@@ -2399,13 +2489,9 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
         if (sharedPrefrences.getDateOfbirth(context).equals("")) {
             profile_page_textview_datepicker.setText("DD / MM / YYYY");
 
-        }
-
-
-
-        else {
-            SimpleDateFormat input = new SimpleDateFormat("MM/dd/yyyy",Locale.US);
-            SimpleDateFormat output = new SimpleDateFormat("dd / MM / yyyy",Locale.US);
+        } else {
+            SimpleDateFormat input = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+            SimpleDateFormat output = new SimpleDateFormat("dd / MM / yyyy", Locale.US);
             try {
                 Log.d("tripDate", sharedPrefrences.getDateOfbirth(context));
                 oneWayTripDate = input.parse(sharedPrefrences.getDateOfbirth(context));                 // parse input
@@ -2426,8 +2512,6 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
         String text = sharedPrefrences.getpassword(context);
         profile_page_edittext_password.setText(text);
     }
-
-
 
 
     @Override

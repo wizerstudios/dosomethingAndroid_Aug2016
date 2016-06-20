@@ -3,8 +3,10 @@ package com.dosomething.android;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -94,7 +96,7 @@ import java.util.zip.Inflater;
 
 public class DoSomethingStatus extends AppCompatActivity {
     private static final int RESULT_LOAD_IMG = 1;
-
+    BroadcastReceiver playerStateReceiver;
     LinearLayout status_layout_pin;
     LinearLayout status_layout_menu;
     LinearLayout status_layout_chat;
@@ -207,7 +209,7 @@ public class DoSomethingStatus extends AppCompatActivity {
 
     private RelativeLayout layout_walkthrough_profile;
     private ImageView image_walkthrough_account_profile;
-    private String name="NearBy Screen";
+    private String name = "NearBy Screen";
     private Tracker mTracker;
     private Timer timer;
 
@@ -215,12 +217,10 @@ public class DoSomethingStatus extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_do_something_status);
-        try
-        {
+        try {
             MyApplication application = (MyApplication) getApplication();
             mTracker = application.getDefaultTracker();
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 //        overridePendingTransition(R.anim.slide_enter, R.anim.slide_exit);
@@ -243,7 +243,7 @@ public class DoSomethingStatus extends AppCompatActivity {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         pd = new TransparentProgressDialog(context, getResources().getDrawable(R.drawable.loading));
-        relativelayoutupdate_profile_progress=(RelativeLayout)findViewById(R.id.relativelayoutupdate_profile_progress);
+        relativelayoutupdate_profile_progress = (RelativeLayout) findViewById(R.id.relativelayoutupdate_profile_progress);
         kbv = (ImageView) findViewById(R.id.update_profile_progress);
         kbv.setBackgroundResource(R.drawable.progress_drawable);
 
@@ -301,7 +301,7 @@ public class DoSomethingStatus extends AppCompatActivity {
                             String date = sharedPreferences.getDateOfbirth(context);
 //                    String date ="29/07/13";
                             SimpleDateFormat input = new SimpleDateFormat("dd / MM / yyyy", Locale.US);
-                            SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
+                            SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
                             try {
                                 Log.d("tripDate", date);
@@ -390,7 +390,7 @@ public class DoSomethingStatus extends AppCompatActivity {
 //        rangebar_age = (RangeBar) findViewById(R.id.rangebar_age);
 //        rangebar_distance = (RangeBar) findViewById(R.id.rangebar_distance);
 
-
+        initReceiver();
         slidingmenu_clear_all_filter_textvalue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -609,11 +609,13 @@ public class DoSomethingStatus extends AppCompatActivity {
         detail_fragment = (FrameLayout) findViewById(R.id.detail_fragment);
         dialog = new Dialog(DoSomethingStatus.this);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dosomething_password_match);
         password_no_match = (TextView) dialog.findViewById(R.id.password_no_match);
         alert_textview_password_nomatch_cancel = (TextView) dialog.findViewById(R.id.alert_textview_password_nomatch_cancel);
         dialog_savechanges = new Dialog(DoSomethingStatus.this);
         dialog_savechanges.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog_savechanges.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog_savechanges.setContentView(R.layout.dosomething_alert_save_changes);
         status_textview_save = (TextView) dialog_savechanges.findViewById(R.id.status_textview_save);
         alert_textview_save = (TextView) dialog_savechanges.findViewById(R.id.alert_textview_save);
@@ -662,6 +664,9 @@ public class DoSomethingStatus extends AppCompatActivity {
 //                fadeOut_AlertSave();
 //                relativelayout_alertdialog_save.setVisibility(View.GONE);
                 dialog_savechanges.dismiss();
+                sharedPreferences.setUpdateProfilePicture(context, "");
+                sharedPreferences.setUpdateProfilePicture1(context, "");
+                sharedPreferences.setUpdateProfilePicture2(context, "");
                 sharedPreferences.setBooleam(context, "false");
             }
         });
@@ -759,7 +764,7 @@ public class DoSomethingStatus extends AppCompatActivity {
                 sharedPreferences.setPushType(context, "");
                 sharedPreferences.setChatAutoUpdate(context, "true");
                 ((MyApplication) getApplication()).getListFilterBeans().clear();
-                ((MyApplication)getApplication()).setCount(0);
+                ((MyApplication) getApplication()).setCount(0);
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(status_ImageView_profile.getWindowToken(), 0);
                 if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context)) {
@@ -814,10 +819,10 @@ public class DoSomethingStatus extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sharedPreferences.setPushType(context, "");
-                sharedPreferences.setChatAutoUpdate(context,"true");
+                sharedPreferences.setChatAutoUpdate(context, "true");
                 ((MyApplication) getApplication()).getListFilterBeans().clear();
                 ((MyApplication) getApplication()).setanInt(0);
-                ((MyApplication)getApplication()).setCount(0);
+                ((MyApplication) getApplication()).setCount(0);
                 if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context)) {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(status_ImageView_setting.getWindowToken(), 0);
@@ -858,11 +863,11 @@ public class DoSomethingStatus extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context)) {
-                    sharedPreferences.setChatAutoUpdate(context,"true");
+                    sharedPreferences.setChatAutoUpdate(context, "true");
                     sharedPreferences.setPushType(context, "");
                     ((MyApplication) getApplication()).getListFilterBeans().clear();
                     ((MyApplication) getApplication()).setanInt(0);
-                    ((MyApplication)getApplication()).setCount(0);
+                    ((MyApplication) getApplication()).setCount(0);
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(status_layout_menu.getWindowToken(), 0);
                     if (sharedPreferences.getBoolean(context).equals("false")) {
@@ -902,7 +907,8 @@ public class DoSomethingStatus extends AppCompatActivity {
         status_layout_pin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sharedPreferences.setChatAutoUpdate(context,"true");
+
+                sharedPreferences.setChatAutoUpdate(context, "true");
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(status_layout_pin.getWindowToken(), 0);
                 settext("YES");
@@ -982,10 +988,10 @@ public class DoSomethingStatus extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sharedPreferences.setPushType(context, "");
-                sharedPreferences.setChatAutoUpdate(context,"false");
+                sharedPreferences.setChatAutoUpdate(context, "false");
                 ((MyApplication) getApplication()).getListFilterBeans().clear();
                 ((MyApplication) getApplication()).setanInt(0);
-                ((MyApplication)getApplication()).setCount(0);
+                ((MyApplication) getApplication()).setCount(0);
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(status_layout_pin.getWindowToken(), 0);
                 if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context)) {
@@ -1093,7 +1099,7 @@ public class DoSomethingStatus extends AppCompatActivity {
 
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-                somethingNearMe = new DoSomethingNearMe();
+            somethingNearMe = new DoSomethingNearMe();
 //                        fragmentTransaction.setCustomAnimations(R.anim.slide_out, R.anim.slide_out);
 
             activity_dosomething_textview_toolbar_save.setVisibility(View.GONE);
@@ -1121,7 +1127,7 @@ public class DoSomethingStatus extends AppCompatActivity {
 
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-                somethingNearMe = new DoSomethingNearMe();
+            somethingNearMe = new DoSomethingNearMe();
 //                        fragmentTransaction.setCustomAnimations(R.anim.slide_out, R.anim.slide_out);
 
             activity_dosomething_textview_toolbar_save.setVisibility(View.GONE);
@@ -1281,6 +1287,13 @@ public class DoSomethingStatus extends AppCompatActivity {
         Log.i("tracker", "Setting screen name: " + name);
         mTracker.setScreenName("Image~" + name);
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(GCMIntentService.RECIEVING_REQUEST);
+        registerReceiver(playerStateReceiver, filter);
+
+
         if (!sharedPreferences.getSessionid(context).equals("")) {
             timer_chat = new Timer();
             timer_chat.schedule(new AutoChatHistory(), 0, 5000);
@@ -1487,7 +1500,7 @@ public class DoSomethingStatus extends AppCompatActivity {
                     } else {
                         file = new File(Environment.getExternalStorageDirectory(),
                                 getResources().getString(R.string.app_name) + "fragment_profie_image" + ".jpg");
-                        sharedPreferences.setUpdateProfilePicture(context,"");
+                        sharedPreferences.setUpdateProfilePicture(context, "");
 //                        Log.d("PATH====>", sharedPreferences.getUpdateProfilePicture(context));
 //                        params.put(TAG_PROFILEIMAGE1, file);
 //                        uploadProfilePicture(file);
@@ -1528,7 +1541,7 @@ public class DoSomethingStatus extends AppCompatActivity {
                     } else {
                         file3 = new File(Environment.getExternalStorageDirectory(),
                                 getResources().getString(R.string.app_name) + "fragment_profie_image2" + ".jpg");
-                        sharedPreferences.setUpdateProfilePicture2(context,"");
+                        sharedPreferences.setUpdateProfilePicture2(context, "");
 //                        Log.d("PATH====>", sharedPreferences.getUpdateProfilePicture2(context));
 //                        params.put(TAG_PROFILEIMAGE3, file3);
                     }
@@ -1616,6 +1629,15 @@ public class DoSomethingStatus extends AppCompatActivity {
                             Log.d("image1", sharedPreferences.setProfilePicture(context, image1));
                             Log.d("image2", sharedPreferences.setProfilePicture1(context, image2));
                             Log.d("image3", sharedPreferences.setProfilePicture2(context, image3));
+                            if (sharedPreferences.getProfilePicture(context).equals("")) {
+                                sharedPreferences.setProfileImageBitmap1(context, "");
+                            }
+                            if (sharedPreferences.getProfilePicture1(context).equals("")) {
+                                sharedPreferences.setProfileImageBitmap2(context, "");
+                            }
+                            if (sharedPreferences.getProfilePicture2(context).equals("")) {
+                                sharedPreferences.setProfileImageBitmap3(context, "");
+                            }
                             sharedPreferences.setNotifyMessage(context, notification_message);
                             sharedPreferences.setNotifySound(context, notification_sound);
                             sharedPreferences.setNotifyVibration(context, notification_vibration);
@@ -2061,12 +2083,12 @@ public class DoSomethingStatus extends AppCompatActivity {
         private String image1_thumb;
         private String image2_thumb;
         private String image3_thumb;
+
         @Override
 
         protected void onPreExecute() {
 
             super.onPreExecute();
-
 
 
         }
@@ -2323,8 +2345,7 @@ public class DoSomethingStatus extends AppCompatActivity {
                             CharSequence s = DateFormat.format("yyyy-MM-dd HH:mm:ss", d.getTime());
                             datetime = String.valueOf(s);
                             Log.d("date and time", datetime);
-                            if(!sharedPreferences.getSessionid(context).equals(""))
-                            {
+                            if (!sharedPreferences.getSessionid(context).equals("")) {
                                 new ChatHistory().execute();
                             }
 
@@ -2388,8 +2409,22 @@ public class DoSomethingStatus extends AppCompatActivity {
             timer_chat = null;
 
         }
+        unregisterReceiver(playerStateReceiver);
     }
 
+    public void initReceiver() {
+        playerStateReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d("Receiving bradcast::::", "::::" + intent.getAction());
+                clickNearme(true);
+                ((MyApplication) getApplication()).getDoSomethingNearMe().pop();
+
+            }
+        };
+
+    }
 
     private class ChatHistory extends AsyncTask<Void, Void, Boolean> {
         String status;
@@ -2428,13 +2463,11 @@ public class DoSomethingStatus extends AppCompatActivity {
                             JSONArray hobbiesArray = json_content.getJSONArray("converation");
                             for (int i = 0; i < hobbiesArray.length(); i++) {
                                 JSONObject details = hobbiesArray.getJSONObject(i);
-                                if(details.has("unreadmessage"))
-                                {
+                                if (details.has("unreadmessage")) {
                                     unreadmessage = details.getString("unreadmessage");
 
-                                }else
-                                {
-                                    unreadmessage="0";
+                                } else {
+                                    unreadmessage = "0";
                                 }
                                 status = "success";
 
@@ -2524,7 +2557,7 @@ public class DoSomethingStatus extends AppCompatActivity {
 
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Log.d("ConnectTimeoutException","Exception"+e);
+                        Log.d("ConnectTimeoutException", "Exception" + e);
                     }
 
                 } else {
@@ -2555,54 +2588,58 @@ public class DoSomethingStatus extends AppCompatActivity {
     }
 
 
-
-public void profileRefresh(boolean refresh)
-{
-    if(refresh)
-    {
-        status_ImageView_profile.setImageDrawable(getResources().getDrawable(R.drawable.profile_icon_active));
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        FragmentProfile fragmentProfile = new FragmentProfile();
-        activity_dosomething_textview_toolbar_save.setVisibility(View.VISIBLE);
-        activity_dosomething_textview_toolbar_search.setVisibility(View.GONE);
-        activity_dosomething_imageview_filter_icon.setVisibility(View.GONE);
-        if (bundle_list.isEmpty()) {
-            Bundle bundle = new Bundle();
-            bundle_list.clear();
-            bundle_list.add(R.drawable.pluis_icon);
-            Log.d("FFFFFFFFFFFFFFFFFFFFFFF", "H" + bundle_list);
-            bundle.putIntegerArrayList("array_bundle_hobbies_image", bundle_list);
-            fragmentProfile.setArguments(bundle);
-        } else {
-            Bundle value = new Bundle();
-            value.putIntegerArrayList("array_bundle_hobbies_image", bundle_list);
-            Log.d("ARRAYYYYBUNDLE", "............" + value);
-            fragmentProfile.setArguments(value);
+    public void profileRefresh(boolean refresh) {
+        if (refresh) {
+            status_ImageView_profile.setImageDrawable(getResources().getDrawable(R.drawable.profile_icon_active));
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            FragmentProfile fragmentProfile = new FragmentProfile();
+            activity_dosomething_textview_toolbar_save.setVisibility(View.VISIBLE);
+            activity_dosomething_textview_toolbar_search.setVisibility(View.GONE);
+            activity_dosomething_imageview_filter_icon.setVisibility(View.GONE);
+            if (sharedPreferences.getProfilePicture(context).equals("")) {
+                sharedPreferences.setProfileImageBitmap1(context, "");
+            }
+            if (sharedPreferences.getProfilePicture1(context).equals("")) {
+                sharedPreferences.setProfileImageBitmap2(context, "");
+            }
+            if (sharedPreferences.getProfilePicture2(context).equals("")) {
+                sharedPreferences.setProfileImageBitmap3(context, "");
+            }
+            if (bundle_list.isEmpty()) {
+                Bundle bundle = new Bundle();
+                bundle_list.clear();
+                bundle_list.add(R.drawable.pluis_icon);
+                Log.d("FFFFFFFFFFFFFFFFFFFFFFF", "H" + bundle_list);
+                bundle.putIntegerArrayList("array_bundle_hobbies_image", bundle_list);
+                fragmentProfile.setArguments(bundle);
+            } else {
+                Bundle value = new Bundle();
+                value.putIntegerArrayList("array_bundle_hobbies_image", bundle_list);
+                Log.d("ARRAYYYYBUNDLE", "............" + value);
+                fragmentProfile.setArguments(value);
+            }
+            fragmentTransaction.replace(R.id.detail_fragment, fragmentProfile);
+            fragmentTransaction.commit();
+            status_ImageView_pin.setImageDrawable(getResources().getDrawable(R.drawable.pin));
+            status_ImageView_chat.setImageDrawable(getResources().getDrawable(R.drawable.chat));
+            status_ImageView_setting.setImageDrawable(getResources().getDrawable(R.drawable.setting));
+            click_action14 = true;
+            click_action15 = false;
+            click_action12 = false;
+            click_action13 = false;
+            refresh = false;
         }
-        fragmentTransaction.replace(R.id.detail_fragment, fragmentProfile);
-        fragmentTransaction.commit();
-        status_ImageView_pin.setImageDrawable(getResources().getDrawable(R.drawable.pin));
-        status_ImageView_chat.setImageDrawable(getResources().getDrawable(R.drawable.chat));
-        status_ImageView_setting.setImageDrawable(getResources().getDrawable(R.drawable.setting));
-        click_action14 = true;
-        click_action15 = false;
-        click_action12 = false;
-        click_action13 = false;
-        refresh=false;
     }
-}
 
 
-
-    public void clickNearme(boolean slide)
-    {
+    public void clickNearme(boolean slide) {
         if (slide) {
 
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(status_layout_pin.getWindowToken(), 0);
             settext("YES");
-            slide=false;
-            sharedPreferences.setSlideNearBy(context,"false");
+            slide = false;
+            sharedPreferences.setSlideNearBy(context, "false");
             if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context))
 
             {
@@ -2859,49 +2896,46 @@ public void profileRefresh(boolean refresh)
         }
     }
 
-public void slideToChat(boolean b)
-{
-    if(b)
-    {
-        sharedPreferences.setPushType(context, "");
-        ((MyApplication) getApplication()).getListFilterBeans().clear();
-        ((MyApplication) getApplication()).setanInt(0);
-        ((MyApplication)getApplication()).setCount(0);
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(status_layout_pin.getWindowToken(), 0);
-        if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context)) {
+    public void slideToChat(boolean b) {
+        if (b) {
+            sharedPreferences.setPushType(context, "");
+            ((MyApplication) getApplication()).getListFilterBeans().clear();
+            ((MyApplication) getApplication()).setanInt(0);
+            ((MyApplication) getApplication()).setCount(0);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(status_layout_pin.getWindowToken(), 0);
+            if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context)) {
 
-            if (sharedPreferences.getBoolean(context).equals("false")) {
+                if (sharedPreferences.getBoolean(context).equals("false")) {
 
-                ((MyApplication) getApplication()).getListChatBean().clear();
-                activity_dosomething_textview_toolbar_save.setVisibility(View.GONE);
+                    ((MyApplication) getApplication()).getListChatBean().clear();
+                    activity_dosomething_textview_toolbar_save.setVisibility(View.GONE);
 
-                activity_dosomething_textview_toolbar_search.setVisibility(View.GONE);
+                    activity_dosomething_textview_toolbar_search.setVisibility(View.GONE);
 
-                DoSomethingChatList doSomethingChatList = new DoSomethingChatList();
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.detail_fragment, doSomethingChatList);
-                fragmentTransaction.commit();
-                activity_dosomething_imageview_filter_icon.setVisibility(View.GONE);
-                status_ImageView_chat.setImageDrawable(getResources().getDrawable(R.drawable.chat_active));
-                status_ImageView_pin.setImageDrawable(getResources().getDrawable(R.drawable.pin));
-                status_ImageView_profile.setImageDrawable(getResources().getDrawable(R.drawable.profile_icon));
-                status_ImageView_setting.setImageDrawable(getResources().getDrawable(R.drawable.setting));
-                click_action15 = false;
-                click_action14 = false;
-                click_action13 = true;
-                click_action12 = false;
-                check++;
-                b=false;
+                    DoSomethingChatList doSomethingChatList = new DoSomethingChatList();
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.detail_fragment, doSomethingChatList);
+                    fragmentTransaction.commit();
+                    activity_dosomething_imageview_filter_icon.setVisibility(View.GONE);
+                    status_ImageView_chat.setImageDrawable(getResources().getDrawable(R.drawable.chat_active));
+                    status_ImageView_pin.setImageDrawable(getResources().getDrawable(R.drawable.pin));
+                    status_ImageView_profile.setImageDrawable(getResources().getDrawable(R.drawable.profile_icon));
+                    status_ImageView_setting.setImageDrawable(getResources().getDrawable(R.drawable.setting));
+                    click_action15 = false;
+                    click_action14 = false;
+                    click_action13 = true;
+                    click_action12 = false;
+                    check++;
+                    b = false;
+                } else {
+                    dialog_savechanges.show();
+                }
             } else {
-                dialog_savechanges.show();
+                NetworkCheck.alertdialog(context);
             }
-        } else {
-            NetworkCheck.alertdialog(context);
         }
     }
-}
-
 
 
     public void dosomethingNearmepopup(boolean b) {

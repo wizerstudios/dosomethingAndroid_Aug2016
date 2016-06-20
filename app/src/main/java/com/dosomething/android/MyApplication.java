@@ -13,7 +13,9 @@ import com.dosomething.android.Beanclasses.Food_hobbies;
 import com.dosomething.android.Beanclasses.HobbiesBean;
 import com.dosomething.android.Beanclasses.Pets_hobbies;
 import com.dosomething.android.Beanclasses.Recreation_hobbies;
+import com.dosomething.android.Fragments.DoSomethingNearMe;
 import com.dosomething.android.Fragments.DoSomething_Friends_profile_fragment;
+import com.dosomething.android.Fragments.FragmentProfile;
 import com.dosomething.android.Fragments.UserProfileImage1_Fragment;
 import com.dosomething.android.Fragments.UserProfileImage2_Fragment;
 import com.dosomething.android.Fragments.UserProfileImage3_Fragment;
@@ -32,16 +34,33 @@ public class MyApplication extends Application {
     private Tracker mTracker;
 
     DoSomething_Friends_profile_fragment mDoSomething_Friends_profile_fragment;
+    DoSomethingNearMe doSomethingNearMe;
     DoSomethingStatus doSomethingStatus;
     UserProfileImage1_Fragment userProfileImage1_fragment;
     UserProfileImage2_Fragment userProfileImage2_fragment;
 
+    public DoSomethingNearMe getDoSomethingNearMe() {
+        return doSomethingNearMe;
+    }
+
+    public void setDoSomethingNearMe(DoSomethingNearMe doSomethingNearMe) {
+        this.doSomethingNearMe = doSomethingNearMe;
+    }
 
     UserProfileImage3_Fragment userProfileImage3_fragment;
     Profile_image_one_fragment profile_image_viewpager_dots_one;
     Profile_image_two_fragment profile_image_two_fragment;
     Profile_image_three_fragment profile_image_three_fragment;
 
+FragmentProfile fragmentProfile;
+
+    public FragmentProfile getFragmentProfile() {
+        return fragmentProfile;
+    }
+
+    public void setFragmentProfile(FragmentProfile fragmentProfile) {
+        this.fragmentProfile = fragmentProfile;
+    }
 
     public Profile_image_one_fragment getProfile_image_one_fragment() {
         return profile_image_viewpager_dots_one;

@@ -78,7 +78,7 @@ public class FragmentProfile extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static int NUM_PAGES=3;
+    private static int NUM_PAGES = 3;
     private static final String TAG_PROFILEUSERID = "profile_user_id";
     private static final int RESULT_LOAD_IMG = 1;
     private Date oneWayTripDate;
@@ -200,7 +200,8 @@ public class FragmentProfile extends Fragment {
     List<android.support.v4.app.Fragment> fragments = new Vector<Fragment>();
     UserProfileImage1_Fragment userProfileImage1_fragment;
     private ArrayList<ImageView> dots;
-boolean popup=false;
+    boolean popup = false;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -292,10 +293,10 @@ boolean popup=false;
 
 
         pd = new TransparentProgressDialog(getActivity(), getResources().getDrawable(R.drawable.loading));
-
+        ((MyApplication) getActivity().getApplication()).setFragmentProfile(this);
         String date = sharedPrefrences.getDateOfbirth(getActivity());
-        SimpleDateFormat input = new SimpleDateFormat("dd/MM/yyyy",Locale.US);
-        SimpleDateFormat output = new SimpleDateFormat("dd / MM / yyyy",Locale.US);
+        SimpleDateFormat input = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        SimpleDateFormat output = new SimpleDateFormat("dd / MM / yyyy", Locale.US);
         try {
             Log.d("tripDate", date);
             Date oneWayTripDate = input.parse(date);                 // parse input
@@ -332,10 +333,6 @@ boolean popup=false;
         }
 
 
-
-
-
-
         if (fragments.size() == 3) {
             fragment_profile_image_autoincrease.setClickable(false);
         }
@@ -361,39 +358,58 @@ boolean popup=false;
                     fragment_pager.setOffscreenPageLimit(3);
                     dots.clear();
                     fragment_viewpager_dots.removeAllViews();
-                    popup=true;
+                    popup = true;
                     addDots();
+
 
                 } else if (fragments.size() == 1)
 
                 {
 
-                    fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage2_Fragment.class.getName()));
-                    mPagerAdapter.notifyDataSetChanged();
-                    dots.clear();
-                    fragment_viewpager_dots.removeAllViews();
-                    popup=true;
-                    addDots();
 
-
+                    if (!sharedPrefrences.getProfilePicture(getActivity()).equals("")) {
+                        fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage2_Fragment.class.getName()));
+                        mPagerAdapter.notifyDataSetChanged();
+                        dots.clear();
+                        fragment_viewpager_dots.removeAllViews();
+                        popup = true;
+                        addDots();
+                    } else {
+                        if (!sharedPrefrences.getUpdateProfilePicture(getActivity()).equals("")) {
+                            fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage2_Fragment.class.getName()));
+                            mPagerAdapter.notifyDataSetChanged();
+                            dots.clear();
+                            fragment_viewpager_dots.removeAllViews();
+                            popup = true;
+                            addDots();
+                        }
+                    }
 
 
                 } else if (fragments.size() == 2) {
-
-                    fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage3_Fragment.class.getName()));
-                    mPagerAdapter.notifyDataSetChanged();
-                    dots.clear();
-                    fragment_viewpager_dots.removeAllViews();
-                    popup=true;
-                    addDots();
+                    if (!sharedPrefrences.getProfilePicture1(getActivity()).equals("")) {
+                        fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage3_Fragment.class.getName()));
+                        mPagerAdapter.notifyDataSetChanged();
+                        dots.clear();
+                        fragment_viewpager_dots.removeAllViews();
+                        popup = true;
+                        addDots();
+                    } else {
+                        if (!sharedPrefrences.getUpdateProfilePicture1(getActivity()).equals("")) {
+                            fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage2_Fragment.class.getName()));
+                            mPagerAdapter.notifyDataSetChanged();
+                            dots.clear();
+                            fragment_viewpager_dots.removeAllViews();
+                            popup = true;
+                            addDots();
+                        }
+                    }
 
 
                 }
 
             }
         });
-
-
 
 
 ////////////////////////////////////////Hobbies/////////////////////////////////////////////////////
@@ -557,7 +573,6 @@ boolean popup=false;
         }
 
 
-
         ////////////////////////////////////////////////////////////////////////////////////////////
         fragment_profile_page_edittext_password.addTextChangedListener(new TextWatcher() {
             @Override
@@ -683,20 +698,17 @@ boolean popup=false;
 
     public void addDots() {
 
-        try
-        {
+        try {
 
 
             Log.d("num_pages", "______" + NUM_PAGES);
             Log.d("num_dots", "______" + dots.size());
             for (int i = 0; i < fragments.size(); i++) {
                 ImageView dot = new ImageView(getActivity());
-                if(i==fragment_pager.getCurrentItem())
-                {
+                if (i == fragment_pager.getCurrentItem()) {
 
                     dot.setImageDrawable(getResources().getDrawable(R.drawable.dot1));
-                }else
-                {
+                } else {
                     dot.setImageDrawable(getResources().getDrawable(R.drawable.dot1_active));
                 }
 
@@ -710,27 +722,21 @@ boolean popup=false;
                 Log.d("num_dots2", "______" + dots.size());
 
             }
-            if(popup)
-            {
+            if (popup) {
                 fragment_pager.setCurrentItem(fragment_pager.getCurrentItem() + 1, true);
             }
 
 
-
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
 
 
         fragment_pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                popup=false;
-
-
+                popup = false;
 
 
             }
@@ -744,21 +750,17 @@ boolean popup=false;
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if(popup)
-                {
-                    switch (fragment_pager.getCurrentItem()+1)
-                    {
+                if (popup) {
+                    switch (fragment_pager.getCurrentItem() + 1) {
                         case 2:
-                            if(((MyApplication)getActivity().getApplication()).getUserProfileImage2_fragment()!=null)
-                            {
-                                ((MyApplication)getActivity().getApplication()).getUserProfileImage2_fragment().showImageSelectionAlert();
+                            if (((MyApplication) getActivity().getApplication()).getUserProfileImage2_fragment() != null) {
+                                ((MyApplication) getActivity().getApplication()).getUserProfileImage2_fragment().showImageSelectionAlert();
                             }
 
                             break;
                         case 3:
-                            if(((MyApplication)getActivity().getApplication()).getUserProfileImage3_fragment()!=null)
-                            {
-                                ((MyApplication)getActivity().getApplication()).getUserProfileImage3_fragment().showImageSelectionAlert();
+                            if (((MyApplication) getActivity().getApplication()).getUserProfileImage3_fragment() != null) {
+                                ((MyApplication) getActivity().getApplication()).getUserProfileImage3_fragment().showImageSelectionAlert();
                             }
 
                             break;
@@ -779,8 +781,6 @@ boolean popup=false;
             drawable.setBounds(0, 0, 0, 0);
             dots.get(i).setImageDrawable(drawable);
         }
-
-
 
 
     }
@@ -1140,8 +1140,6 @@ boolean popup=false;
                             sharedPrefrences.setProfilePicture2(getActivity(), image3);
 
 
-
-
                         }
                         fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage1_Fragment.class.getName()));
                         mPagerAdapter = new PagerAdapter(getChildFragmentManager(), fragments);
@@ -1153,12 +1151,10 @@ boolean popup=false;
                         selectDot(fragment_pager.getCurrentItem());
 
 
-
-
                         if (!sharedPrefrences.getProfilePicture1(getActivity()).equals("")) {
                             fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage2_Fragment.class.getName()));
                             mPagerAdapter.notifyDataSetChanged();
-                            NUM_PAGES=2;
+                            NUM_PAGES = 2;
                             dots.clear();
                             fragment_viewpager_dots.removeAllViews();
 
@@ -1169,7 +1165,7 @@ boolean popup=false;
                         if (!sharedPrefrences.getProfilePicture2(getActivity()).equals("")) {
                             fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage3_Fragment.class.getName()));
                             mPagerAdapter.notifyDataSetChanged();
-                            NUM_PAGES=3;
+                            NUM_PAGES = 3;
                             dots.clear();
                             fragment_viewpager_dots.removeAllViews();
 
@@ -1178,15 +1174,12 @@ boolean popup=false;
                         }
 
 
-
-
-
                         if (getActivity() != null) {
                             sharedPrefrences.setPassword(getActivity(), password);
                             String date = date_of_birth;
 //                    String date ="29/07/13";
-                            SimpleDateFormat input = new SimpleDateFormat("dd/MM/yyyy",Locale.US);
-                            SimpleDateFormat output = new SimpleDateFormat("dd / MM / yyyy",Locale.US);
+                            SimpleDateFormat input = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+                            SimpleDateFormat output = new SimpleDateFormat("dd / MM / yyyy", Locale.US);
                             try {
                                 Log.d("tripDate", date);
                                 oneWayTripDate = input.parse(date);                 // parse input
@@ -1197,7 +1190,6 @@ boolean popup=false;
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
-
 
 
                             Log.d("image1", sharedPrefrences.getProfilePicture(getActivity()));
@@ -1225,7 +1217,107 @@ boolean popup=false;
 
     }
 
+    public void addimageSlide() {
+        try {
+            if (fragments != null) {
+                if (fragments.size() == 2) {
 
+
+                    if (fragments.get(1) != null)
+
+
+
+                    if (!sharedPrefrences.getProfileImageBitmap3(getActivity()).equals("")) {
+                        sharedPrefrences.setProfileImageBitmap2(getActivity(), sharedPrefrences.getProfileImageBitmap3(getActivity()));
+                        sharedPrefrences.setProfileImageBitmap3(getActivity(), "");
+                    }
+
+                    if (!sharedPrefrences.getProfileImageBitmap2(getActivity()).equals("")) {
+                        sharedPrefrences.setProfileImageBitmap1(getActivity(), sharedPrefrences.getProfileImageBitmap2(getActivity()));
+                        sharedPrefrences.setProfileImageBitmap2(getActivity(), "");
+                    }
+
+                    if (!sharedPrefrences.getUpdateProfilePicture1(getActivity()).equals("")) {
+                        sharedPrefrences.setUpdateProfilePicture(getActivity(), sharedPrefrences.getUpdateProfilePicture1(getActivity()));
+                        sharedPrefrences.setUpdateProfilePicture1(getActivity(), "");
+                    }
+
+                    if (!sharedPrefrences.getProfilePicture1(getActivity()).equals("")) {
+                        sharedPrefrences.setProfilePicture(getActivity(), sharedPrefrences.getProfilePicture1(getActivity()));
+                        sharedPrefrences.setProfilePicture1(getActivity(), "");
+                    }
+
+
+                    if (!sharedPrefrences.getUpdateProfilePicture2(getActivity()).equals("")) {
+                        sharedPrefrences.setUpdateProfilePicture1(getActivity(), sharedPrefrences.getUpdateProfilePicture2(getActivity()));
+                        sharedPrefrences.setUpdateProfilePicture2(getActivity(), "");
+                    }
+                    if (!sharedPrefrences.getProfilePicture2(getActivity()).equals("")) {
+                        sharedPrefrences.setProfilePicture1(getActivity(), sharedPrefrences.getProfilePicture2(getActivity()));
+                        sharedPrefrences.setProfilePicture2(getActivity(), "");
+                    }
+                    getChildFragmentManager().beginTransaction().remove(fragments.get(1)).commit();
+
+                    fragments.remove(1);
+
+
+                    mPagerAdapter = new PagerAdapter(getChildFragmentManager(), fragments);
+                    fragment_pager.setAdapter(mPagerAdapter);
+                    dots.clear();
+                    fragment_viewpager_dots.removeAllViews();
+                    addDots();
+
+
+                } else if (fragments.size() == 3) {
+                    if (fragments.get(2) != null)
+                        if (!sharedPrefrences.getProfileImageBitmap2(getActivity()).equals("")) {
+                            sharedPrefrences.setProfileImageBitmap1(getActivity(), sharedPrefrences.getProfileImageBitmap2(getActivity()));
+                            sharedPrefrences.setProfileImageBitmap2(getActivity(), "");
+                        }
+
+                    if (!sharedPrefrences.getProfileImageBitmap3(getActivity()).equals("")) {
+                        sharedPrefrences.setProfileImageBitmap2(getActivity(), sharedPrefrences.getProfileImageBitmap3(getActivity()));
+                        sharedPrefrences.setProfileImageBitmap3(getActivity(), "");
+                    }
+
+                    if (!sharedPrefrences.getUpdateProfilePicture1(getActivity()).equals("")) {
+                        sharedPrefrences.setUpdateProfilePicture(getActivity(), sharedPrefrences.getUpdateProfilePicture1(getActivity()));
+                        sharedPrefrences.setUpdateProfilePicture1(getActivity(), "");
+                    }
+
+                    if (!sharedPrefrences.getProfilePicture1(getActivity()).equals("")) {
+                        sharedPrefrences.setProfilePicture(getActivity(), sharedPrefrences.getProfilePicture1(getActivity()));
+                        sharedPrefrences.setProfilePicture1(getActivity(), "");
+                    }
+
+
+                    if (!sharedPrefrences.getUpdateProfilePicture2(getActivity()).equals("")) {
+                        sharedPrefrences.setUpdateProfilePicture1(getActivity(), sharedPrefrences.getUpdateProfilePicture2(getActivity()));
+                        sharedPrefrences.setUpdateProfilePicture1(getActivity(), "");
+                    }
+                    if (!sharedPrefrences.getProfilePicture2(getActivity()).equals("")) {
+                        sharedPrefrences.setProfilePicture1(getActivity(), sharedPrefrences.getProfilePicture2(getActivity()));
+                        sharedPrefrences.setProfilePicture2(getActivity(), "");
+                    }
+                    getChildFragmentManager().beginTransaction().remove(fragments.get(2)).commit();
+
+
+                    fragments.remove(2);
+
+                    mPagerAdapter = new PagerAdapter(getChildFragmentManager(), fragments);
+                    fragment_pager.setAdapter(mPagerAdapter);
+                    dots.clear();
+                    fragment_viewpager_dots.removeAllViews();
+                    addDots();
+
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     private void text_font_typeface() {
         Typeface patron_bold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Patron-Bold.ttf");

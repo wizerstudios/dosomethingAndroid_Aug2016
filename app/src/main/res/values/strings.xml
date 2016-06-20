@@ -88,6 +88,7 @@
     <string name="dosomething_apilink_string_activity">http://mobileapp.dosomethingapp.com/activity?</string>
     <string name="dosomething_apilink_string_apidetails">http://mobileapp.dosomethingapp.com/apidetails?</string>
     <string name="dosomething_apilink_string_blockuser">http://mobileapp.dosomethingapp.com/blockuser?</string>
+    <string name="dosomething_apilink_string_unmatch">http://mobileapp.dosomethingapp.com/cancelrequest?</string>
     <string name="dosomething_apilink_string_deleteconversation">http://mobileapp.dosomethingapp.com/deleteconversation?</string>
     <string name="dosomething_apilink_string_onlinestatus">http://mobileapp.dosomethingapp.com/onlinestatus?</string>
     <string name="dosomething_apilink_string_deleteimage">http://mobileapp.dosomethingapp.com/deleteprofileimage?</string>
@@ -239,7 +240,7 @@
     <string name="Cancel">Cancel</string>
     <string name="dosomething_splashactivity_string_createanaccount">Create an Account</string>
     <string name="dosomething_splashactivity_string_signin">Sign In</string>
-    <string name="account_create_confirmation"><![CDATA[By clicking \"create\", you agree to the \"Terms \n of Use\" and \"Privacy Policy\"]]></string>
+    <string name="account_create_confirmation"><![CDATA[By selecting this you agree to our \"Terms \n of Use\" and \"Privacy Policy\"]]></string>
 
 
     <!--Range Bar section-->

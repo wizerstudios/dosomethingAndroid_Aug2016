@@ -198,6 +198,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/activity_dosomething_chatblock"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -212,7 +213,7 @@
                 android:layout_height="50dp"
                 android:background="@android:color/holo_red_light"
                 android:gravity="center"
-                android:text="Delete"
+                android:text="Unmatch"
                 android:textColor="@color/white" />
 
             <TextView

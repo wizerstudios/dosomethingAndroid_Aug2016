@@ -184,7 +184,6 @@ public class DoSomeThingCreateAccount extends Activity {
 
         accessTokenTracker.startTracking();
         profileTracker.startTracking();
-
         setContentView(R.layout.activity_do_some_thing_create_account);
 //        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         try
@@ -239,11 +238,13 @@ public class DoSomeThingCreateAccount extends Activity {
         create_account_textview_relativelayout_facebook = (RelativeLayout) findViewById(R.id.create_account_textview_relativelayout_facebook);
         dialog = new Dialog(DoSomeThingCreateAccount.this);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.alert_dialog);
         status_textview_availablenow = (TextView) dialog.findViewById(R.id.status_textview_availablenow);
         status_textview_accept_check = (TextView) dialog.findViewById(R.id.status_textview_accept_check);
         progress_bar = new Dialog(DoSomeThingCreateAccount.this);
         progress_bar.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        progress_bar.requestWindowFeature(Window.FEATURE_NO_TITLE);
         progress_bar.setContentView(R.layout.progress_bar);
         ImageView progress_bar_imageview = (ImageView) progress_bar.findViewById(R.id.progress_bar_imageview);
         progress_bar_imageview.setBackgroundResource(R.drawable.progress_drawable);

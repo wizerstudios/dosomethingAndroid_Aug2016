@@ -125,6 +125,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/activity_dosomething_chatperson_Tectview_block"
                     android:textColor="@color/white"
                     android:background="@android:color/darker_gray"
@@ -142,7 +143,7 @@
                     android:gravity="center"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
-                    android:text="Delete"/>
+                    android:text="Unmatch"/>
             </LinearLayout>
         </RelativeLayout>
     </android.support.v7.widget.CardView>

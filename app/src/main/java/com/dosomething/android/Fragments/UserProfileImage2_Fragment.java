@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -146,6 +147,7 @@ public class UserProfileImage2_Fragment extends Fragment {
         user_image_two_imageview_camera_inside=(ImageView)view.findViewById(R.id.user_image_two_imageview_camera_inside);
         dialog = new Dialog(getActivity());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dosomething_alert_imagepickandremove);
 //        dosomething_alert_pick_image_textview = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview);
         dosomething_alert_pick_image_textview_gallery = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_gallery);
@@ -171,7 +173,20 @@ public class UserProfileImage2_Fragment extends Fragment {
             });
         }else
         {
-            dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
+
+            if (!sharedPrefrences.getProfileImageBitmap2(getActivity()).equals(""))
+            {
+                byte[] b = Base64.decode(sharedPrefrences.getProfileImageBitmap2(getActivity()), Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+                Bitmap conv_bm = getCroppedBitmap(bitmap);
+                user_profile_imageview_two.setImageBitmap(conv_bm);
+            }else
+            {
+                dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
+            }
+
+
+
         }
 
         user_image_two_imageview_camera_outside.setOnClickListener(new View.OnClickListener() {
@@ -342,7 +357,18 @@ public class UserProfileImage2_Fragment extends Fragment {
                 dosomething_alert_pick_image_textview_remove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new Imageremoval().execute();
+                        if(!sharedPrefrences.getProfilePicture1(getActivity()).equals(""))
+                        {
+                            new Imageremoval().execute();
+                        }else
+                        {
+                            sharedPrefrences.setProfilePicture1(getActivity(),"");
+                            sharedPrefrences.setUpdateProfilePicture1(getActivity(),"");
+                            sharedPrefrences.setProfileImageBitmap2(getActivity(), "");
+
+//                            ((MyApplication)getActivity().getApplication()).getFragmentProfile().addimageSlide();
+                        }
+
                         dialog.dismiss();
                     }
                 });
@@ -460,6 +486,7 @@ public class UserProfileImage2_Fragment extends Fragment {
 
                             Bitmap conv_bm = getCroppedBitmap(photo);
                             user_profile_imageview_two.setImageBitmap(conv_bm);
+                            dosomething_alert_pick_image_textview_remove.setVisibility(View.VISIBLE);
                             user_image_two_imageview_camera_inside.setVisibility(View.GONE);
                             user_image_two_imageview_camera_outside.setVisibility(View.GONE);
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -538,8 +565,8 @@ public class UserProfileImage2_Fragment extends Fragment {
             cropIntent.putExtra("crop", "true");
             cropIntent.putExtra("aspectX", 1);
             cropIntent.putExtra("aspectY", 1);
-            cropIntent.putExtra("outputX", 1000);
-            cropIntent.putExtra("outputY", 1000);
+            cropIntent.putExtra("outputX", 300);
+            cropIntent.putExtra("outputY", 300);
             cropIntent.putExtra("scale", true);
             cropIntent.putExtra("return-data", true);
 //            cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
@@ -767,6 +794,23 @@ public class UserProfileImage2_Fragment extends Fragment {
                         try {
                             if (json_object.has("deleteprofileimage")) {
                                 if (json_content.getString("status").equalsIgnoreCase("success")) {
+
+
+                                    if (!sharedPrefrences.getProfileImageBitmap3(getActivity()).equals("")) {
+                                        sharedPrefrences.setProfileImageBitmap2(getActivity(), sharedPrefrences.getProfileImageBitmap3(getActivity()));
+                                    }
+
+
+
+                                    if(!sharedPrefrences.getUpdateProfilePicture2(getActivity()).equals(""))
+                                    {
+                                        sharedPrefrences.setUpdateProfilePicture1(getActivity(), sharedPrefrences.getUpdateProfilePicture2(getActivity()));
+                                    }
+
+                                    if(!sharedPrefrences.getProfilePicture2(getActivity()).equals(""))
+                                    {
+                                        sharedPrefrences.setProfilePicture1(getActivity(), sharedPrefrences.getProfilePicture2(getActivity()));
+                                    }
                                     sharedPrefrences.setProfilePicture1(getActivity(), "");
                                     ((DoSomethingStatus) getActivity()).profileRefresh(true);
 

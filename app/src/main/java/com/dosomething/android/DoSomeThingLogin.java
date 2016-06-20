@@ -197,6 +197,7 @@ public class DoSomeThingLogin extends Activity {
 //        com.facebook.Profile.getCurrentProfile();
         Window window = getWindow();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
 // clear FLAG_TRANSLUCENT_STATUS flag:
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -225,6 +226,7 @@ public class DoSomeThingLogin extends Activity {
 
         progress_bar = new Dialog(DoSomeThingLogin.this);
         progress_bar.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        progress_bar.requestWindowFeature(Window.FEATURE_NO_TITLE);
         progress_bar.setContentView(R.layout.progress_bar);
         progress_bar_imageview = (ImageView) progress_bar.findViewById(R.id.progress_bar_imageview);
         progress_bar_imageview.setBackgroundResource(R.drawable.progress_drawable);
@@ -239,6 +241,8 @@ public class DoSomeThingLogin extends Activity {
         login_button_login_back = (Button) findViewById(R.id.login_button_login_back);
         dialog = new Dialog(DoSomeThingLogin.this);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         dialog.setContentView(R.layout.alert_dialog);
         status_textview_availablenow = (TextView) dialog.findViewById(R.id.status_textview_availablenow);
         status_textview_accept_check = (TextView) dialog.findViewById(R.id.status_textview_accept_check);

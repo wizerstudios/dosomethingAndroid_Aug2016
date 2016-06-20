@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -94,7 +95,7 @@ public class UserProfileImage1_Fragment extends Fragment {
     private Dialog dialog;
     private TextView dosomething_alert_pick_image_textview;
     private TextView dosomething_alert_pick_image_textview_gallery;
-    private TextView dosomething_alert_pick_image_textview_camera,dosomething_alert_pick_image_textview_remove;
+    private TextView dosomething_alert_pick_image_textview_camera, dosomething_alert_pick_image_textview_remove;
 
     ProgressBar fragment_profile_page_progressbar_hobbies;
     private String sessionid;
@@ -103,6 +104,15 @@ public class UserProfileImage1_Fragment extends Fragment {
     private String json_string;
     private JSONObject json_object;
     private JSONObject json_content;
+    FragmentProfile fragmentProfile;
+
+    public FragmentProfile getFragmentProfile() {
+        return fragmentProfile;
+    }
+
+    public void setFragmentProfile(FragmentProfile fragmentProfile) {
+        this.fragmentProfile = fragmentProfile;
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -152,13 +162,14 @@ public class UserProfileImage1_Fragment extends Fragment {
         fragment_profile_page_progressbar_hobbies = (ProgressBar) view.findViewById(R.id.fragment_profile_page_progressbar_hobbies);
         dialog = new Dialog(getActivity());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dosomething_alert_imagepickandremove);
 //        dosomething_alert_pick_image_textview = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview);
         dosomething_alert_pick_image_textview_gallery = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_gallery);
         dosomething_alert_pick_image_textview_camera = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_camera);
         dosomething_alert_pick_image_textview_remove = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_remove);
 
-        ((MyApplication)getActivity().getApplication()).setUserProfileImage1_fragment(this);
+        ((MyApplication) getActivity().getApplication()).setUserProfileImage1_fragment(this);
 
         try {
             if (!sharedPrefrences.getProfilePicture(getActivity()).equals("")) {
@@ -180,8 +191,16 @@ public class UserProfileImage1_Fragment extends Fragment {
                     }
                 });
             } else {
-                dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
-                fragment_profile_page_progressbar_hobbies.setVisibility(View.GONE);
+                if (!sharedPrefrences.getProfileImageBitmap1(getActivity()).equals("")) {
+                    byte[] b = Base64.decode(sharedPrefrences.getProfileImageBitmap1(getActivity()), Base64.DEFAULT);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+                    Bitmap conv_bm = getCroppedBitmap(bitmap);
+                    user_profile_imageview_one.setImageBitmap(conv_bm);
+                } else {
+                    dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
+                    fragment_profile_page_progressbar_hobbies.setVisibility(View.GONE);
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -322,7 +341,7 @@ public class UserProfileImage1_Fragment extends Fragment {
     }
 
 
-    public  void showImageSelectionAlert() {
+    public void showImageSelectionAlert() {
         dosomething_alert_pick_image_textview_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -346,11 +365,18 @@ public class UserProfileImage1_Fragment extends Fragment {
         });
 
 
-
         dosomething_alert_pick_image_textview_remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Imageremoval().execute();
+                if (!sharedPrefrences.getProfilePicture(getActivity()).equals("")) {
+                    new Imageremoval().execute();
+                } else {
+                    sharedPrefrences.setProfilePicture(getActivity(),"");
+                    sharedPrefrences.setUpdateProfilePicture(getActivity(),"");
+                    sharedPrefrences.setProfileImageBitmap1(getActivity(), "");
+//                    ((MyApplication)getActivity().getApplication()).getFragmentProfile().addimageSlide();
+                }
+
                 dialog.dismiss();
             }
         });
@@ -419,6 +445,7 @@ public class UserProfileImage1_Fragment extends Fragment {
 
                             Bitmap conv_bm = getCroppedBitmap(photo);
                             user_profile_imageview_one.setImageBitmap(conv_bm);
+                            dosomething_alert_pick_image_textview_remove.setVisibility(View.VISIBLE);
                             user_image_one_imageview_camera_inside.setVisibility(View.GONE);
                             user_image_one_imageview_camera_outside.setVisibility(View.GONE);
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -488,8 +515,8 @@ public class UserProfileImage1_Fragment extends Fragment {
             cropIntent.putExtra("crop", "true");
             cropIntent.putExtra("aspectX", 1);
             cropIntent.putExtra("aspectY", 1);
-            cropIntent.putExtra("outputX", 1000);
-            cropIntent.putExtra("outputY", 1000);
+            cropIntent.putExtra("outputX", 300);
+            cropIntent.putExtra("outputY", 300);
             cropIntent.putExtra("scale", true);
             cropIntent.putExtra("return-data", true);
 //            cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
@@ -704,12 +731,12 @@ public class UserProfileImage1_Fragment extends Fragment {
 
         private Exception error;
         String deleteimageApi;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if(getActivity()!=null)
-            {
-                deleteimageApi=getActivity().getResources().getString(R.string.dosomething_apilink_string_deleteimage);
+            if (getActivity() != null) {
+                deleteimageApi = getActivity().getResources().getString(R.string.dosomething_apilink_string_deleteimage);
             }
 
         }
@@ -736,15 +763,40 @@ public class UserProfileImage1_Fragment extends Fragment {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            try
-            {
+            try {
                 if (aBoolean) {
 
                     if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
                         try {
                             if (json_object.has("deleteprofileimage")) {
                                 if (json_content.getString("status").equalsIgnoreCase("success")) {
-                                    sharedPrefrences.setProfilePicture(getActivity(), "");
+                                    if (!sharedPrefrences.getProfileImageBitmap2(getActivity()).equals("")) {
+                                        sharedPrefrences.setProfileImageBitmap1(getActivity(), sharedPrefrences.getProfileImageBitmap2(getActivity()));
+                                    }
+
+                                    if (!sharedPrefrences.getProfileImageBitmap3(getActivity()).equals("")) {
+                                        sharedPrefrences.setProfileImageBitmap2(getActivity(), sharedPrefrences.getProfileImageBitmap3(getActivity()));
+                                    }
+
+                                    if(!sharedPrefrences.getUpdateProfilePicture1(getActivity()).equals(""))
+                                    {
+                                        sharedPrefrences.setUpdateProfilePicture(getActivity(), sharedPrefrences.getUpdateProfilePicture1(getActivity()));
+                                    }
+
+                                    if(!sharedPrefrences.getProfilePicture1(getActivity()).equals(""))
+                                    {
+                                        sharedPrefrences.setProfilePicture(getActivity(), sharedPrefrences.getProfilePicture1(getActivity()));
+                                    }
+
+
+                                    if(!sharedPrefrences.getUpdateProfilePicture2(getActivity()).equals(""))
+                                    {
+                                        sharedPrefrences.setUpdateProfilePicture1(getActivity(), sharedPrefrences.getUpdateProfilePicture2(getActivity()));
+                                    }
+                                    if(!sharedPrefrences.getProfilePicture2(getActivity()).equals(""))
+                                    {
+                                        sharedPrefrences.setProfilePicture1(getActivity(), sharedPrefrences.getProfilePicture2(getActivity()));
+                                    }
                                     ((DoSomethingStatus) getActivity()).profileRefresh(true);
 
                                 }
@@ -754,13 +806,12 @@ public class UserProfileImage1_Fragment extends Fragment {
                         }
 
                     }
-                }else {
+                } else {
                     if (error != null) {
 
                     }
                 }
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

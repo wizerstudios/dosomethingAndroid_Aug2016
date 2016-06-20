@@ -8,7 +8,6 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -29,7 +28,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dosomething.android.CommonClasses.Jsonfunctions;
 import com.dosomething.android.CommonClasses.NetworkCheck;
@@ -40,7 +38,6 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -81,8 +78,8 @@ public class SplashActivity extends AppCompatActivity
             sharedPrefrences;
     Context context = this;
     ArrayList<String>
-            dummy_hobbies_name,
-            dummy_hobbies_image;
+            dummy_hobbies_name;
+        ArrayList<Integer> dummy_hobbies_image;
     Typeface patron_bold;
     RelativeLayout
             layout_walkthrough_account_create;

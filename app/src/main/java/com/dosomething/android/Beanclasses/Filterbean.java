@@ -6,29 +6,39 @@ import java.util.ArrayList;
 public class Filterbean
     {
     String
-            first_name,
-            last_name,
-            about,
-            gender,
-            age,
-            date_of_birth,
-            image2,
-            image1,
-            image3,
-            online_status,
-            Avilable_now,
-            DoSomething,
-            distance,
-            user_id,
-            imag_inActive,
-            imag_Active,
-            image_name,
-            imag_inActive1,
-            imag_Active1,
-            image_name1,
-            imag_inActive2,
-            imag_Active2,
-            image_name2;
+            first_name;
+        String last_name;
+        String about;
+        String gender;
+        String age;
+        String date_of_birth;
+        String image2;
+        String image1;
+        String image3;
+        String online_status;
+        String Avilable_now;
+        String DoSomething;
+        String distance;
+        String user_id;
+        String imag_inActive;
+        String imag_Active;
+        String image_name;
+        String imag_inActive1;
+        String imag_Active1;
+        String image_name1;
+        String imag_inActive2;
+        String imag_Active2;
+        String image_name2;
+
+        public String getMatched() {
+            return matched;
+        }
+
+        public void setMatched(String matched) {
+            this.matched = matched;
+        }
+
+        String matched;
     ArrayList<HobbiesBean> hobbiesBeans = new ArrayList<>();
     int
             image_id,
@@ -40,7 +50,7 @@ public class Filterbean
         }
 
 
-    public Filterbean(String user_id, String first_name, String last_name, String about, String gender, String age, String date_of_birth, String online_status,String image2, String image1, String image3, String Available_now, String DoSomething, String distance, int image_id, String image_name, String imag_Active, String imag_inActive, int image_id1, String image_name1, String imag_Active1, String imag_inActive1, int image_id2, String image_name2, String imag_Active2, String imag_inActive2, ArrayList<HobbiesBean> hobbiesBeans)
+    public Filterbean(String user_id, String first_name, String last_name, String about, String gender, String age, String date_of_birth, String online_status,String image2, String image1, String image3, String Available_now, String DoSomething, String distance, int image_id, String image_name, String imag_Active, String imag_inActive, int image_id1, String image_name1, String imag_Active1, String imag_inActive1, int image_id2, String image_name2, String imag_Active2, String imag_inActive2, ArrayList<HobbiesBean> hobbiesBeans,String matched)
         {
         this.user_id = user_id;
         this.first_name = first_name;
@@ -69,6 +79,7 @@ public class Filterbean
         this.imag_Active2 = imag_Active2;
         this.imag_inActive2 = imag_inActive2;
         this.hobbiesBeans = hobbiesBeans;
+            this.matched=matched;
         }
 
     public ArrayList<HobbiesBean> getListHobbies()

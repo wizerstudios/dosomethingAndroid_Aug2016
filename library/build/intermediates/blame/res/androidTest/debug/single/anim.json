@@ -1,18 +1,18 @@
 [
     {
-        "merged": "D:\\GITLAB\\dosomething\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_out_to_bottom.xml",
-        "source": "D:\\GITLAB\\dosomething\\library\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_out_to_bottom.xml"
+        "merged": "F:\\GITLAB\\dosomething\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_out_to_top.xml",
+        "source": "F:\\GITLAB\\dosomething\\library\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_out_to_top.xml"
     },
     {
-        "merged": "D:\\GITLAB\\dosomething\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_in_from_bottom.xml",
-        "source": "D:\\GITLAB\\dosomething\\library\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_in_from_bottom.xml"
+        "merged": "F:\\GITLAB\\dosomething\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_in_from_top.xml",
+        "source": "F:\\GITLAB\\dosomething\\library\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_in_from_top.xml"
     },
     {
-        "merged": "D:\\GITLAB\\dosomething\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_out_to_top.xml",
-        "source": "D:\\GITLAB\\dosomething\\library\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_out_to_top.xml"
+        "merged": "F:\\GITLAB\\dosomething\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_out_to_bottom.xml",
+        "source": "F:\\GITLAB\\dosomething\\library\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_out_to_bottom.xml"
     },
     {
-        "merged": "D:\\GITLAB\\dosomething\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_in_from_top.xml",
-        "source": "D:\\GITLAB\\dosomething\\library\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_in_from_top.xml"
+        "merged": "F:\\GITLAB\\dosomething\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\slide_in_from_bottom.xml",
+        "source": "F:\\GITLAB\\dosomething\\library\\build\\intermediates\\bundles\\debug\\res\\anim\\slide_in_from_bottom.xml"
     }
 ]

@@ -113,6 +113,7 @@ public class DoSomethingChatBox extends Fragment {
     private String urlchatHistory = "http://wiztestinghost.com/dosomething/getconversation?";
     private String urlsendchat = "http://wiztestinghost.com/dosomething/sendmessage?";
     private static final String TAG_SESSIONID = "sessionid";
+    private static final String TAG_FRIENDUSERID = "request_send_user_id";
     private static final String TAG_CONVERSATIONID = "conversationId";
     private static final String TAG_RECEIVERID = "message_receiver_id";
     private static final String TAG_MESSAGE = "message";
@@ -1327,15 +1328,28 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
             try {
                 HashMap<String, Object> paramsBlock = new HashMap<>();
                 paramsBlock.put(TAG_SESSIONID, sharedPrefrences.getSessionid(getActivity()));
-                paramsBlock.put(TAG_CONVERSATIONID, sharedPrefrences.getConversationId(getActivity()));
-                json_string = jsonfunctions.postToURL(getActivity().getResources().getString(R.string.dosomething_apilink_string_deleteconversation), paramsBlock);
+                paramsBlock.put(TAG_FRIENDUSERID, sharedPrefrences.getFriendUserId(getActivity()));
+                json_string = jsonfunctions.postToURL(getActivity().getResources().getString(R.string.dosomething_apilink_string_unmatch), paramsBlock);
                 try {
                     json_object = new JSONObject(json_string);
-                    if (json_object.has("deleteconversation")) {
-                        json_content = json_object.getJSONObject("deleteconversation");
-                        if (json_content.getString("status").equalsIgnoreCase("success")) {
-                            blockStatus = "Conversaion has been Cleared";
+                    if (json_object.has("cancelrequest")) {
+
+                        blockStatus=json_object.getString("cancelrequest");
+                        if(!json_object.getString("cancelrequest").equals("null"))
+                        {
+                            json_content = json_object.getJSONObject("cancelrequest");
+                            if(json_content.has("status"))
+                            {
+                                if (json_content.getString("status").equalsIgnoreCase("success")) {
+                                    blockStatus = "Conversaion has been Cleared";
+                                }else if (json_content.getString("status").equalsIgnoreCase("error"))
+                                {
+                                    blockStatus = "error";
+                                }
+                            }
                         }
+
+
                     } else if (json_content.getString("error").equalsIgnoreCase("InvalidSession")) {
                         blockStatus = "InvalidSession";
                     }
@@ -1365,12 +1379,19 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
                     if (getActivity() != null) {
 
                         ((MyApplication) getActivity().getApplication()).getListChatBean().clear();
-                        DoSomethingChatList doSomethingChatList = new DoSomethingChatList();
-                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.detail_fragment, doSomethingChatList);
-                        fragmentTransaction.commit();
+                        ((DoSomethingStatus) getActivity()).clickNearme(true);
+
                     }
 
+
+                    break;
+                case "error":
+                    if (getActivity() != null) {
+
+                        ((MyApplication) getActivity().getApplication()).getListChatBean().clear();
+                        ((DoSomethingStatus) getActivity()).clickNearme(true);
+
+                    }
 
                     break;
                 default:

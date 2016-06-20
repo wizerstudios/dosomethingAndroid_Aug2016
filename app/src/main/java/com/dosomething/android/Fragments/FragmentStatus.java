@@ -2135,6 +2135,11 @@ public class FragmentStatus extends Fragment {
                             MediaPlayer mp = MediaPlayer.create(getActivity(), R.raw.click_one);
 
                             mp.start();
+                            /*if(sharedPrefrences.getSetting_Sound(context).equals("0"))
+                            {
+                                mp.setVolume(0,0);
+                            }*/
+
 
                             switch (position) {
 

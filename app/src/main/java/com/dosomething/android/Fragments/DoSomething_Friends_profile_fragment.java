@@ -57,6 +57,7 @@ import com.dosomething.android.CommonClasses.NetworkCheck;
 import com.dosomething.android.CommonClasses.SharedPrefrences;
 import com.dosomething.android.CommonClasses.TransparentProgressDialog;
 import com.dosomething.android.DoSomeThingLogin;
+import com.dosomething.android.DoSomethingStatus;
 import com.dosomething.android.MyApplication;
 import com.dosomething.android.R;
 import com.google.android.gms.analytics.Tracker;
@@ -202,12 +203,10 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_do_something__friends_profile_fragment, container, false);
-        try
-        {
+        try {
             MyApplication application = (MyApplication) getActivity().getApplication();
             mTracker = application.getDefaultTracker();
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         aQuery = new AQuery(getActivity());
@@ -270,8 +269,7 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
 
         friend_profile_zoom_imageview = (ImageView) view.findViewById(R.id.friend_profile_zoom_imageview);
         profile_page_imageview_gender = (ImageView) view.findViewById(R.id.profile_page_imageview_gender);
-        if(getActivity()!=null)
-        {
+        if (getActivity() != null) {
             ((MyApplication) getActivity().getApplication()).setmDoSomething_Friends_profile_fragment(this);
 
             if (((MyApplication) getActivity().getApplication()).getDoSomethingStatus() != null) {
@@ -315,48 +313,57 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
 
             }*/
 
-                switch (sharedPreferences.getSendRequest(getActivity())) {
+
+                switch (DoSomethingNearMe.usermatched) {
                     case "Yes":
-                        friend_profile_textview_lets_do_something.setTextColor(getResources().getColor(R.color.white));
-                        friend_profile_textview_lets_do_something.setText(getResources().getString(R.string.friend_profile_textview_lets_do_requestsend));
-                        friend_profile_textview_lets_do_something.setBackgroundColor(getResources().getColor(R.color.text_grey));
-                        friend_profile_textview_lets_do_something.setOnClickListener(new View.OnClickListener() {
-
-                            @Override
-
-                            public void onClick(View v) {
-                                ((MyApplication) getActivity().getApplication()).getListFilterBeans().clear();
-                                profile_user_id = sharedPreferences.getFriendUserId(getActivity());
-                                sessionid = sharedPreferences.getSessionid(getActivity());
-                                new SendRequest().execute();
-
-                            }
-
-                        });
+                        friend_profile_textview_lets_do_something.setText("Matched");
 
                         break;
                     case "No":
-                        friend_profile_textview_lets_do_something.setOnClickListener(new View.OnClickListener() {
+                        switch (sharedPreferences.getSendRequest(getActivity())) {
+                            case "Yes":
+                                friend_profile_textview_lets_do_something.setTextColor(getResources().getColor(R.color.white));
+                                friend_profile_textview_lets_do_something.setText(getResources().getString(R.string.friend_profile_textview_lets_do_requestsend));
+                                friend_profile_textview_lets_do_something.setBackgroundColor(getResources().getColor(R.color.text_grey));
+                                friend_profile_textview_lets_do_something.setOnClickListener(new View.OnClickListener() {
 
-                            @Override
+                                    @Override
 
-                            public void onClick(View v) {
-                                ((MyApplication) getActivity().getApplication()).getListFilterBeans().clear();
-                                profile_user_id = sharedPreferences.getFriendUserId(getActivity());
-                                sessionid = sharedPreferences.getSessionid(getActivity());
-                                new SendRequest().execute();
+                                    public void onClick(View v) {
+                                        ((MyApplication) getActivity().getApplication()).getListFilterBeans().clear();
+                                        profile_user_id = sharedPreferences.getFriendUserId(getActivity());
+                                        sessionid = sharedPreferences.getSessionid(getActivity());
+                                        new SendRequest().execute();
 
-                            }
+                                    }
 
-                        });
+                                });
+
+                                break;
+                            case "No":
+                                friend_profile_textview_lets_do_something.setOnClickListener(new View.OnClickListener() {
+
+                                    @Override
+
+                                    public void onClick(View v) {
+                                        ((MyApplication) getActivity().getApplication()).getListFilterBeans().clear();
+                                        profile_user_id = sharedPreferences.getFriendUserId(getActivity());
+                                        sessionid = sharedPreferences.getSessionid(getActivity());
+                                        new SendRequest().execute();
+
+                                    }
+
+                                });
+                                break;
+                        }
                         break;
                 }
+
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if(getActivity()!=null)
-            {
+            if (getActivity() != null) {
                 if (((MyApplication) getActivity().getApplication()).getListHobbies().size() != 0) {
                     CustomGrid hobbiesGrid = new CustomGrid(getActivity(), ((MyApplication) getActivity().getApplication()).getListHobbies());
                     friends_profile_gridview_hobbies.setAdapter(hobbiesGrid);
@@ -615,19 +622,18 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
         friendprofile_relative_image_zoom.setAnimation(animation);
 
 
-
-            aQuery.id(friend_profile_zoom_imageview).image(Url, true, true, 0, 0, new BitmapAjaxCallback() {
-                @Override
-                public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
-                    if (status.getCode() == 200) {
-                        Bitmap resized = Bitmap.createScaledBitmap(bm, bm.getWidth(), bm.getHeight(), true);
+        aQuery.id(friend_profile_zoom_imageview).image(Url, true, true, 0, 0, new BitmapAjaxCallback() {
+            @Override
+            public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
+                if (status.getCode() == 200) {
+                    Bitmap resized = Bitmap.createScaledBitmap(bm, bm.getWidth(), bm.getHeight(), true);
 //                    Bitmap conv_bm = getOvalCroppedBitmap(resized);
-                        iv.setImageBitmap(resized);
+                    iv.setImageBitmap(resized);
 
 
-                    }
                 }
-            });
+            }
+        });
 
 
 //        friend_profile_zoom_imageview.setImageDrawable(Url);
@@ -857,8 +863,6 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
     private void initialisePaging() {
 
 
-
-
         fragments.add(Fragment.instantiate(getActivity(), Friend_Profile_one_fragment.class.getName()));
         this.mPagerAdapter = new PagerAdapter(getChildFragmentManager(), fragments);
 
@@ -869,10 +873,8 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
         dotsLayout.removeAllViews();
 
         addDots();
-        if(getActivity()!=null)
-        {
-            if(!sharedPreferences.getFriendProfilePicture1(getActivity()).equals("")||sharedPreferences.getFriendProfilePicture1(getActivity()).equals("http://mobileapp.dosomethingapp.com//uploads//profile//noimage.png"))
-            {
+        if (getActivity() != null) {
+            if (!sharedPreferences.getFriendProfilePicture1(getActivity()).equals("") || sharedPreferences.getFriendProfilePicture1(getActivity()).equals("http://mobileapp.dosomethingapp.com//uploads//profile//noimage.png")) {
                 fragments.add(Fragment.instantiate(getActivity(), Friend_Profile_two_fragment.class.getName()));
                 this.mPagerAdapter.notifyDataSetChanged();
                 dots.clear();
@@ -880,8 +882,7 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
                 addDots();
             }
 
-            if(!sharedPreferences.getFriendProfilePicture2(getActivity()).equals("")||sharedPreferences.getFriendProfilePicture2(getActivity()).equals("http://mobileapp.dosomethingapp.com//uploads//profile//noimage.png"))
-            {
+            if (!sharedPreferences.getFriendProfilePicture2(getActivity()).equals("") || sharedPreferences.getFriendProfilePicture2(getActivity()).equals("http://mobileapp.dosomethingapp.com//uploads//profile//noimage.png")) {
                 fragments.add(Fragment.instantiate(getActivity(), Friend_Profile_three_fragment.class.getName()));
                 this.mPagerAdapter.notifyDataSetChanged();
                 dots.clear();
@@ -898,18 +899,15 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
     public void addDots() {
 
 
-
         Log.d("num_pages", "______" + NUM_PAGES);
 
         for (int i = 0; i < fragments.size(); i++) {
 
             ImageView dot = new ImageView(getActivity());
 
-            if(i==pager.getCurrentItem())
-            {
+            if (i == pager.getCurrentItem()) {
                 dot.setImageDrawable(getResources().getDrawable(R.drawable.dot1));
-            }else
-            {
+            } else {
                 dot.setImageDrawable(getResources().getDrawable(R.drawable.dot1_active));
             }
 
@@ -1632,6 +1630,14 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
 
 
     private class SendRequest extends AsyncTask<Void, Void, Void> {
+        String status;
+
+        private String Name;
+        private String image1;
+        private String UserId = "0";
+        Exception error;
+        String sendRequestApi;
+        private String ConversaionId = "0";
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -1672,23 +1678,53 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
                         if (json_content.getString("status").equalsIgnoreCase("success")) {
                             progress_bar.dismiss();
                             splashAnimation.stop();
-                            if(json_content.getString("Message").equalsIgnoreCase("Request send successfully"))
-                            {
+                            if (json_content.getString("Message").equalsIgnoreCase("Request send successfully")) {
+
+
+
+
+                                if (json_content.has("Conversaion")) {
+                                    if (!json_content.get("Conversaion").equals("0")) {
+                                        DoSomethingNearMe.conversation_matched = "match";
+                                        JSONObject sendrequest = json_content.getJSONObject("Conversaion");
+                                        if (sendrequest.has("id")) {
+                                            ConversaionId = sendrequest.getString("id");
+                                            UserId = sendrequest.getString("UserId");
+                                            Name = sendrequest.getString("Name");
+                                            DoSomethingNearMe.image1 = sendrequest.getString("image1");
+                                            sharedPreferences.setConversationId(getActivity(), ConversaionId);
+                                            sharedPreferences.setFriendUserId(getActivity(), UserId);
+                                            sharedPreferences.setFriendFirstname(getActivity(), Name);
+                                            if (getActivity() != null) {
+                                                ((MyApplication) getActivity().getApplication()).getListFilterBeans().clear();
+                                                ((DoSomethingStatus) getActivity()).clickNearme(true);
+
+                                            }
+
+                                        }
+                                    } else {
+                                        DoSomethingNearMe.conversation_matched = "0";
+                                    }
+
+                                } else {
+                                    DoSomethingNearMe.conversation_matched = "0";
+                                }
+
+
+
 
                                 friend_profile_textview_lets_do_something.setTextColor(getResources().getColor(R.color.white));
 
                                 friend_profile_textview_lets_do_something.setText(getResources().getString(R.string.friend_profile_textview_lets_do_requestsend));
 
                                 friend_profile_textview_lets_do_something.setBackgroundColor(getResources().getColor(R.color.text_grey));
-                            }else if(json_content.getString("Message").equalsIgnoreCase("Request Canceled successfully"))
-                            {
+                            } else if (json_content.getString("Message").equalsIgnoreCase("Request Canceled successfully")) {
                                 friend_profile_textview_lets_do_something.setTextColor(getResources().getColor(R.color.white));
 
                                 friend_profile_textview_lets_do_something.setText(getResources().getString(R.string.friend_profile_textview_lets_do_something));
 
                                 friend_profile_textview_lets_do_something.setBackgroundColor(getResources().getColor(R.color.red));
                             }
-
 
 
                         } else if (json_content.getString("status").equalsIgnoreCase("failed")) {
@@ -1713,7 +1749,6 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
 
         }
     }
-
 
 
     class AutoSlider extends TimerTask {

@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -98,6 +99,7 @@ public class Profile_image_one_fragment extends android.support.v4.app.Fragment 
         aQuery = new AQuery(getActivity());
         dialog = new Dialog(getActivity());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dosomething_alert_imagepickandremove);
 //        dosomething_alert_pick_image_textview = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview);
         dosomething_alert_pick_image_textview_gallery = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_gallery);
@@ -138,7 +140,7 @@ public class Profile_image_one_fragment extends android.support.v4.app.Fragment 
                 }else
                 {
                     if(sharedPrefrences.getProfilePicture(getActivity()).equals(""))
-                    dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
+                        dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
                 }
             }
         } catch (Exception e) {
@@ -214,13 +216,16 @@ public class Profile_image_one_fragment extends android.support.v4.app.Fragment 
         dosomething_alert_pick_image_textview_remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 profile_image_one_page_imageview_profile_image.setImageResource(R.drawable.profile_noimg);
                 profile_image_one_imageview_camera_inside.setVisibility(View.GONE);
                 profile_image_one_imageview_camera_outside.setVisibility(View.GONE);
                 dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
+                sharedPrefrences.setProfilePicture(getActivity(), "");
                 sharedPrefrences.setFBProfilePicture(getActivity(), "");
                 sharedPrefrences.setProfileImageBitmap1(getActivity(), "");
-                sharedPrefrences.setProfilePicture(getActivity(), "");
+
+                ((DoSomethingprofile)getActivity()).addimageSlide();
                 dialog.dismiss();
 
             }
@@ -278,7 +283,7 @@ public class Profile_image_one_fragment extends android.support.v4.app.Fragment 
             case PICK_FROM_CAMERA:
 
 
-                    cropCapturedImage();
+                cropCapturedImage();
 
 
                 break;
@@ -655,8 +660,8 @@ public class Profile_image_one_fragment extends android.support.v4.app.Fragment 
             cropIntent.putExtra("crop", "true");
             cropIntent.putExtra("aspectX", 1);
             cropIntent.putExtra("aspectY", 1);
-            cropIntent.putExtra("outputX", 1000);
-            cropIntent.putExtra("outputY", 1000);
+            cropIntent.putExtra("outputX", 300);
+            cropIntent.putExtra("outputY", 300);
             cropIntent.putExtra("scale", true);
             cropIntent.putExtra("return-data", true);
 //            cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);

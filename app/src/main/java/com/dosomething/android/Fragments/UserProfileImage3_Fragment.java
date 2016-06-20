@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -135,19 +136,20 @@ public class UserProfileImage3_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view=inflater.inflate(R.layout.fragment_user_profile_image3, container, false);
-        sharedPrefrences=new SharedPrefrences();
-        aQuery=new AQuery(getActivity());
+        View view = inflater.inflate(R.layout.fragment_user_profile_image3, container, false);
+        sharedPrefrences = new SharedPrefrences();
+        aQuery = new AQuery(getActivity());
         jsonfunctions = new Jsonfunctions(getActivity());
         sessionid = sharedPrefrences.getSessionid(getActivity());
         field = "image3";
-        user_profile_imageview_three=(ImageView)view.findViewById(R.id.user_profile_imageview_three);
-        user_image_three_imageview_camera_outside=(ImageView)view.findViewById(R.id.user_image_three_imageview_camera_outside);
-        user_image_three_imageview_camera_inside=(ImageView)view.findViewById(R.id.user_image_three_imageview_camera_inside);
+        user_profile_imageview_three = (ImageView) view.findViewById(R.id.user_profile_imageview_three);
+        user_image_three_imageview_camera_outside = (ImageView) view.findViewById(R.id.user_image_three_imageview_camera_outside);
+        user_image_three_imageview_camera_inside = (ImageView) view.findViewById(R.id.user_image_three_imageview_camera_inside);
 
 
         dialog = new Dialog(getActivity());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dosomething_alert_imagepickandremove);
 //        dosomething_alert_pick_image_textview = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview);
         dosomething_alert_pick_image_textview_gallery = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_gallery);
@@ -155,7 +157,7 @@ public class UserProfileImage3_Fragment extends Fragment {
 
         dosomething_alert_pick_image_textview_remove = (TextView) dialog.findViewById(R.id.dosomething_alert_pick_image_textview_remove);
 
-        ((MyApplication)getActivity().getApplication()).setUserProfileImage3_fragment(this);
+        ((MyApplication) getActivity().getApplication()).setUserProfileImage3_fragment(this);
         if (!sharedPrefrences.getProfilePicture2(getActivity()).equals("")) {
 //            LoadImageFromURL loadImage = new LoadImageFromURL();
 //            loadImage.execute();
@@ -173,14 +175,23 @@ public class UserProfileImage3_Fragment extends Fragment {
                     }
                 }
             });
-        }else
-        {
-            dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
+        } else {
+            if (!sharedPrefrences.getProfileImageBitmap3(getActivity()).equals(""))
+            {
+                byte[] b = Base64.decode(sharedPrefrences.getProfileImageBitmap3(getActivity()), Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+                Bitmap conv_bm = getCroppedBitmap(bitmap);
+                user_profile_imageview_three.setImageBitmap(conv_bm);
+            }else
+            {
+                dosomething_alert_pick_image_textview_remove.setVisibility(View.GONE);
+            }
+
         }
         user_image_three_imageview_camera_outside.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               showImageSelectionAlert();
+                showImageSelectionAlert();
                 /*android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getActivity());
                 builder.setTitle("Choose Image");
                 builder.setMessage("Do you want to go with?");
@@ -245,7 +256,7 @@ public class UserProfileImage3_Fragment extends Fragment {
         user_profile_imageview_three.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               showImageSelectionAlert();
+                showImageSelectionAlert();
                 /*android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getActivity());
                 builder.setTitle("Choose Image");
                 builder.setMessage("Do you want to go with?");
@@ -312,12 +323,11 @@ public class UserProfileImage3_Fragment extends Fragment {
     }
 
 
-    public void OnClickListener(){
+    public void OnClickListener() {
         user_profile_imageview_three.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getActivity()!=null)
-                {
+                if (getActivity() != null) {
                     if (((MyApplication) getActivity().getApplication()).getmDoSomething_Friends_profile_fragment() != null) {
                         ((MyApplication) getActivity().getApplication()).getmDoSomething_Friends_profile_fragment().showImage(sharedPrefrences.getProfilePicture2(getActivity()));
                     }
@@ -328,8 +338,7 @@ public class UserProfileImage3_Fragment extends Fragment {
     }
 
 
-    public void showImageSelectionAlert()
-    {
+    public void showImageSelectionAlert() {
         dosomething_alert_pick_image_textview_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -354,12 +363,21 @@ public class UserProfileImage3_Fragment extends Fragment {
         });
 
 
-
-
         dosomething_alert_pick_image_textview_remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Imageremoval().execute();
+                if (!sharedPrefrences.getProfilePicture2(getActivity()).equals(""))
+
+                {
+                    new Imageremoval().execute();
+                }else
+                {
+                    sharedPrefrences.setProfilePicture2(getActivity(),"");
+                    sharedPrefrences.setUpdateProfilePicture2(getActivity(),"");
+                    sharedPrefrences.setProfileImageBitmap3(getActivity(),"");
+//                    ((MyApplication)getActivity().getApplication()).getFragmentProfile().addimageSlide();
+                }
+
                 dialog.dismiss();
             }
         });
@@ -386,6 +404,7 @@ public class UserProfileImage3_Fragment extends Fragment {
     public interface User_profile_image_viewpager_dots_three {
         public void user_profile_Image_three();
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -429,10 +448,6 @@ public class UserProfileImage3_Fragment extends Fragment {
 //        }
 
 
-
-
-
-
         if (resultCode != Activity.RESULT_OK) return;
 
         switch (requestCode) {
@@ -450,10 +465,8 @@ public class UserProfileImage3_Fragment extends Fragment {
 
             case CROP_FROM_CAMERA:
                 Bundle extras = data.getExtras();
-                try
-                {
-                    if(getActivity()!=null)
-                    {
+                try {
+                    if (getActivity() != null) {
                         if (extras != null) {
                             Bitmap photo = extras.getParcelable("data");
                             Bitmap resized = Bitmap.createScaledBitmap(photo, 540, 540, true);
@@ -461,6 +474,7 @@ public class UserProfileImage3_Fragment extends Fragment {
                             Bitmap conv_bm = getCroppedBitmap(photo);
 
                             user_profile_imageview_three.setImageBitmap(conv_bm);
+                            dosomething_alert_pick_image_textview_remove.setVisibility(View.VISIBLE);
                             user_image_three_imageview_camera_inside.setVisibility(View.GONE);
                             user_image_three_imageview_camera_outside.setVisibility(View.GONE);
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -481,8 +495,6 @@ public class UserProfileImage3_Fragment extends Fragment {
                             sharedPrefrences.setBooleam(getActivity(), "true");
 
 
-
-
                         }
 
                         File f = new File(mImageCaptureUri.getPath());
@@ -491,8 +503,7 @@ public class UserProfileImage3_Fragment extends Fragment {
                     }
 
 
-                }catch (Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -502,18 +513,7 @@ public class UserProfileImage3_Fragment extends Fragment {
         }
 
 
-
-
-
-
-
-
     }
-
-
-
-
-
 
 
     public Bitmap getCroppedBitmap(Bitmap bitmap) {
@@ -544,8 +544,8 @@ public class UserProfileImage3_Fragment extends Fragment {
             cropIntent.putExtra("crop", "true");
             cropIntent.putExtra("aspectX", 1);
             cropIntent.putExtra("aspectY", 1);
-            cropIntent.putExtra("outputX", 1000);
-            cropIntent.putExtra("outputY", 1000);
+            cropIntent.putExtra("outputX", 300);
+            cropIntent.putExtra("outputY", 300);
             cropIntent.putExtra("scale", true);
             cropIntent.putExtra("return-data", true);
 //            cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
@@ -555,7 +555,6 @@ public class UserProfileImage3_Fragment extends Fragment {
             e.printStackTrace();
         }
     }
-
 
 
     private void doCrop() {
@@ -632,30 +631,12 @@ public class UserProfileImage3_Fragment extends Fragment {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private String getPath(Uri uri, Activity activity) {
         Cursor cursor = null;
-        int column_index = 0 ;
+        int column_index = 0;
         try {
-            String[] projection = { MediaStore.Images.Media.DATA };
-            Log.d("projection====",""+projection);
+            String[] projection = {MediaStore.Images.Media.DATA};
+            Log.d("projection====", "" + projection);
             cursor = activity.managedQuery(uri, projection, null, null, null);
             column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
@@ -673,6 +654,7 @@ public class UserProfileImage3_Fragment extends Fragment {
 
         return Uri.parse(path);
     }
+
     public static Bitmap getRoundedRectanguleBitmap(Bitmap bitmap, int pixels) {
         Bitmap result = null;
         try {
@@ -692,6 +674,7 @@ public class UserProfileImage3_Fragment extends Fragment {
         }
         return result;
     }
+
     public class LoadImageFromURL extends AsyncTask<String, Void, Bitmap> {
 
         @Override
@@ -700,8 +683,7 @@ public class UserProfileImage3_Fragment extends Fragment {
 
             try {
 
-                if(getActivity()!=null)
-                {
+                if (getActivity() != null) {
                     URL url = new URL(sharedPrefrences.getProfilePicture2(getActivity()));
                     Log.d("image1", sharedPrefrences.getProfilePicture2(getActivity()));
 
@@ -740,13 +722,13 @@ public class UserProfileImage3_Fragment extends Fragment {
     private class Imageremoval extends AsyncTask<Void, Void, Boolean> {
 
         private Exception error;
-String deleteimageApi;
+        String deleteimageApi;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if(getActivity()!=null)
-            {
-                deleteimageApi=getActivity().getResources().getString(R.string.dosomething_apilink_string_deleteimage);
+            if (getActivity() != null) {
+                deleteimageApi = getActivity().getResources().getString(R.string.dosomething_apilink_string_deleteimage);
             }
 
         }
@@ -773,8 +755,7 @@ String deleteimageApi;
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            try
-            {
+            try {
                 if (aBoolean) {
 
                     if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
@@ -796,8 +777,7 @@ String deleteimageApi;
                         }
                     }
                 }
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

@@ -43,6 +43,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MyService extends Service implements LocationListener,
@@ -93,8 +94,7 @@ public class MyService extends Service implements LocationListener,
     public void message() {
         Log.d("service", "////////////" + "SERVICE");
         final LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-        } else {
+        if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             location_update();
 
             if (isNetworkAvailable()) {
@@ -174,13 +174,18 @@ public class MyService extends Service implements LocationListener,
 
         AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 
-        if (sharedPrefrences.getSetting_Sound(context).equals("1")) {
-            audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 
-        } else if (sharedPrefrences.getSetting_Sound(context).equals("0")) {
-            audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+        /*if(audioManager.getRingerMode()==AudioManager.RINGER_MODE_NORMAL)
+        {
+            if (sharedPrefrences.getSetting_Sound(context).equals("1")) {
+                audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 
+            } else if (sharedPrefrences.getSetting_Sound(context).equals("0")) {
+                audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+
+            }
         }
+       */
 
        /* if(sharedPrefrences.getNotifySound(context).equals("Yes"))
         {
@@ -267,7 +272,7 @@ public class MyService extends Service implements LocationListener,
 
     private void location_update() {
         SimpleDateFormat dateFormat;
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
         if (currentLocation != null) {
             sessionid = sharedPrefrences.getSessionid(context);
 
@@ -501,12 +506,16 @@ public class MyService extends Service implements LocationListener,
                     try {
                         if (json_object_updateposition.has("onlinestatus")) {
 
-                            if (json_content_updateposition.getString("status").equalsIgnoreCase("success")) {
+                            if(json_object_updateposition.getString("onlinestatus").equals("0"))
+                            {
+                                if (json_content_updateposition.getString("status").equalsIgnoreCase("success")) {
 
-                            } else if (json_content_updateposition.getString("status").equalsIgnoreCase("InvalidSession")) {
+                                } else if (json_content_updateposition.getString("status").equalsIgnoreCase("InvalidSession")) {
 
 
+                                }
                             }
+
                         } else if (json_object_updateposition.getString("error").equalsIgnoreCase("InvalidSession")) {
 
                         }

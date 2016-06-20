@@ -3,7 +3,6 @@ package com.dosomething.android.Fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -32,9 +31,9 @@ import com.dosomething.android.Database.DBAdapter;
 import com.dosomething.android.DoSomethingPrivacyPolicy;
 import com.dosomething.android.DoSomethingStatus;
 import com.dosomething.android.DoSomethingTermsofUse;
-import com.dosomething.android.SplashActivity;
 import com.dosomething.android.MyApplication;
 import com.dosomething.android.R;
+import com.dosomething.android.SplashActivity;
 import com.google.android.gms.analytics.Tracker;
 
 import org.json.JSONException;
@@ -42,8 +41,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static android.content.Context.AUDIO_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -178,11 +175,11 @@ public class FragmentSettings extends Fragment {
         text_font_typeface();
 
 
-        AudioManager audioManager = (AudioManager) getActivity().getSystemService(AUDIO_SERVICE);
+        /*AudioManager audioManager = (AudioManager) getActivity().getSystemService(AUDIO_SERVICE);
 
         audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
 
-        audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+        audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);*/
 
 
         if (getActivity() != null) {
@@ -435,6 +432,9 @@ public class FragmentSettings extends Fragment {
                 sharedPrefrences.setProfileImageBitmap1(getActivity(), "");
                 sharedPrefrences.setProfileImageBitmap2(getActivity(), "");
                 sharedPrefrences.setProfileImageBitmap3(getActivity(), "");
+                sharedPrefrences.setUpdateProfilePicture(getActivity(), "");
+                sharedPrefrences.setUpdateProfilePicture1(getActivity(), "");
+                sharedPrefrences.setUpdateProfilePicture2(getActivity(), "");
                 sharedPrefrences.setFBProfilePicture(getActivity(), "");
                 sharedPrefrences.setAbout(getActivity(), "");
                 sharedPrefrences.setHobbies(getActivity(), "");
@@ -478,7 +478,9 @@ public class FragmentSettings extends Fragment {
                 Intent intent = new Intent(getActivity(), SplashActivity.class);
                 startActivity(intent);
                 getActivity().finish();
-
+                sharedPrefrences.setUpdateProfilePicture(getActivity(), "");
+                sharedPrefrences.setUpdateProfilePicture1(getActivity(), "");
+                sharedPrefrences.setUpdateProfilePicture2(getActivity(), "");
                 sharedPrefrences.setLogin(getActivity(), "");
                 sharedPrefrences.setDateofBirth(getActivity(), "");
                 sharedPrefrences.setFirstname(getActivity(), "");

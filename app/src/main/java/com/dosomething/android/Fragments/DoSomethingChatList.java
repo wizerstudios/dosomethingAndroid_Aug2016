@@ -77,6 +77,7 @@ public class DoSomethingChatList extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private static final String TAG_SESSIONID = "sessionid";
     private static final String TAG_CONVERSATIONID = "conversationId";
+    private static final String TAG_FRIENDUSERID = "request_send_user_id";
     private static final String TAG_TIME = "datetime";
     private static String urlchatHistory = "http://wiztestinghost.com/dosomething/getchathistory?";
 
@@ -1206,7 +1207,7 @@ try
         protected void onPreExecute() {
             super.onPreExecute();
             if (getActivity() != null) {
-                deleteConversation_Api_url = getActivity().getResources().getString(R.string.dosomething_apilink_string_deleteconversation);
+                deleteConversation_Api_url = getActivity().getResources().getString(R.string.dosomething_apilink_string_unmatch);
             }
 
         }
@@ -1216,13 +1217,16 @@ try
             try {
                 HashMap<String, Object> paramsBlock = new HashMap<>();
                 paramsBlock.put(TAG_SESSIONID, sharedPrefrences.getSessionid(getActivity()));
-                paramsBlock.put(TAG_CONVERSATIONID, sharedPrefrences.getConversationId(getActivity()));
+                paramsBlock.put(TAG_FRIENDUSERID, sharedPrefrences.getFriendUserId(getActivity()));
                 json_string = jsonfunctions.postToURL(deleteConversation_Api_url, paramsBlock);
                 try {
                     json_object = new JSONObject(json_string);
-                    if (json_object.has("deleteconversation")) {
-                        json_content = json_object.getJSONObject("deleteconversation");
+                    if (json_object.has("cancelrequest")) {
+                        json_content = json_object.getJSONObject("cancelrequest");
                         if (json_content.getString("status").equalsIgnoreCase("success")) {
+                            blockStatus = "Conversaion has been Cleared";
+                        }else if (json_content.getString("status").equalsIgnoreCase("error"))
+                        {
                             blockStatus = "Conversaion has been Cleared";
                         }
                     }
@@ -1243,12 +1247,12 @@ try
             super.onPostExecute(aVoid);
             switch (blockStatus) {
                 case "Conversaion has been Cleared":
-
-                    if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
+                    ((MyApplication) getActivity().getApplication()).getListChatBean().clear();
+                    ((DoSomethingStatus) getActivity()).clickNearme(true);
+                    /*if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
                         new ChatHistory().execute();
-                    }
 
-
+                    }*/
                     break;
             }
         }

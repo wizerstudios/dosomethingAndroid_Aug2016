@@ -36,7 +36,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     private String push_type = "";
     SharedPrefrences sharedPrefrences = new SharedPrefrences();
     private String senderId = "";
-
+    public static final String RECIEVING_REQUEST = "request_received";
     public GCMIntentService() {
         super();
     }
@@ -107,6 +107,10 @@ public class GCMIntentService extends GCMBaseIntentService {
                         String part = parts[6];
                         sharedPrefrences.setFriendFirstname(context, part);
 
+//                        ((DoSomethingStatus) context).clickNearme(true);
+                        broadCast(RECIEVING_REQUEST);
+
+
                     }
 
                 }
@@ -175,6 +179,18 @@ public class GCMIntentService extends GCMBaseIntentService {
         }
 
     }
+
+    private void broadCast(String recieverAction) {
+        try {
+            Log.d("Sending bradcast::::", "::::" + recieverAction);
+            Intent broadcastIntent = new Intent();
+            broadcastIntent.setAction(recieverAction);
+            sendBroadcast(broadcastIntent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     protected void onRegistered(final Context context, final String regId) {
