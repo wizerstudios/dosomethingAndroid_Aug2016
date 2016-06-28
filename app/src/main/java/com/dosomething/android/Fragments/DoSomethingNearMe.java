@@ -1450,6 +1450,10 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                                                                                       sharedPreferences.setFriendAbout(getActivity(), filterr_list.get(position).getabout());
                                                                                                       sharedPreferences.setFriendGender(getActivity(), filterr_list.get(position).getgender());
                                                                                                       sharedPreferences.setSendRequest(getActivity(), filterr_list.get(position).getDoSomething());
+                                                                                                      SharedPrefrences.clearDosomethingitems(getActivity());
+                                                                                                      SharedPrefrences.setDosomethingItem(getActivity(), filterr_list.get(position).getDosomething_beans());
+                                                                                                      SharedPrefrences.clearHobbiesitems(getActivity());
+                                                                                                      SharedPrefrences.setHobbiesItem(getActivity(), filterr_list.get(position).getListHobbies());
                                                                                                       sessionid = sharedPreferences.getSessionid(getActivity());
                                                                                                       profile_user_id = sharedPreferences.getFriendUserId(getActivity());
                                                                                                       if (!click_action) {
@@ -2098,7 +2102,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
 
                             }
 
-                            filter_list.add(new Filterbean(user_id, first_name, last_name, about, gender, age, date_of_birth, online_status, image2, image1, image3, available_now, send_request, distance, id, name, Image, ActiveImage, id1, name1, Image1, ActiveImage1, id2, name2, Image2, ActiveImage2, hobbiesBeans, matched));
+                            filter_list.add(new Filterbean(user_id, first_name, last_name, about, gender, age, date_of_birth, online_status, image2, image1, image3, available_now, send_request, distance, id, name, Image, ActiveImage, id1, name1, Image1, ActiveImage1, id2, name2, Image2, ActiveImage2, hobbiesBeans, matched,dosomething_beans));
 
                             Log.d("BEAN", "GHGHGH" + filter_list.get(i).getDoSomething());
                             Log.d("BEAN", "GHGHGH" + filter_list.get(i).getonline_status());
@@ -2222,7 +2226,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
 
 
 
-                                                                   }
+                                }
 
 
                             } catch (ArrayIndexOutOfBoundsException e) {
@@ -2910,50 +2914,19 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                             Log.d("BEAN", "GHGHGH" + image1);
 
 
-//                            Log.v("SessionId =======>", SessionId);
 
-//                            finish();
-
-//if(json_content.getString("Message").equalsIgnoreCase("Registred Successfully"))
-
-//{
-
-// }else
-
-//{
-
-
-//    JSONArray sportsArray = json_content.getJSONArray("userDetails");
-
-//    JSONObject firstSport = sportsArray.getJSONObject(0);
-
-//    String SessionId = firstSport.getString("SessionId");
-
-//    sharedPreferences.setSessionid(context, SessionId);
-
-//    Log.v("SessionId =======>", SessionId);
-
-//    Intent i = new Intent(DoSomeThingCreateAccount.this, DoSomethingStatus.class);
-
-//    startActivity(i);
-
-//    finish();
-
-//}
-
-//
 
                         } else if (json_content.getString("status").equalsIgnoreCase("failed")) {
 
                             Toast.makeText(getActivity().getApplicationContext(), "FAILED", Toast.LENGTH_LONG);
 
-//                            pDialog.dismiss();
+
 
                         } else if (json_content.getString("status").equalsIgnoreCase("error")) {
 
                             Toast.makeText(getActivity().getApplicationContext(), "ERROR", Toast.LENGTH_LONG);
 
-//                            pDialog.dismiss();
+
 
                         }
 

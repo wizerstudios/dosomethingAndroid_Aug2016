@@ -21,6 +21,7 @@
                 android:clickable="true">
 
                 <LinearLayout
+                    android:id="@+id/activity_dosomething_profile_view_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="8dp"

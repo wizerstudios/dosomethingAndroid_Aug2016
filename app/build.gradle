@@ -78,5 +78,5 @@ dependencies {
     compile('org.apache.httpcomponents:httpmime:4.2.4') {
         exclude module: 'httpclient'
     }
-
+    compile 'com.daimajia.swipelayout:library:1.2.0@aar'
 }

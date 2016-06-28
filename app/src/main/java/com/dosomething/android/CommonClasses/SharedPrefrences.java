@@ -5,6 +5,20 @@ import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
+import com.dosomething.android.Beanclasses.Dosomething_Bean;
+import com.dosomething.android.Beanclasses.HobbiesBean;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import biz.source_code.base64Coder.Base64Coder;
+
 /**
  * Created by hi on 10/13/2015.
  */
@@ -2081,6 +2095,144 @@ public class SharedPrefrences {
         text = settings.getString(ProfilePicture2, "");
 
         return text;
+    }
+
+
+    public static void setDosomethingItem(Context context, ArrayList<Dosomething_Bean> cartList){
+        HashMap<String, Dosomething_Bean> webMap = new HashMap<String, Dosomething_Bean>();
+        for(int i = 0; i< cartList.size() ; i++){
+            webMap.put(""+ i, (Dosomething_Bean)cartList.get(i));
+        }
+        SharedPreferences preferences;
+        preferences = context.getSharedPreferences("CART", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        for (String s : webMap.keySet()) {
+            try {
+                editor.putString(s, toStringTopic(webMap.get(s)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        editor.apply();
+    }
+
+    public static void clearDosomethingitems(Context context){
+        SharedPreferences preferences;
+        preferences = context.getSharedPreferences("CART", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    public static ArrayList<Dosomething_Bean> getDosomethingitems(Context context){
+        HashMap <String, Dosomething_Bean> map =  new HashMap <String, Dosomething_Bean>();
+        ArrayList<Dosomething_Bean> websiteList =  new ArrayList<Dosomething_Bean>();
+        SharedPreferences preferences;
+        preferences = context.getSharedPreferences("CART", Context.MODE_PRIVATE);
+//        Fireplace.d("getHomeTopics", "--------" + preferences.getAll().keySet());
+        for (String key : preferences.getAll().keySet()) {
+            try {
+                map.put(key, (Dosomething_Bean)fromStringTopic(preferences.getString(key, null)));
+                websiteList.add(/*Integer.parseInt(key), */(Dosomething_Bean) fromStringTopic(preferences.getString(key, null)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return websiteList;
+    }
+
+
+
+    public static String toStringTopic( Serializable o ) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream( baos );
+        oos.writeObject(o);
+        oos.close();
+        return new String( Base64Coder.encode(baos.toByteArray()) );
+    }
+
+
+    /** Read the object from Base64 string. */
+    public static Dosomething_Bean fromStringTopic( String s ) throws IOException ,
+            ClassNotFoundException {
+        byte [] data = Base64Coder.decode(s);
+        ObjectInputStream ois = new ObjectInputStream( new ByteArrayInputStream(  data ) );
+        Object o  = ois.readObject();
+        ois.close();
+        return (Dosomething_Bean) o;
+    }
+
+
+
+
+
+
+    public static void setHobbiesItem(Context context, ArrayList<HobbiesBean> cartList){
+        HashMap<String, HobbiesBean> webMap = new HashMap<String, HobbiesBean>();
+        for(int i = 0; i< cartList.size() ; i++){
+            webMap.put(""+ i, (HobbiesBean)cartList.get(i));
+        }
+        SharedPreferences preferences;
+        preferences = context.getSharedPreferences("CART", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        for (String s : webMap.keySet()) {
+            try {
+                editor.putString(s, toHobbiesStringTopic(webMap.get(s)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        editor.apply();
+    }
+
+    public static void clearHobbiesitems(Context context){
+        SharedPreferences preferences;
+        preferences = context.getSharedPreferences("CART", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+    }
+
+    public static ArrayList<HobbiesBean> getHobbiesitems(Context context){
+        HashMap <String, HobbiesBean> map =  new HashMap <String, HobbiesBean>();
+        ArrayList<HobbiesBean> websiteList =  new ArrayList<HobbiesBean>();
+        SharedPreferences preferences;
+        preferences = context.getSharedPreferences("CART", Context.MODE_PRIVATE);
+//        Fireplace.d("getHomeTopics", "--------" + preferences.getAll().keySet());
+        for (String key : preferences.getAll().keySet()) {
+            try {
+                map.put(key, (HobbiesBean)fromHobbiesStringTopic(preferences.getString(key, null)));
+                websiteList.add(/*Integer.parseInt(key), */(HobbiesBean) fromHobbiesStringTopic(preferences.getString(key, null)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return websiteList;
+    }
+
+
+
+    public static String toHobbiesStringTopic( Serializable o ) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream( baos );
+        oos.writeObject(o);
+        oos.close();
+        return new String( Base64Coder.encode(baos.toByteArray()) );
+    }
+
+
+    /** Read the object from Base64 string. */
+    public static HobbiesBean fromHobbiesStringTopic( String s ) throws IOException ,
+            ClassNotFoundException {
+        byte [] data = Base64Coder.decode(s);
+        ObjectInputStream ois = new ObjectInputStream( new ByteArrayInputStream(  data ) );
+        Object o  = ois.readObject();
+        ois.close();
+        return (HobbiesBean) o;
     }
 
 

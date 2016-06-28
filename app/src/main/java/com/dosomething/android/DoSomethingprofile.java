@@ -399,6 +399,12 @@ public class DoSomethingprofile extends AppCompatActivity implements Profile_ima
             viewpagerdots.removeAllViews();
             addDots();
 
+        } else if (!sharedPrefrences.getFBProfilePicture(context).equalsIgnoreCase("")) {
+            fragments.add(android.support.v4.app.Fragment.instantiate(context, Profile_image_two_fragment.class.getName()));
+            mPagerAdapter.notifyDataSetChanged();
+            dots.clear();
+            viewpagerdots.removeAllViews();
+            addDots();
         }
         if (!sharedPrefrences.getProfilePicture2(context).equals("")) {
             fragments.add(android.support.v4.app.Fragment.instantiate(context, Profile_image_three_fragment.class.getName()));

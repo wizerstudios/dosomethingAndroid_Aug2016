@@ -1,8 +1,9 @@
 package com.dosomething.android.Beanclasses;
 
 
-public class Dosomething_Bean
-    {
+import java.io.Serializable;
+
+public class Dosomething_Bean implements Serializable {
     String
             imag_inActive,
             imag_Active,

@@ -39,12 +39,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
 import com.dosomething.android.Beanclasses.ChatBean;
 import com.dosomething.android.Beanclasses.ConversationBean;
+import com.dosomething.android.Beanclasses.Dosomething_Bean;
+import com.dosomething.android.Beanclasses.HobbiesBean;
 import com.dosomething.android.CommonClasses.EmojiTextView;
 import com.dosomething.android.CommonClasses.Jsonfunctions;
 import com.dosomething.android.CommonClasses.NetworkCheck;
@@ -118,7 +121,8 @@ public class DoSomethingChatBox extends Fragment {
     private static final String TAG_RECEIVERID = "message_receiver_id";
     private static final String TAG_MESSAGE = "message";
     private static final String TAG_TIME = "datetime";
-
+    private static final String TAG_PROFILEUSERID = "profile_user_id";
+    private String profile_user_id;
     private String sessionid, json_string;
     Jsonfunctions jsonfunctions;
     JSONObject json_object, json_content, details;
@@ -139,7 +143,7 @@ public class DoSomethingChatBox extends Fragment {
     private Handler handler;
     RelativeLayout relative_image;
     RelativeLayout layout_walkthrough_profile;
-ImageView image_walkthrough_chat;
+    ImageView image_walkthrough_chat;
     private AnimationDrawable splashAnimation;
     private ImageView kbv;
     private String datetime;
@@ -149,6 +153,11 @@ ImageView image_walkthrough_chat;
     private Timer blink_time;
     private Tracker mTracker;
     private String formattedDate;
+    private LinearLayout activity_dosomething_profile_view_layout;
+    private ArrayList<HobbiesBean> hobbiesBeans = new ArrayList<>();
+    private ArrayList<Dosomething_Bean> dosomething_beans = new ArrayList<>();
+    private DoSomething_Friends_profile_fragment doSomethingFriendsProfileFragment;
+    private FragmentTransaction fragmentTransaction;
 
     /**
      * Use this factory method to create a new instance of
@@ -190,12 +199,10 @@ ImageView image_walkthrough_chat;
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_do_something_chat_box, container, false);
 
-        try
-        {
+        try {
             MyApplication application = (MyApplication) getActivity().getApplication();
             mTracker = application.getDefaultTracker();
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         sharedPrefrences = new SharedPrefrences();
@@ -211,7 +218,7 @@ ImageView image_walkthrough_chat;
         splashAnimation = (AnimationDrawable) kbv.getBackground();
         relative_image = (RelativeLayout) view.findViewById(R.id.relative_image);
         layout_walkthrough_profile = (RelativeLayout) view.findViewById(R.id.layout_walkthrough_profile);
-        image_walkthrough_chat=(ImageView)view.findViewById(R.id.image_walkthrough_chat);
+        image_walkthrough_chat = (ImageView) view.findViewById(R.id.image_walkthrough_chat);
         dosomething_fragment_chatbox_deleteorblock = (LinearLayout) view.findViewById(R.id.dosomething_fragment_chatbox_deleteorblock);
         chatbox_block_screen = (LinearLayout) view.findViewById(R.id.chatbox_block_screen);
         dosomething_fragment_chatbox_messagebox = (EditText) view.findViewById(R.id.dosomething_fragment_chatbox_messagebox);
@@ -224,7 +231,7 @@ ImageView image_walkthrough_chat;
         activity_dosomething_chatcancel = (TextView) view.findViewById(R.id.activity_dosomething_chatcancel);
         dosomething_fragment_chat_messages_textview = (TextView) view.findViewById(R.id.dosomething_fragment_chat_messages_textview);
         activity_dosomething_chatbox_messagesent_button = (ImageView) view.findViewById(R.id.activity_dosomething_chatbox_messagesent_button);
-
+        activity_dosomething_profile_view_layout = (LinearLayout) view.findViewById(R.id.activity_dosomething_profile_view_layout);
         image_walkthrough_chat.setBackgroundResource(R.drawable.blink_icon);
         splashAnimation_chat = (AnimationDrawable) image_walkthrough_chat.getBackground();
         Calendar c = Calendar.getInstance();
@@ -233,22 +240,21 @@ ImageView image_walkthrough_chat;
         text_font_typeface();
 
 
-
 //        if (sharedPrefrences.getFriendFirstName(getActivity()).equals("Support")) {
 //            dosomething_fragment_chatbox_deleteorblock.setEnabled(false);
 //            dosomething_fragment_chatbox_deleteorblock.setClickable(false);
 //        }
 
-        if(formattedDate.equals(sharedPrefrences.getDeviceDate(getActivity()))) {
+        if (formattedDate.equals(sharedPrefrences.getDeviceDate(getActivity()))) {
 
-if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
-{
-    layout_walkthrough_profile.setVisibility(View.VISIBLE);
-    blink_time = new Timer();
-    blink_time.schedule(new Blink_progress(), 0, 340);
-    splashAnimation_chat.start();
-    sharedPrefrences.setWalkThroughchat(getActivity(),"true");
-}}
+            if (sharedPrefrences.getWalkThroughchat(getActivity()).equals("false")) {
+                layout_walkthrough_profile.setVisibility(View.VISIBLE);
+                blink_time = new Timer();
+                blink_time.schedule(new Blink_progress(), 0, 340);
+                splashAnimation_chat.start();
+                sharedPrefrences.setWalkThroughchat(getActivity(), "true");
+            }
+        }
         layout_walkthrough_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -262,7 +268,7 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
 
                 }
                 splashAnimation_chat.stop();
-                sharedPrefrences.setWalkThroughchat(getActivity(),"true");
+                sharedPrefrences.setWalkThroughchat(getActivity(), "true");
             }
         });
         image_walkthrough_chat.setOnClickListener(new View.OnClickListener() {
@@ -286,6 +292,8 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
         if (dosomething_fragment_chat_box_personname.getText().toString().trim().equalsIgnoreCase("Support")) {
             dosomething_fragment_chatbox_deleteorblock.setClickable(false);
             dosomething_fragment_chatbox_deleteorblock.setEnabled(false);
+            activity_dosomething_profile_view_layout.setClickable(false);
+            activity_dosomething_profile_view_layout.setEnabled(false);
         }
         messages = new ArrayList<>();
 //        messages.add(new Message("Hello", false));
@@ -317,6 +325,44 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
        {
            layoutManager.scrollToPosition(messages.size() - 1);
        }*/
+
+        activity_dosomething_profile_view_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getActivity() != null) {
+
+
+                    if (((MyApplication) getActivity().getApplication()).getDoSomethingStatus() != null) {
+                        ((DoSomethingStatus) getActivity()).hideFilterIconVisible(true);
+                        sharedPrefrences.setDosomething_filterImage_Visibility(getActivity(), "No");
+                        /*sharedPrefrences.setFriendUserId(getActivity(), filterr_list.get(position).getuser_id());
+                        sharedPrefrences.setFriendFirstname(getActivity(), filterr_list.get(position).getfirst_name());
+                        sharedPrefrences.setFriendLastname(getActivity(), filterr_list.get(position).getlast_name());
+                        sharedPrefrences.setFriendAge(getActivity(), filterr_list.get(position).getAge());
+                        sharedPrefrences.setFriendProfilePicture(getActivity(), filterr_list.get(position).getimage1());
+                        sharedPrefrences.setFriendProfilePicture1(getActivity(), filterr_list.get(position).getimage2());
+                        sharedPrefrences.setFriendProfilePicture2(getActivity(), filterr_list.get(position).getimage3());
+                        sharedPrefrences.setFriendAbout(getActivity(), filterr_list.get(position).getabout());
+                        sharedPrefrences.setFriendGender(getActivity(), filterr_list.get(position).getgender());
+                        sharedPrefrences.setSendRequest(getActivity(), filterr_list.get(position).getDoSomething());
+                        SharedPrefrences.clearDosomethingitems(getActivity());
+                        SharedPrefrences.setDosomethingItem(getActivity(), filterr_list.get(position).getDosomething_beans());
+                        SharedPrefrences.clearHobbiesitems(getActivity());
+                        SharedPrefrences.setHobbiesItem(getActivity(),filterr_list.get(position).getListHobbies());*/
+                        sessionid = sharedPrefrences.getSessionid(getActivity());
+                        profile_user_id = sharedPrefrences.getFriendUserId(getActivity());
+
+                        new GetUserDetails().execute();
+
+                        if (getActivity() != null) {
+                            ((MyApplication) getActivity().getApplication()).getDoSomethingStatus().settext("YES");
+
+                        }
+                    }
+                }
+            }
+        });
+
 
         dosomething_fragment_chat_messages_list.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -419,9 +465,7 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
     }
 
 
-
-
-    class Blink_progress extends TimerTask{
+    class Blink_progress extends TimerTask {
 
         @Override
         public void run() {
@@ -660,8 +704,7 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
         @Override
         public void onBindViewHolder(final DataObjectHolder holder, int position) {
 
-            try
-            {
+            try {
                 Message message = mMessages.get(position);
                 holder.dosomething_fragment_chat_message.setTypeface(patron_regular);
                 holder.dosomething_fragment_chat_message_time.setTypeface(patron_regular);
@@ -721,12 +764,9 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
                     }
                     holder.dosomething_fragment_chat_message_layout.setLayoutParams(lp);
                 }
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
 
 
         }
@@ -846,7 +886,6 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
                     if (json_object.has("getconversation")) {
                         if (json_content.getString("status").equalsIgnoreCase("success")) {
                             {
-
 
 
                                 if (json_content.has("receiver")) {
@@ -1034,7 +1073,6 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
                             final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
                             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                             dosomething_fragment_chat_messages_list.setLayoutManager(layoutManager);
-
 
 
                             isLoader = true;
@@ -1334,16 +1372,13 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
                     json_object = new JSONObject(json_string);
                     if (json_object.has("cancelrequest")) {
 
-                        blockStatus=json_object.getString("cancelrequest");
-                        if(!json_object.getString("cancelrequest").equals("null"))
-                        {
+                        blockStatus = json_object.getString("cancelrequest");
+                        if (!json_object.getString("cancelrequest").equals("null")) {
                             json_content = json_object.getJSONObject("cancelrequest");
-                            if(json_content.has("status"))
-                            {
+                            if (json_content.has("status")) {
                                 if (json_content.getString("status").equalsIgnoreCase("success")) {
                                     blockStatus = "Conversaion has been Cleared";
-                                }else if (json_content.getString("status").equalsIgnoreCase("error"))
-                                {
+                                } else if (json_content.getString("status").equalsIgnoreCase("error")) {
                                     blockStatus = "error";
                                 }
                             }
@@ -1459,6 +1494,261 @@ if(sharedPrefrences.getWalkThroughchat(getActivity()).equals("false"))
 
         }
 
+    }
+
+
+    private class GetUserDetails extends AsyncTask<Void, Void, Void> {
+
+        private String first_name, last_name, gender, about;
+        private String email;
+        private String status;
+        private String device;
+        private String age;
+        private int user_id;
+        private String profile_id;
+        private String image2;
+        private String image1;
+        private String image3;
+        private String send_request;
+        private String device_token;
+        private String date_of_birth;
+        String matched;
+
+        @Override
+
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
+
+        }
+
+
+        @Override
+
+        protected Void doInBackground(Void... params) {
+
+            if (getActivity() != null) {
+
+
+                try {
+                    HashMap<String, Object> paramsfb = new HashMap<>();
+                    paramsfb.put(TAG_SESSIONID, sessionid);
+
+                    paramsfb.put(TAG_PROFILEUSERID, profile_user_id);
+
+                    json_string = jsonfunctions.postToURL(getString(R.string.dosomething_apilink_string_getuserdetails), paramsfb);
+
+
+                    json_object = new JSONObject(json_string);
+
+
+                    if (json_object.has("getuserdetails")) {
+                        json_content = json_object.getJSONObject("getuserdetails");
+
+                        if (json_content.getString("status").equalsIgnoreCase("success")) {
+
+//                            pDialog.dismiss();
+
+
+                            JSONObject userlistobject = json_content.getJSONObject("userDetails");
+
+                            user_id = userlistobject.getInt("user_id");
+
+                            profile_id = userlistobject.getString("profile_id");
+                            first_name = userlistobject.getString("first_name");
+
+                            last_name = userlistobject.getString("last_name");
+
+                            gender = userlistobject.getString("gender");
+
+                            about = userlistobject.getString("about");
+
+                            email = userlistobject.getString("email");
+
+                            status = userlistobject.getString("status");
+
+                            device = userlistobject.getString("device");
+
+                            age = userlistobject.getString("age");
+
+                            image2 = userlistobject.getString("image2");
+
+                            image1 = userlistobject.getString("image1");
+                            image3 = userlistobject.getString("image3");
+                            send_request = userlistobject.getString("send_request");
+                            send_request = userlistobject.getString("send_request");
+
+                            device_token = userlistobject.getString("device_token");
+                            if (userlistobject.has("matched")) {
+                                matched = userlistobject.getString("matched");
+
+                            } else {
+                                matched = "";
+                            }
+                            date_of_birth = userlistobject.getString("date_of_birth");
+                            JSONArray hobbiesArray = userlistobject.getJSONArray("hobbieslist");
+                            hobbiesBeans.clear();
+                            for (int j = 0; j < hobbiesArray.length(); j++) {
+                                JSONObject details = hobbiesArray.getJSONObject(j);
+                                int id = details.getInt("hobbies_id");
+                                int category_id = details.getInt("category_id");
+                                String name = details.getString("name");
+                                String Image = details.getString("image");
+                                String ActiveImage = details.getString("image_active");
+                                hobbiesBeans.add(new HobbiesBean(id, category_id, name, Image, ActiveImage));
+
+
+                            }
+                            JSONArray dosomethingList = userlistobject.getJSONArray("dosomething");
+                            dosomething_beans.clear();
+                            for (int j = 0; j < dosomethingList.length(); j++) {
+                                JSONObject details = dosomethingList.getJSONObject(j);
+                                int id = details.getInt("Id");
+                                String name = details.getString("name");
+                                String Image = details.getString("ActiveImage");
+                                String ActiveImage = details.getString("InactiveImage");
+                                dosomething_beans.add(new Dosomething_Bean(id, name, Image, ActiveImage));
+
+                            }
+
+//                                profileBeans.add(new ProfileBean(user_id, profile_id, first_name, last_name, gender, about, email, status, device, age, image2, image1, image3, device_token, date_of_birth));
+
+                            Log.d("BEAN", "GHGHGH" + user_id);
+                            Log.d("BEAN", "GHGHGH" + profile_id);
+
+                            Log.d("BEAN", "GHGHGH" + first_name);
+
+                            Log.d("BEAN", "GHGHGH" + last_name);
+
+                            Log.d("BEAN", "GHGHGH" + gender);
+
+                            Log.d("BEAN", "GHGHGH" + about);
+
+                            Log.d("BEAN", "GHGHGH" + email);
+
+                            Log.d("BEAN", "GHGHGH" + status);
+
+
+                            Log.d("BEAN", "GHGHGH" + image1);
+
+
+                        } else if (json_content.getString("status").equalsIgnoreCase("failed")) {
+
+                            Toast.makeText(getActivity().getApplicationContext(), "FAILED", Toast.LENGTH_LONG);
+
+
+                        } else if (json_content.getString("status").equalsIgnoreCase("error")) {
+
+                            Toast.makeText(getActivity().getApplicationContext(), "ERROR", Toast.LENGTH_LONG);
+
+
+                        }
+
+                    } else if (json_object.has("error")) {
+                        if (json_object.getString("error").equalsIgnoreCase("InvalidSession")) {
+                            status = "";
+                        }
+
+                    }
+
+                } catch (JSONException e) {
+                    Log.e("Timeout Exception: ", e.toString());
+                    e.printStackTrace();
+
+                }
+
+            }
+
+
+            return null;
+
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+
+
+        }
+
+        @Override
+
+        protected void onPostExecute(Void result) {
+
+            super.onPostExecute(result);
+
+            try {
+
+
+                if (!status.equalsIgnoreCase("")) {
+
+                    if (getActivity() != null) {
+                        DoSomethingNearMe.usermatched = matched;
+
+                        sharedPrefrences.setFriendUserId(getActivity(), String.valueOf(user_id));
+                        sharedPrefrences.setFriendFirstname(getActivity(), first_name);
+                        sharedPrefrences.setFriendLastname(getActivity(), last_name);
+                        sharedPrefrences.setFriendAge(getActivity(), age);
+                        sharedPrefrences.setFriendProfilePicture(getActivity(), image1);
+                        sharedPrefrences.setFriendProfilePicture1(getActivity(), image2);
+                        sharedPrefrences.setFriendProfilePicture2(getActivity(), image3);
+                        sharedPrefrences.setFriendAbout(getActivity(), about);
+                        sharedPrefrences.setFriendGender(getActivity(), gender);
+                        sharedPrefrences.setSendRequest(getActivity(), send_request);
+
+
+                        ((MyApplication) getActivity().getApplication()).setListHobbies(hobbiesBeans);
+                        ((MyApplication) getActivity().getApplication()).setListDosomethingBean(dosomething_beans);
+
+                        doSomethingFriendsProfileFragment = new DoSomething_Friends_profile_fragment();
+
+
+                        fragmentTransaction = getFragmentManager().beginTransaction();
+                        if (fragmentTransaction != null) {
+                            fragmentTransaction.replace(R.id.detail_fragment, doSomethingFriendsProfileFragment);
+                            fragmentTransaction.commit();
+
+                        }
+
+
+                    }
+
+
+                } else {
+                    sharedPrefrences.setLogin(getActivity(), "");
+                    sharedPrefrences.setEmail(getActivity(), "");
+                    sharedPrefrences.setDateofBirth(getActivity(), "");
+                    sharedPrefrences.setFirstname(getActivity(), "");
+                    sharedPrefrences.setDeviceToken(getActivity(), "");
+                    sharedPrefrences.setLastname(getActivity(), "");
+                    sharedPrefrences.setGender(getActivity(), "");
+                    sharedPrefrences.setPassword(getActivity(), "");
+                    sharedPrefrences.setUserId(getActivity(), "");
+                    sharedPrefrences.setSessionid(getActivity(), "");
+                    sharedPrefrences.setProfileId(getActivity(), "");
+                    sharedPrefrences.setNotifyMessage(getActivity(), "");
+                    sharedPrefrences.setNotifyVibration(getActivity(), "");
+                    sharedPrefrences.setNotifySound(getActivity(), "");
+                    sharedPrefrences.setProfilePicture(getActivity(), "");
+                    sharedPrefrences.setProfilePicture1(getActivity(), "");
+                    sharedPrefrences.setProfilePicture2(getActivity(), "");
+                    sharedPrefrences.setFBProfilePicture(getActivity(), "");
+                    sharedPrefrences.setAbout(getActivity(), "");
+                    Intent i = new Intent(getActivity(), DoSomeThingLogin.class);
+                    startActivity(i);
+                    getActivity().finish();
+                    pd.dismiss();
+                }
+
+
+            } catch (Exception e) {
+                Log.e("Timeout Exception: ", e.toString());
+                e.printStackTrace();
+            }
+
+
+        }
     }
 
 

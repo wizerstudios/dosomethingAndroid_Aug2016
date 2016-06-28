@@ -6,11 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
@@ -23,6 +26,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +41,7 @@ import android.widget.TextView;
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxStatus;
 import com.androidquery.callback.BitmapAjaxCallback;
+import com.daimajia.swipe.SwipeLayout;
 import com.dosomething.android.Beanclasses.ChatBean;
 import com.dosomething.android.CommonClasses.Jsonfunctions;
 import com.dosomething.android.CommonClasses.NetworkCheck;
@@ -156,12 +161,10 @@ public class DoSomethingChatList extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_do_something_chat, container, false);
-        try
-        {
+        try {
             MyApplication application = (MyApplication) getActivity().getApplication();
             mTracker = application.getDefaultTracker();
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -201,9 +204,13 @@ public class DoSomethingChatList extends Fragment {
                 listChatBeanIds = ((MyApplication) getActivity().getApplication()).getChatBeanIdsList();
                 chatAdapter = new RecyclerAdapter(getActivity());
                 dosomething_fragment_chatlist.setAdapter(chatAdapter);
+//                initSwipe();
             } else {
                 chatAdapter.notifyDataSetChanged();
+//                initSwipe();
             }
+
+
 /*
 dosomething_fragment_chatlist.getItemAnimator().setSupportsChangeAnimations(false);
 chatAdapter.notifyDataSetChanged();
@@ -214,10 +221,9 @@ chatAdapter.notifyDataSetChanged();
 
             if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
                 isLoader = true;
-if(sharedPrefrences.getChatAutoUpdate(getActivity()).equals("false"))
-{
-    callAsynchronousTask();
-}
+                if (sharedPrefrences.getChatAutoUpdate(getActivity()).equals("false")) {
+                    callAsynchronousTask();
+                }
 
             }
 
@@ -342,8 +348,7 @@ if(sharedPrefrences.getChatAutoUpdate(getActivity()).equals("false"))
                         try {
                             // PerformBackgroundTask this class is the class that extends AsynchTask
 
-                            if(getActivity()!=null)
-                            {
+                            if (getActivity() != null) {
                                 if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
                                     Date d = new Date();
                                     CharSequence s = DateFormat.format("yyyy-MM-dd HH:mm:ss", d.getTime());
@@ -353,7 +358,6 @@ if(sharedPrefrences.getChatAutoUpdate(getActivity()).equals("false"))
                                     new ChatHistory().execute();
                                 }
                             }
-
 
 
                         } catch (Exception e) {
@@ -610,7 +614,7 @@ if(sharedPrefrences.getChatAutoUpdate(getActivity()).equals("false"))
 
     class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.DataObjectHolder> {
         Activity activity;
-        private int lastPosition=listChatBeans.size()-1;
+        private int lastPosition = listChatBeans.size() - 1;
 
         public RecyclerAdapter(Activity activity) {
             super();
@@ -629,8 +633,7 @@ if(sharedPrefrences.getChatAutoUpdate(getActivity()).equals("false"))
         @Override
         public void onBindViewHolder(final DataObjectHolder holder, final int position) {
 
-            try
-            {
+            try {
                 final ChatBean chatBean = listChatBeans.get(listChatBeanIds.get(position));
 
                 holder.activity_dosomething_chatperson_name.setTypeface(patron_bold);
@@ -665,23 +668,18 @@ if(sharedPrefrences.getChatAutoUpdate(getActivity()).equals("false"))
                     }
                 });
 
-try
-{
-    if(chatBean.getUnreadmessage()!=null)
-    {
-        if (chatBean.getUnreadmessage().equals("0")) {
-            holder.activity_dosomething_meassge_count.setVisibility(View.GONE);
-        } else {
-            holder.activity_dosomething_meassge_count.setVisibility(View.VISIBLE);
-            holder.activity_dosomething_meassge_count.setText(chatBean.getUnreadmessage());
-        }
-    }
-}catch (Exception e)
-{
-    e.printStackTrace();
-}
-
-
+                try {
+                    if (chatBean.getUnreadmessage() != null) {
+                        if (chatBean.getUnreadmessage().equals("0")) {
+                            holder.activity_dosomething_meassge_count.setVisibility(View.GONE);
+                        } else {
+                            holder.activity_dosomething_meassge_count.setVisibility(View.VISIBLE);
+                            holder.activity_dosomething_meassge_count.setText(chatBean.getUnreadmessage());
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
 
                 if (!chatBean.getName().equals("")) {
@@ -718,8 +716,7 @@ try
                                 iv.setImageBitmap(conv_bm);
                                 chatBean.setProfileImage(conv_bm);
                                 listChatBeans.put(chatBean.getChat_id() + "", chatBean);
-                            }else
-                            {
+                            } else {
                                 holder.activity_dosomething_chatperson_appIcon.setImageDrawable(getResources().getDrawable(R.drawable.profile_noimg));
 
                             }
@@ -731,27 +728,8 @@ try
                         holder.activity_dosomething_chatperson_appIcon.setImageBitmap(chatBean.getProfileImage());
                     }
                 }
-//            }
 
-//            switch (position) {
-//                case 0:
-//                    holder.activity_dosomething_meassge_count.setText("52");
-//                    holder.activity_dosomething_chatperson_message.setText("Hi... How about a dinner?");
-//                    break;
-//                case 1:
-//                    holder.activity_dosomething_chatperson_appIcon.setImageDrawable(getResources().getDrawable(R.drawable.yuna));
-//                    holder.activity_dosomething_meassge_count.setText("1");
-//                    holder.activity_dosomething_chatperson_name.setText("Yuna");
-//                    break;
-//                case 2:
-//                    holder.activity_dosomething_chatperson_appIcon.setImageDrawable(getResources().getDrawable(R.drawable.taylor));
-//                    holder.activity_dosomething_meassge_count.setText("5");
-//                    holder.activity_dosomething_chatperson_name.setText("Taylor");
-//                    break;
-//
-//
-//            }
-                holder.activity_dosomething_chatperson.setOnLongClickListener(new View.OnLongClickListener() {
+                /*holder.activity_dosomething_chatperson.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
                         Log.d("dosomething_click", "onLongClick" + String.valueOf(position));
@@ -781,12 +759,78 @@ try
                         new DosomethingDeleteConversation().execute();
 
                     }
-                });
-            }catch (Exception e)
-            {
+                });*/
+
+
+                if (!chatBean.getName().trim().equalsIgnoreCase("Support")) {
+                    holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
+                    holder.swipeLayout.addDrag(SwipeLayout.DragEdge.Right, holder.swipeLayout.findViewById(R.id.bottom_wrapper));
+
+                    holder.swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
+                        @Override
+                        public void onClose(SwipeLayout layout) {
+                            //when the SurfaceView totally cover the BottomView.
+                        }
+
+                        @Override
+                        public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+                            //you are swiping.
+                        }
+
+                        @Override
+                        public void onStartOpen(SwipeLayout layout) {
+
+                        }
+
+                        @Override
+                        public void onOpen(SwipeLayout layout) {
+                            //when the BottomView totally show.
+                        }
+
+                        @Override
+                        public void onStartClose(SwipeLayout layout) {
+
+                        }
+
+                        @Override
+                        public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+                            //when user's hand released.
+                        }
+                    });
+
+                    holder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                        }
+                    });
+                    holder.activity_dosomething_chatperson_Tectview_delete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            sharedPrefrences.setConversationId(getActivity(), String.valueOf(chatBean.getChat_id()));
+                            removeItem(position);
+                            new DosomethingDeleteConversation().execute();
+
+                        }
+                    });
+                }else
+                {
+                    holder.swipeLayout.setSwipeEnabled(false);
+                }
+
+
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
+        }
+
+
+        public void removeItem(int position) {
+            listChatBeans.remove(listChatBeanIds.get(position));
+            listChatBeanIds.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, listChatBeanIds.size());
         }
 
         @Override
@@ -811,9 +855,11 @@ try
             TextView activity_dosomething_meassge_count;
             TextView activity_dosomething_chatperson_Tectview_block;
             TextView activity_dosomething_chatperson_Tectview_delete;
+            SwipeLayout swipeLayout;
 
             public DataObjectHolder(View itemview) {
                 super(itemview);
+                swipeLayout = (SwipeLayout) itemview.findViewById(R.id.swipe);
                 activity_dosomething_chatperson = (LinearLayout) itemview.findViewById(R.id.activity_dosomething_chatperson);
                 activity_dosomething_chatperson_Tectview_blockanddelete = (LinearLayout) itemview.findViewById(R.id.activity_dosomething_chatperson_Tectview_blockanddelete);
                 activity_dosomething_chatperson_appIcon = (ImageView) itemview.findViewById(R.id.activity_dosomething_chatperson_appIcon);
@@ -837,6 +883,71 @@ try
                 lastPosition = position;
             }
         }*/
+    }
+
+    private int edit_position;
+    private Paint p = new Paint();
+    private View view;
+
+    private void initSwipe() {
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+
+                if (direction == ItemTouchHelper.LEFT) {
+                    chatAdapter.removeItem(position);
+                } else {
+                    removeView();
+                    edit_position = position;
+
+                }
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                Bitmap icon;
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+
+                    View itemView = viewHolder.itemView;
+                    float height = (float) itemView.getBottom() - (float) itemView.getTop();
+                    float width = height / 3;
+
+                    if (dX > 0) {
+                        p.setColor(Color.parseColor("#388E3C"));
+                        RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom());
+                        c.drawRect(background, p);
+                        icon = BitmapFactory.decodeResource(getResources(), android.R.drawable.ic_menu_edit);
+                        RectF icon_dest = new RectF((float) itemView.getLeft() + width, (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width, (float) itemView.getBottom() - width);
+                        c.drawBitmap(icon, null, icon_dest, p);
+                    } else {
+                        p.setColor(Color.parseColor("#D32F2F"));
+                        RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
+                        c.drawRect(background, p);
+                        icon = BitmapFactory.decodeResource(getResources(), android.R.drawable.ic_delete);
+                        RectF icon_dest = new RectF((float) itemView.getRight() - 2 * width, (float) itemView.getTop() + width, (float) itemView.getRight() - width, (float) itemView.getBottom() - width);
+                        c.drawBitmap(icon, null, icon_dest, p);
+                    }
+                }
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(dosomething_fragment_chatlist);
+    }
+
+
+    private void removeView() {
+        if (view.getParent() != null) {
+            ((ViewGroup) view.getParent()).removeView(view);
+        }
     }
 
 
@@ -866,8 +977,6 @@ try
         //return _bmp;
         return output;
     }
-
-
 
 
     private class ChatHistory extends AsyncTask<Void, Void, Boolean> {
@@ -1050,9 +1159,11 @@ try
                                         if (chatAdapter == null) {
                                             chatAdapter = new RecyclerAdapter(getActivity());
                                             dosomething_fragment_chatlist.setAdapter(chatAdapter);
+//                                            initSwipe();
                                         } else {
 
                                             chatAdapter.notifyDataSetChanged();
+//                                            initSwipe();
                                         }
                                         dosomething_fragment_chatlist.getItemAnimator().setSupportsChangeAnimations(false);
 
@@ -1225,8 +1336,7 @@ try
                         json_content = json_object.getJSONObject("cancelrequest");
                         if (json_content.getString("status").equalsIgnoreCase("success")) {
                             blockStatus = "Conversaion has been Cleared";
-                        }else if (json_content.getString("status").equalsIgnoreCase("error"))
-                        {
+                        } else if (json_content.getString("status").equalsIgnoreCase("error")) {
                             blockStatus = "Conversaion has been Cleared";
                         }
                     }

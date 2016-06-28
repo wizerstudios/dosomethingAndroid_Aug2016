@@ -1227,10 +1227,10 @@ public class FragmentProfile extends Fragment {
 
 
 
-                    if (!sharedPrefrences.getProfileImageBitmap3(getActivity()).equals("")) {
-                        sharedPrefrences.setProfileImageBitmap2(getActivity(), sharedPrefrences.getProfileImageBitmap3(getActivity()));
-                        sharedPrefrences.setProfileImageBitmap3(getActivity(), "");
-                    }
+                        if (!sharedPrefrences.getProfileImageBitmap3(getActivity()).equals("")) {
+                            sharedPrefrences.setProfileImageBitmap2(getActivity(), sharedPrefrences.getProfileImageBitmap3(getActivity()));
+                            sharedPrefrences.setProfileImageBitmap3(getActivity(), "");
+                        }
 
                     if (!sharedPrefrences.getProfileImageBitmap2(getActivity()).equals("")) {
                         sharedPrefrences.setProfileImageBitmap1(getActivity(), sharedPrefrences.getProfileImageBitmap2(getActivity()));

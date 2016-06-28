@@ -92,6 +92,7 @@ public class DoSomeThingLogin extends Activity {
     private static String urlupdateposition = "http://wiztestinghost.com/dosomething/updatelocation?";
     private static String urlCheck = "http://wiztestinghost.com/dosomething/checkuser?";
     private static final String TAG_TYPE = "type";
+    private static final String TAG_OVERRIDE = "override";
     private static final String TAG_FIRSTNAME = "first_name";
     private static final String TAG_LASTNAME = "last_name";
     private static final String TAG_EMAIL = "email";
@@ -107,7 +108,7 @@ public class DoSomeThingLogin extends Activity {
     private TransparentProgressDialog pd;
     ArrayList<HobbiesBean> img_list = new ArrayList<>();
 
-    String type, firstname, lastname, email, password, showpassword, profileId, dob, profileImage, gender, age, device, json_string, json_string_updateposition, deviceid, response;
+    String type,override="0", firstname, lastname, email, password, showpassword, profileId, dob, profileImage, gender, age, device, json_string, json_string_updateposition, deviceid, response;
     String latitude;
     String longitude;
     Jsonfunctions jsonfunctions;
@@ -153,6 +154,7 @@ public class DoSomeThingLogin extends Activity {
     private Dialog dialog;
     private TextView status_textview_availablenow;
     private TextView status_textview_accept_check;
+    private TextView status_textview_unaccept_check;
     private Dialog progress_bar;
     private ImageView progress_bar_imageview;
     private Tracker mTracker;
@@ -246,6 +248,7 @@ public class DoSomeThingLogin extends Activity {
         dialog.setContentView(R.layout.alert_dialog);
         status_textview_availablenow = (TextView) dialog.findViewById(R.id.status_textview_availablenow);
         status_textview_accept_check = (TextView) dialog.findViewById(R.id.status_textview_accept_check);
+        status_textview_unaccept_check = (TextView) dialog.findViewById(R.id.status_textview_unaccept_check);
         text_font_typeface();
         dummy_hobbies_name = new ArrayList<>();
         dummy_hobbies_name.add("");
@@ -287,6 +290,7 @@ public class DoSomeThingLogin extends Activity {
 
                     status_textview_availablenow.setText("Please enter your email address to Login");
                     status_textview_accept_check.setText("Dismiss");
+                    status_textview_unaccept_check.setVisibility(View.GONE);
                     status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -310,6 +314,7 @@ public class DoSomeThingLogin extends Activity {
 
                     status_textview_availablenow.setText("please enter valid email address");
                     status_textview_accept_check.setText("Dismiss");
+                    status_textview_unaccept_check.setVisibility(View.GONE);
                     status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -334,6 +339,7 @@ public class DoSomeThingLogin extends Activity {
 
                     status_textview_availablenow.setText("please enter  password");
                     status_textview_accept_check.setText("Dismiss");
+                    status_textview_unaccept_check.setVisibility(View.GONE);
                     status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -466,7 +472,7 @@ public class DoSomeThingLogin extends Activity {
                                             deviceid = sharedPreferences.getDeviceToken(context);
                                             hide_keyboard(activity);
                                             sharedPreferences.setLoginType(context, "Facebook");
-                                            new AsynCheckClass().execute();
+                                            new AsyncCheckfbemail().execute();
                                             splashAnimation.start();
                                             click_fb = true;
                                         } catch (Exception e) {
@@ -930,6 +936,7 @@ public class DoSomeThingLogin extends Activity {
 
                                 status_textview_availablenow.setText(context.getResources().getString(R.string.emailandpassword_error));
                                 status_textview_accept_check.setText("Dismiss");
+                                status_textview_unaccept_check.setVisibility(View.GONE);
                                 status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -968,6 +975,110 @@ public class DoSomeThingLogin extends Activity {
         }
     }
 
+
+    private class AsyncCheckfbemail extends AsyncTask<Void,Void,Boolean>
+    {
+        Exception error;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progress_bar.show();
+            timer = new Timer();
+            timer.schedule(new AutoSlider(), 0, 1350);
+            splashAnimation.start();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            HashMap<String, Object> paramsCheck = new HashMap<>();
+            paramsCheck.put(TAG_EMAIL, email);
+            paramsCheck.put(TAG_TYPE, type);
+            json_string = jsonfunctions.postToURL(getString(R.string.dosomething_apilink_string_checkfbemail), paramsCheck);
+            try {
+                json_object = new JSONObject(json_string);
+                json_content = json_object.getJSONObject("checkfbemail");
+                return true;
+            } catch (JSONException e) {
+                error=e;
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if(aBoolean)
+            {
+                if (NetworkCheck.isWifiAvailable(context) || NetworkCheck.isNetworkAvailable(context)) {
+                    try {
+                        if (json_object.has("checkfbemail")) {
+                            if (json_content.getString("status").equalsIgnoreCase("success")) {
+                                progress_bar.dismiss();
+                                timer.cancel();
+                                splashAnimation.stop();
+                                new AsynCheckClass().execute();
+                            } else if (json_content.getString("status").equalsIgnoreCase("failure"))
+                            {
+
+                                progress_bar.dismiss();
+                                timer.cancel();
+                                splashAnimation.stop();
+
+                                if(json_content.has("override"))
+                                {
+                                    int i=json_content.getInt("override");
+                                    if(i==0)
+                                    {
+                                        if(json_content.has("Message"))
+                                        {
+
+
+                                            String s=json_content.getString("Message");
+
+                                            status_textview_availablenow.setText(s);
+                                            status_textview_unaccept_check.setVisibility(View.VISIBLE);
+                                            status_textview_accept_check.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialog.dismiss();
+                                                    override="1";
+                                                    new AsynCheckClass().execute();
+                                                }
+                                            });
+                                            dialog.show();
+
+
+
+                                            status_textview_unaccept_check.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                        }
+                                    }else
+                                    {
+                                        new AsynCheckClass().execute();
+                                    }
+                                }
+
+                            }
+                        }
+
+
+
+
+                    }catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }}}
+
+
+
+        }}
+
+
     private class AsynCheckClass extends AsyncTask<Void, Void, Boolean> {
         private String SessionId;
         private String image1_thumb;
@@ -986,13 +1097,7 @@ public class DoSomeThingLogin extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // Showing progress dialog
-//            pDialog = new ProgressDialog(DoSomeThingLogin.this);
-//            pDialog.setMessage("Please wait...");
-//            pDialog.setCancelable(false);
-//            pDialog.show();
-//            pd.show();
-          /*  kbv.setVisibility(View.VISIBLE);*/
+
             progress_bar.show();
             timer = new Timer();
             timer.schedule(new AutoSlider(), 0, 1350);
@@ -1005,6 +1110,7 @@ public class DoSomeThingLogin extends Activity {
             HashMap<String, Object> paramsCheck = new HashMap<>();
             paramsCheck.put(TAG_EMAIL, email);
             paramsCheck.put(TAG_TYPE, type);
+            paramsCheck.put(TAG_OVERRIDE, override);
             json_string = jsonfunctions.postToURL(getString(R.string.dosomething_apilink_string_checkuser), paramsCheck);
             Log.v("jason url=======>", String.valueOf(paramsCheck));
             try {

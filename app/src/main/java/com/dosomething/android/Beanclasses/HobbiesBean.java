@@ -1,7 +1,8 @@
 package com.dosomething.android.Beanclasses;
 
-public class HobbiesBean
-    {
+import java.io.Serializable;
+
+public class HobbiesBean implements Serializable {
     String
             imag_inActive,
             imag_Active,
