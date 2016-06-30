@@ -1414,7 +1414,13 @@ public class DoSomethingChatBox extends Fragment {
                     if (getActivity() != null) {
 
                         ((MyApplication) getActivity().getApplication()).getListChatBean().clear();
-                        ((DoSomethingStatus) getActivity()).clickNearme(true);
+//                        ((DoSomethingStatus) getActivity()).clickNearme(true);
+
+                        ((MyApplication) getActivity().getApplication()).getListChatBean().clear();
+                        DoSomethingChatList doSomethingChatList = new DoSomethingChatList();
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.detail_fragment, doSomethingChatList);
+                        fragmentTransaction.commit();
 
                     }
 

@@ -31,7 +31,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class GCMIntentService extends GCMBaseIntentService {
-    private final int NOTIFCATION_ID = 0;
+    private int NOTIFCATION_ID = 0;
     private String conversationid = "";
     private String push_type = "";
     SharedPrefrences sharedPrefrences = new SharedPrefrences();
@@ -61,13 +61,12 @@ public class GCMIntentService extends GCMBaseIntentService {
             mBuilder.setSmallIcon(R.drawable.home_button);
 
 
-//			http://indiawebcoders.com/mobileapps/dosomething/uploads/profile/noimage.png
 
             mBuilder.setLargeIcon(largeIcon);
             mBuilder.setColor(getResources().getColor(R.color.notification_icon_background));
             mBuilder.setContentTitle(getString(R.string.app_name));
             mBuilder.getNotification().flags |= Notification.FLAG_AUTO_CANCEL;
-
+            mBuilder.setAutoCancel(true);
             String setting_sound;
             if (intent.hasExtra("setting_sound")) {
 
@@ -83,7 +82,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             {
                 mBuilder.setSound(uri);
             }
-            mBuilder.setAutoCancel(true);
+
 
             Log.d("RESPONCE", intent.getExtras().toString());
             String message = "";
@@ -100,14 +99,29 @@ public class GCMIntentService extends GCMBaseIntentService {
                         String[] parts = message.split(" ");
                         String part = parts[4];
                         sharedPrefrences.setFriendFirstname(context, part);
+
                     } else if (type.equals("sendrequest")) {
                         sharedPrefrences.setPushType(context,"sendrequest");
                         assert message != null;
                         String[] parts = message.split(" ");
                         String part = parts[6];
                         sharedPrefrences.setFriendFirstname(context, part);
+                        if (intent.hasExtra("senderId")) {
+                            senderId = intent.getExtras().getString("senderId");
 
-//                        ((DoSomethingStatus) context).clickNearme(true);
+                            sharedPrefrences.setFriendUserId(context, senderId);
+                        } else {
+                            senderId = "";
+                        }
+                        if (intent.hasExtra("conversationid")) {
+
+                            conversationid = intent.getExtras().getString("conversationid");
+
+                            sharedPrefrences.setConversationId(context, conversationid);
+                        } else {
+                            conversationid = "";
+                        }
+
                         broadCast(RECIEVING_REQUEST);
 
 
@@ -120,7 +134,7 @@ public class GCMIntentService extends GCMBaseIntentService {
                 if (intent.hasExtra("conversationid")) {
 
                     conversationid = intent.getExtras().getString("conversationid");
-                    sharedPrefrences.setConversationId(context, conversationid);
+
 
                 } else {
                     conversationid = "";
@@ -129,7 +143,6 @@ public class GCMIntentService extends GCMBaseIntentService {
                 if (intent.hasExtra("senderId")) {
                     senderId = intent.getExtras().getString("senderId");
 
-                    sharedPrefrences.setFriendUserId(context, senderId);
                 } else {
                     senderId = "";
                 }
@@ -149,12 +162,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             mBuilder.setContentText(message);
             mBuilder.setStyle(bigStyle);
 
-			/*int itemId = mRecyclerView.getChildPosition(view);
-            Intent intentDetail = new Intent(context, ArticleDetailsActivity.class);
-	        intentDetail.putExtra("id", itemId);    					
-	        PendingIntent notificationIntent = PendingIntent.getActivity(this, 0,
-	        		intentDetail,
-					PendingIntent.FLAG_UPDATE_CURRENT);*/
+
             Intent newsIntent = null;
             if (conversationid != null && conversationid.length() > 0) {
                 newsIntent = new Intent(context, DoSomethingStatus.class);
@@ -167,6 +175,8 @@ public class GCMIntentService extends GCMBaseIntentService {
             } else {
                 newsIntent = new Intent(context, SplashActivity.class);
             }
+            /*NOTIFCATION_ID=Integer.parseInt(conversationid);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);*/
             PendingIntent notificationIntent = PendingIntent.getActivity(this, 0,
                     newsIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT);

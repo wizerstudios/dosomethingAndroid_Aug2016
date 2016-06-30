@@ -34,15 +34,15 @@
                 android:background="@android:color/white"
                 android:textColor="@color/red" />
 
-            <!--<TextView-->
-                <!--android:id="@+id/status_textview_unaccept_check"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_weight="1"-->
-                <!--android:gravity="center"-->
-                <!--android:text="NO"-->
-                <!--android:background="@android:color/darker_gray"-->
-                <!--android:textColor="@color/white" />-->
+            <TextView
+                android:id="@+id/status_textview_unaccept_check"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="NO"
+                android:background="@android:color/darker_gray"
+                android:textColor="@color/white" />
         </LinearLayout>
 
 </LinearLayout>

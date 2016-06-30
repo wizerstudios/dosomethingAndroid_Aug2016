@@ -75,7 +75,7 @@ import static com.google.android.gms.internal.zzip.runOnUiThread;
  * Use the {@link DoSomethingChatList#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DoSomethingChatList extends Fragment {
+public class DoSomethingChatList extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -204,17 +204,12 @@ public class DoSomethingChatList extends Fragment {
                 listChatBeanIds = ((MyApplication) getActivity().getApplication()).getChatBeanIdsList();
                 chatAdapter = new RecyclerAdapter(getActivity());
                 dosomething_fragment_chatlist.setAdapter(chatAdapter);
-//                initSwipe();
             } else {
                 chatAdapter.notifyDataSetChanged();
-//                initSwipe();
             }
 
 
-/*
-dosomething_fragment_chatlist.getItemAnimator().setSupportsChangeAnimations(false);
-chatAdapter.notifyDataSetChanged();
-*/
+
         }
 
         try {
@@ -230,8 +225,8 @@ chatAdapter.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        dosomething_fragment_chatlist_refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        dosomething_fragment_chatlist_refreshlayout.setOnRefreshListener(this);
+        /*dosomething_fragment_chatlist_refreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 dosomething_fragment_chatlist_refreshlayout.setRefreshing(true);
@@ -242,67 +237,8 @@ chatAdapter.notifyDataSetChanged();
 
                 refreshList();
             }
-        });
+        });*/
 
-
-//
-
-
-        //dosomething_fragment_chatlist.setOnTouchListener(swipeDetector);
-
-
-        //dosomething_fragment_chatlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-
-        //@Override
-
-
-        //public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-        //if(swipeDetector.swipeDetected()) {
-
-
-        //if(swipeDetector.getAction() == SwipeDetector.Action.RL) {
-
-
-        //Toast.makeText(getActivity(),"swipe",Toast.LENGTH_SHORT).show();
-
-
-        //} else {
-
-
-        //Toast.makeText(getActivity(),"nooo",Toast.LENGTH_SHORT).show();
-
-
-        //
-
-
-        //}
-
-
-        //}
-
-
-        //}
-
-
-        //});
-
-
-        //final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-
-
-        //layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
-
-        //dosomething_fragment_chatlist.setLayoutManager(layoutManager);
-
-
-        //
-
-
-        //dosomething_fragment_chatlist.setAdapter(new RecyclerAdapter(getActivity(), chatBeans));
 
 
         return view;
@@ -369,6 +305,17 @@ chatAdapter.notifyDataSetChanged();
             }
         };
         timer.schedule(doAsynchronousTask, 0, 7000); //execute in every 15 sec
+    }
+
+    @Override
+    public void onRefresh() {
+        dosomething_fragment_chatlist_refreshlayout.setRefreshing(true);
+        if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
+            new ChatHistory().execute();
+        }
+
+
+        refreshList();
     }
 
 
@@ -635,7 +582,53 @@ chatAdapter.notifyDataSetChanged();
 
             try {
                 final ChatBean chatBean = listChatBeans.get(listChatBeanIds.get(position));
+                /*if (chatBean.getImage1().equals("") || chatBean.getImage1().equals("http://128.199.130.137//dosomething//uploads//profile//noimage.png")) {
+                    holder.activity_dosomething_chatperson_appIcon.setImageDrawable(getResources().getDrawable(R.drawable.profile_noimg));
+                } else */
 
+                if (!(chatBean.getImage1().equals("")) && (!chatBean.getImage1().equalsIgnoreCase(chatBean.getOldImageUrl()))) {
+
+                    aQuery.id(holder.activity_dosomething_chatperson_appIcon).image(chatBean.getImage1(), true, true, 0, 0, new BitmapAjaxCallback() {
+                        @Override
+                        public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
+                            if (status.getCode() == 200) {
+//                                Bitmap resized = Bitmap.createScaledBitmap(bm, 90, 90, true);
+                                Bitmap conv_bm = getCroppedBitmap(bm);
+                                iv.setImageBitmap(conv_bm);
+                                chatBean.setProfileImage(conv_bm);
+                                listChatBeans.put(chatBean.getChat_id() + "", chatBean);
+                            } else {
+                                holder.activity_dosomething_chatperson_appIcon.setImageResource(R.drawable.profile_noimg);
+
+                            }
+                        }
+                    });
+
+                } else {
+                    if (chatBean.getProfileImage() != null) {
+                        holder.activity_dosomething_chatperson_appIcon.setImageBitmap(chatBean.getProfileImage());
+                    }else
+                    {
+
+                        aQuery.id(holder.activity_dosomething_chatperson_appIcon).image(chatBean.getImage1(), true, true, 0, 0, new BitmapAjaxCallback() {
+                            @Override
+                            public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
+                                if (status.getCode() == 200) {
+//                                Bitmap resized = Bitmap.createScaledBitmap(bm, 90, 90, true);
+                                    Bitmap conv_bm = getCroppedBitmap(bm);
+                                    iv.setImageBitmap(conv_bm);
+                                    chatBean.setProfileImage(conv_bm);
+                                    listChatBeans.put(chatBean.getChat_id() + "", chatBean);
+                                } else {
+                                    holder.activity_dosomething_chatperson_appIcon.setImageResource(R.drawable.profile_noimg);
+
+                                }
+                            }
+                        });
+
+
+                    }
+                }
                 holder.activity_dosomething_chatperson_name.setTypeface(patron_bold);
                 holder.activity_dosomething_chatperson_Tectview_delete.setTypeface(patron_regular);
                 holder.activity_dosomething_chatperson_Tectview_block.setTypeface(patron_regular);
@@ -699,68 +692,6 @@ chatAdapter.notifyDataSetChanged();
                     holder.activity_dosomething_chatperson_appIcon.setBackgroundResource(R.drawable.dosomething_border);
                     holder.activity_dosomething_chatperson_appIcon.setPadding(3, 3, 3, 3);
                 }
-//            else {
-
-
-                if (chatBean.getImage1().equals("") || chatBean.getImage1().equals("http://128.199.130.137//dosomething//uploads//profile//noimage.png")) {
-                    holder.activity_dosomething_chatperson_appIcon.setImageDrawable(getResources().getDrawable(R.drawable.profile_noimg));
-                } else if (!(chatBean.getImage1().equals("") || chatBean.getImage1().equals("http://128.199.130.137//dosomething//uploads//profile//noimage.png")) && (!chatBean.getImage1().equalsIgnoreCase(chatBean.getOldImageUrl()))) {
-
-                    aQuery.id(holder.activity_dosomething_chatperson_appIcon).image(chatBean.getImage1(), true, true, 0, 0, new BitmapAjaxCallback() {
-                        @Override
-                        public void callback(String url, ImageView iv, Bitmap bm, AjaxStatus status) {
-                            if (status.getCode() == 200) {
-                                Bitmap resized = Bitmap.createScaledBitmap(bm, 90, 90, true);
-//                            Bitmap resized = Bitmap.createScaledBitmap(bm, 300, 300, true);
-                                Bitmap conv_bm = getCroppedBitmap(resized);
-                                iv.setImageBitmap(conv_bm);
-                                chatBean.setProfileImage(conv_bm);
-                                listChatBeans.put(chatBean.getChat_id() + "", chatBean);
-                            } else {
-                                holder.activity_dosomething_chatperson_appIcon.setImageDrawable(getResources().getDrawable(R.drawable.profile_noimg));
-
-                            }
-                        }
-                    });
-
-                } else {
-                    if (chatBean.getProfileImage() != null) {
-                        holder.activity_dosomething_chatperson_appIcon.setImageBitmap(chatBean.getProfileImage());
-                    }
-                }
-
-                /*holder.activity_dosomething_chatperson.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        Log.d("dosomething_click", "onLongClick" + String.valueOf(position));
-                        if (position > 0) {
-                            holder.activity_dosomething_chatperson_Tectview_blockanddelete.setVisibility(View.VISIBLE);
-                            sharedPrefrences.setConversationId(getActivity(), String.valueOf(chatBean.getChat_id()));
-                        }
-
-                        return true;
-                    }
-                });
-                holder.activity_dosomething_chatperson_Tectview_block.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        holder.activity_dosomething_chatperson_Tectview_blockanddelete.setVisibility(View.GONE);
-                        listChatBeans.remove(listChatBeanIds.get(position));
-                        listChatBeanIds.remove(position);
-                        new DosomethingBlockUser().execute();
-                    }
-                });
-                holder.activity_dosomething_chatperson_Tectview_delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        holder.activity_dosomething_chatperson_Tectview_blockanddelete.setVisibility(View.GONE);
-                        listChatBeans.remove(listChatBeanIds.get(position));
-                        listChatBeanIds.remove(position);
-                        new DosomethingDeleteConversation().execute();
-
-                    }
-                });*/
-
 
                 if (!chatBean.getName().trim().equalsIgnoreCase("Support")) {
                     holder.swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
@@ -813,8 +744,7 @@ chatAdapter.notifyDataSetChanged();
 
                         }
                     });
-                }else
-                {
+                } else {
                     holder.swipeLayout.setSwipeEnabled(false);
                 }
 
@@ -1357,8 +1287,8 @@ chatAdapter.notifyDataSetChanged();
             super.onPostExecute(aVoid);
             switch (blockStatus) {
                 case "Conversaion has been Cleared":
-                    ((MyApplication) getActivity().getApplication()).getListChatBean().clear();
-                    ((DoSomethingStatus) getActivity()).clickNearme(true);
+//                    ((MyApplication) getActivity().getApplication()).getListChatBean().clear();
+//                    ((DoSomethingStatus) getActivity()).clickNearme(true);
                     /*if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
                         new ChatHistory().execute();
 

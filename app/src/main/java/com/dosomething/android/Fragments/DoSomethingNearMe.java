@@ -866,32 +866,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
 
 
     }
-    //    public void OnClickListener() {
-//        activity_dosomething_nearme.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                if (((MyApplication) getActivity().getApplication()).getDoSomethingStatus() != null) {
-//                    DoSomething_Friends_profile_fragment doSomethingFriendsProfileFragment = new DoSomething_Friends_profile_fragment();
-//                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-////                    fragmentTransaction.setCustomAnimations(R.anim.slide_enter, R.anim.slide_exit);
-//                    fragmentTransaction.replace(R.id.detail_fragment, doSomethingFriendsProfileFragment);
-//                    fragmentTransaction.commit();
-//                    ((MyApplication) getActivity().getApplication()).getDoSomethingStatus().settext("YES");
-//                }
-//            }
-//        });
-//    }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
@@ -975,6 +950,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
 
                         }
                     });
+                    sharedPreferences.setPushType(getActivity(),"");
                 }
             }
 
@@ -3197,10 +3173,7 @@ public class DoSomethingNearMe extends Fragment implements SwipeRefreshLayout.On
                                 dosomething_nearme_matched_profile_popup.setVisibility(View.GONE);
                                 dosmething_nearuser_matched_grid_control = "";
                                 dosomething_nearme_gridview_layout.setAlpha(1);
-                                               /* chatstart = "1";
-                                                sessionid = sharedPreferences.getSessionid(getActivity());
-                                                request_send_user_id = String.valueOf(UserId);
-                                                new SendRequest().execute();*/
+
                                 if (getActivity() != null) {
                                     ((MyApplication) getActivity().getApplication()).getDoSomethingStatus().setmatchState("match_chat");
                                     sessionid = sharedPreferences.getSessionid(getActivity());

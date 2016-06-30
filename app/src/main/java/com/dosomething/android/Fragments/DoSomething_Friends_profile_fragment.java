@@ -1362,15 +1362,6 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
 
             super.onPreExecute();
 
-            // Showing progress dialog
-
-//            pDialog = new ProgressDialog(getActivity());
-//
-//            pDialog.setMessage("Please wait...");
-//
-//            pDialog.setCancelable(false);
-//
-//            pDialog.show();
         }
 
 
@@ -1455,7 +1446,6 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
                                 dosomething_beans.add(new Dosomething_Bean(id, name, Image, ActiveImage));
                             }
 
-//                                profileBeans.add(new ProfileBean(user_id, profile_id, first_name, last_name, gender, about, email, status, device, age, image2, image1, image3, device_token, date_of_birth));
 
                             Log.d("BEAN", "GHGHGH" + user_id);
                             Log.d("BEAN", "GHGHGH" + profile_id);
@@ -1476,50 +1466,15 @@ public class DoSomething_Friends_profile_fragment extends Fragment implements Fr
                             Log.d("BEAN", "GHGHGH" + image1);
 
 
-//                            Log.v("SessionId =======>", SessionId);
-
-//                            finish();
-
-//if(json_content.getString("Message").equalsIgnoreCase("Registred Successfully"))
-
-//{
-
-// }else
-
-//{
-
-
-//    JSONArray sportsArray = json_content.getJSONArray("userDetails");
-
-//    JSONObject firstSport = sportsArray.getJSONObject(0);
-
-//    String SessionId = firstSport.getString("SessionId");
-
-//    sharedPreferences.setSessionid(context, SessionId);
-
-//    Log.v("SessionId =======>", SessionId);
-
-//    Intent i = new Intent(DoSomeThingCreateAccount.this, DoSomethingStatus.class);
-
-//    startActivity(i);
-
-//    finish();
-
-//}
-
-//
-
                         } else if (json_content.getString("status").equalsIgnoreCase("failed")) {
 
-                            Toast.makeText(getActivity().getApplicationContext(), "FAILED", Toast.LENGTH_LONG);
 
-//                            pDialog.dismiss();
+
 
                         } else if (json_content.getString("status").equalsIgnoreCase("error")) {
 
-                            Toast.makeText(getActivity().getApplicationContext(), "ERROR", Toast.LENGTH_LONG);
 
-//                            pDialog.dismiss();
+
 
                         }
 

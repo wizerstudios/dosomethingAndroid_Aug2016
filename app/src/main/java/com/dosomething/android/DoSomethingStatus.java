@@ -998,11 +998,11 @@ public class DoSomethingStatus extends AppCompatActivity {
 
                     if (sharedPreferences.getBoolean(context).equals("false")) {
 
-                        ((MyApplication) getApplication()).getListChatBean().clear();
+
                         activity_dosomething_textview_toolbar_save.setVisibility(View.GONE);
 
                         activity_dosomething_textview_toolbar_search.setVisibility(View.GONE);
-
+                        ((MyApplication) getApplication()).getListChatBean().clear();
                         DoSomethingChatList doSomethingChatList = new DoSomethingChatList();
                         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.detail_fragment, doSomethingChatList);
@@ -2418,8 +2418,13 @@ public class DoSomethingStatus extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Log.d("Receiving bradcast::::", "::::" + intent.getAction());
-                clickNearme(true);
-                ((MyApplication) getApplication()).getDoSomethingNearMe().pop();
+
+                profile_user_id = sharedPreferences.getFriendUserId(context);
+
+                new GetUserDetails().execute();
+
+//                clickNearme(true);
+//                ((MyApplication) getApplication()).getDoSomethingNearMe().pop();
 
             }
         };
