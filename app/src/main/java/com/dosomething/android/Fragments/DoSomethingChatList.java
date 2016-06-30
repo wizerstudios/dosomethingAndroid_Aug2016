@@ -189,7 +189,8 @@ public class DoSomethingChatList extends Fragment implements SwipeRefreshLayout.
         if (((MyApplication) getActivity().getApplication()).getListChatBean().size() == 0) {
             splashAnimation.start();
             if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
-
+                listChatBeans = new HashMap<>();
+                listChatBeanIds = new ArrayList<>();
                 Date d = new Date();
                 CharSequence s = DateFormat.format("yyyy-MM-dd HH:mm:ss", d.getTime());
                 datetime = String.valueOf(s);
@@ -200,6 +201,8 @@ public class DoSomethingChatList extends Fragment implements SwipeRefreshLayout.
         } else {
             dosomething_fragment_chatlist.setHasFixedSize(true);
             if (chatAdapter == null) {
+                listChatBeans = new HashMap<>();
+                listChatBeanIds = new ArrayList<>();
                 listChatBeans = ((MyApplication) getActivity().getApplication()).getListChatBean();
                 listChatBeanIds = ((MyApplication) getActivity().getApplication()).getChatBeanIdsList();
                 chatAdapter = new RecyclerAdapter(getActivity());
@@ -207,7 +210,6 @@ public class DoSomethingChatList extends Fragment implements SwipeRefreshLayout.
             } else {
                 chatAdapter.notifyDataSetChanged();
             }
-
 
 
         }
@@ -238,7 +240,6 @@ public class DoSomethingChatList extends Fragment implements SwipeRefreshLayout.
                 refreshList();
             }
         });*/
-
 
 
         return view;
@@ -310,6 +311,8 @@ public class DoSomethingChatList extends Fragment implements SwipeRefreshLayout.
     @Override
     public void onRefresh() {
         dosomething_fragment_chatlist_refreshlayout.setRefreshing(true);
+        ((MyApplication) getActivity().getApplication()).getListChatBean().clear();
+        ((MyApplication) getActivity().getApplication()).getChatBeanIdsList().clear();
         if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
             new ChatHistory().execute();
         }
@@ -324,7 +327,7 @@ public class DoSomethingChatList extends Fragment implements SwipeRefreshLayout.
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
@@ -607,8 +610,7 @@ public class DoSomethingChatList extends Fragment implements SwipeRefreshLayout.
                 } else {
                     if (chatBean.getProfileImage() != null) {
                         holder.activity_dosomething_chatperson_appIcon.setImageBitmap(chatBean.getProfileImage());
-                    }else
-                    {
+                    } else {
 
                         aQuery.id(holder.activity_dosomething_chatperson_appIcon).image(chatBean.getImage1(), true, true, 0, 0, new BitmapAjaxCallback() {
                             @Override
@@ -739,8 +741,9 @@ public class DoSomethingChatList extends Fragment implements SwipeRefreshLayout.
                         public void onClick(View view) {
 
                             sharedPrefrences.setConversationId(getActivity(), String.valueOf(chatBean.getChat_id()));
-                            removeItem(position);
                             new DosomethingDeleteConversation().execute();
+                            removeItem(position);
+
 
                         }
                     });
@@ -952,6 +955,7 @@ public class DoSomethingChatList extends Fragment implements SwipeRefreshLayout.
 
                         if (json_content.has("converation")) {
                             JSONArray hobbiesArray = json_content.getJSONArray("converation");
+
                             for (int i = 0; i < hobbiesArray.length(); i++) {
                                 JSONObject details = hobbiesArray.getJSONObject(i);
                                 int id = details.getInt("id");
@@ -1287,12 +1291,13 @@ public class DoSomethingChatList extends Fragment implements SwipeRefreshLayout.
             super.onPostExecute(aVoid);
             switch (blockStatus) {
                 case "Conversaion has been Cleared":
-//                    ((MyApplication) getActivity().getApplication()).getListChatBean().clear();
+                    ((MyApplication) getActivity().getApplication()).getListChatBean().clear();
+                    ((MyApplication) getActivity().getApplication()).getChatBeanIdsList().clear();
 //                    ((DoSomethingStatus) getActivity()).clickNearme(true);
-                    /*if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
+                    if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
                         new ChatHistory().execute();
 
-                    }*/
+                    }
                     break;
             }
         }

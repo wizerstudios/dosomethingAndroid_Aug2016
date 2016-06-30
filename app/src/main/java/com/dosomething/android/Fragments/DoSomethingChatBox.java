@@ -1323,6 +1323,7 @@ public class DoSomethingChatBox extends Fragment {
                     if (getActivity() != null) {
 
                         ((MyApplication) getActivity().getApplication()).getListChatBean().clear();
+                        ((MyApplication) getActivity().getApplication()).getChatBeanIdsList().clear();
                         DoSomethingChatList doSomethingChatList = new DoSomethingChatList();
                         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.detail_fragment, doSomethingChatList);
@@ -1414,6 +1415,7 @@ public class DoSomethingChatBox extends Fragment {
                     if (getActivity() != null) {
 
                         ((MyApplication) getActivity().getApplication()).getListChatBean().clear();
+                        ((MyApplication) getActivity().getApplication()).getChatBeanIdsList().clear();
 //                        ((DoSomethingStatus) getActivity()).clickNearme(true);
 
                         ((MyApplication) getActivity().getApplication()).getListChatBean().clear();

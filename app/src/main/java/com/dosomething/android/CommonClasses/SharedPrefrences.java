@@ -101,6 +101,8 @@ public class SharedPrefrences {
     String WalkThroughchat = "walkthroughchat";
     String DeviceDate ="devicedate";
     String ChatAutoUpdate ="chatupdate";
+    String Chatmessage ="chatmessage";
+    String Statusmeassge ="statusmessage";
 
 
 
@@ -113,6 +115,59 @@ public class SharedPrefrences {
     }
 
 
+    public String setStatusMeassge(Context context, String statusmeassge) {
+        SharedPreferences sharedPreferences;
+        SharedPreferences.Editor editor;
+
+        //sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        editor.putString(Statusmeassge, statusmeassge);
+
+        editor.commit();
+        return statusmeassge;
+    }
+
+
+    public String getStatusmeassge(Context context) {
+        SharedPreferences settings;
+        String text;
+
+
+        // settings = PreferenceManager.getDefaultSharedPreferences(context);
+        settings = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        text = settings.getString(Statusmeassge, "");
+
+        return text;
+    }
+
+    public String setChatMessage(Context context, String chatmessage) {
+        SharedPreferences sharedPreferences;
+        SharedPreferences.Editor editor;
+
+        //sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        editor.putString(Chatmessage, chatmessage);
+
+        editor.commit();
+        return chatmessage;
+    }
+
+
+    public String getChatmessage(Context context) {
+        SharedPreferences settings;
+        String text;
+
+
+        // settings = PreferenceManager.getDefaultSharedPreferences(context);
+        settings = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        text = settings.getString(Chatmessage, "");
+
+        return text;
+    }
 
     public String setChatAutoUpdate(Context context, String chatAutoUpdate) {
         SharedPreferences sharedPreferences;

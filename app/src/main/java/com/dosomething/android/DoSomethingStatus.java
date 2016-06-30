@@ -212,6 +212,7 @@ public class DoSomethingStatus extends AppCompatActivity {
     private String name = "NearBy Screen";
     private Tracker mTracker;
     private Timer timer;
+    public static boolean aBoolean=true;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -633,8 +634,8 @@ public class DoSomethingStatus extends AppCompatActivity {
                 if (NetworkCheck.isNetworkAvailable(context) || NetworkCheck.isWifiAvailable(context)) {
                     String date = sharedPreferences.getDateOfbirth(context);
 //                    String date ="29/07/13";
-                    SimpleDateFormat input = new SimpleDateFormat("dd / MM / yyyy");
-                    SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat input = new SimpleDateFormat("dd / MM / yyyy", Locale.US);
+                    SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
                     try {
                         Log.d("tripDate", date);
@@ -690,12 +691,25 @@ public class DoSomethingStatus extends AppCompatActivity {
         if (mChat_repalce) {
             if (!sharedPreferences.getPushType(context).equals("sendrequest")) {
                 ((MyApplication) getApplication()).getListChatBean().clear();
+                ((MyApplication) getApplication()).getChatBeanIdsList().clear();
                 activity_dosomething_textview_toolbar_save.setVisibility(View.GONE);
                 activity_dosomething_textview_toolbar_search.setVisibility(View.GONE);
-                DoSomethingChatBox doSomethingChatBox = new DoSomethingChatBox();
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.detail_fragment, doSomethingChatBox);
-                fragmentTransaction.commit();
+
+                if(aBoolean)
+                {
+                    DoSomethingChatBox doSomethingChatBox = new DoSomethingChatBox();
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.detail_fragment, doSomethingChatBox);
+                    fragmentTransaction.commit();
+                }else
+                {
+                    DoSomethingChatList doSomethingChatBox = new DoSomethingChatList();
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.detail_fragment, doSomethingChatBox);
+                    fragmentTransaction.commit();
+                }
+
+                sharedPreferences.setChatMessage(context, "");
                 activity_dosomething_imageview_filter_icon.setVisibility(View.GONE);
                 status_ImageView_chat.setImageDrawable(getResources().getDrawable(R.drawable.chat_active));
                 status_ImageView_pin.setImageDrawable(getResources().getDrawable(R.drawable.pin));
@@ -1003,6 +1017,7 @@ public class DoSomethingStatus extends AppCompatActivity {
 
                         activity_dosomething_textview_toolbar_search.setVisibility(View.GONE);
                         ((MyApplication) getApplication()).getListChatBean().clear();
+                        ((MyApplication) getApplication()).getChatBeanIdsList().clear();
                         DoSomethingChatList doSomethingChatList = new DoSomethingChatList();
                         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.detail_fragment, doSomethingChatList);
@@ -1072,7 +1087,8 @@ public class DoSomethingStatus extends AppCompatActivity {
     public void onBackPressed() {
 
         if (click_action13 && chat_state.equals("No")) {
-
+            ((MyApplication) getApplication()).getListChatBean().clear();
+            ((MyApplication) getApplication()).getChatBeanIdsList().clear();
             ((MyApplication) getApplication()).setanInt(0);
             DoSomethingChatList doSomethingChatList = new DoSomethingChatList();
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -2473,6 +2489,7 @@ public class DoSomethingStatus extends AppCompatActivity {
 
                                 } else {
                                     unreadmessage = "0";
+
                                 }
                                 status = "success";
 
@@ -2538,7 +2555,16 @@ public class DoSomethingStatus extends AppCompatActivity {
 
                                     if (count == 0) {
                                         dosomething_status_unread_meassge_count.setVisibility(View.GONE);
+                                        aBoolean=true;
                                     } else {
+
+                                        if (count == 1) {
+                                            aBoolean=true;
+                                            sharedPreferences.setChatMessage(context, "");
+                                        }else {
+                                            aBoolean=false;
+                                        }
+
                                         dosomething_status_unread_meassge_count.setVisibility(View.VISIBLE);
                                     }
 
@@ -2914,6 +2940,7 @@ public class DoSomethingStatus extends AppCompatActivity {
                 if (sharedPreferences.getBoolean(context).equals("false")) {
 
                     ((MyApplication) getApplication()).getListChatBean().clear();
+                    ((MyApplication) getApplication()).getChatBeanIdsList().clear();
                     activity_dosomething_textview_toolbar_save.setVisibility(View.GONE);
 
                     activity_dosomething_textview_toolbar_search.setVisibility(View.GONE);

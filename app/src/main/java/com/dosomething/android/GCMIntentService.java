@@ -37,6 +37,12 @@ public class GCMIntentService extends GCMBaseIntentService {
     SharedPrefrences sharedPrefrences = new SharedPrefrences();
     private String senderId = "";
     public static final String RECIEVING_REQUEST = "request_received";
+    String setting_sound;
+    String message = "";
+    String newmessage = "";
+    String display = "";
+    String type;
+
     public GCMIntentService() {
         super();
     }
@@ -57,8 +63,140 @@ public class GCMIntentService extends GCMBaseIntentService {
         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         try {
+
+
+            if (intent.hasExtra("setting_sound")) {
+
+                setting_sound = intent.getExtras().getString("setting_sound");
+                sharedPrefrences.setSetting_Sound(context, setting_sound);
+
+            } else {
+                setting_sound = "1";
+            }
+
+
+           /* if(sharedPrefrences.getSetting_Sound(context).equals("1"))
+            {
+                mBuilder.setSound(uri);
+            }*/
+
+
+            Log.d("RESPONCE", intent.getExtras().toString());
+
+            try {
+                message = intent.getExtras().getString("message");
+
+                if (intent.hasExtra("push_type")) {
+
+                    type = intent.getExtras().getString("push_type");
+
+                    assert type != null;
+                    if (type.equals("chat")) {
+                        sharedPrefrences.setPushType(context, "chat");
+                        assert message != null;
+                        String[] parts = message.split(" ");
+                        String part = parts[4];
+                        sharedPrefrences.setFriendFirstname(context, part.trim());
+                        sharedPrefrences.setChatMessage(context, sharedPrefrences.getChatmessage(context) + "\n" + message);
+                        display = sharedPrefrences.getChatmessage(context);
+                        NOTIFCATION_ID = 0;
+
+                    } else if (type.equals("sendrequest")) {
+                        sharedPrefrences.setPushType(context, "sendrequest");
+                        assert message != null;
+                        String[] parts = message.split(" ");
+                        String part = parts[6];
+                        sharedPrefrences.setFriendFirstname(context, part.trim());
+                        if (intent.hasExtra("senderId")) {
+                            senderId = intent.getExtras().getString("senderId");
+
+                            sharedPrefrences.setFriendUserId(context, senderId);
+                        } else {
+                            senderId = "";
+                        }
+                        if (intent.hasExtra("conversationid")) {
+
+                            conversationid = intent.getExtras().getString("conversationid");
+
+                            sharedPrefrences.setConversationId(context, conversationid);
+                        } else {
+                            conversationid = "";
+                        }
+                        sharedPrefrences.setStatusMeassge(context, message);
+                        display = sharedPrefrences.getStatusmeassge(context);
+                        newmessage = message;
+                        NOTIFCATION_ID = 1;
+                        broadCast(RECIEVING_REQUEST);
+
+
+                    }
+
+                }
+
+
+                if (intent.hasExtra("conversationid")) {
+
+                    conversationid = intent.getExtras().getString("conversationid");
+
+
+                } else {
+                    conversationid = "";
+                }
+
+                if (intent.hasExtra("senderId")) {
+                    senderId = intent.getExtras().getString("senderId");
+
+                } else {
+                    senderId = "";
+                }
+
+
+                assert message != null;
+                if (message.length() == 0)
+                    message = "";
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+           /* System.out.println("====" + intent.getExtras().getString("message"));
+            BigTextStyle bigStyle = new NotificationCompat.BigTextStyle();
+            bigStyle.bigText(message);*/
+
+
+
+
+
+            Intent newsIntent = null;
+            if (conversationid != null && conversationid.length() > 0) {
+                newsIntent = new Intent(context, DoSomethingStatus.class);
+                newsIntent.putExtra("GCM_chat", true);
+                newsIntent.putExtra("conversationid", conversationid);
+                newsIntent.putExtra("senderId", senderId);
+                newsIntent.putExtra("push_type", type);
+
+
+            } else {
+                newsIntent = new Intent(context, SplashActivity.class);
+            }
+
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            PendingIntent notificationIntent = PendingIntent.getActivity(this, 0,
+                    newsIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
-            mBuilder.setSmallIcon(R.drawable.home_button);
+            Notification notification = mBuilder.setSmallIcon(R.drawable.home_button).setWhen(0)
+                    .setAutoCancel(true)
+                    .setContentTitle(getString(R.string.app_name))
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(display))
+                            .setContentIntent(notificationIntent)
+                            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                            .setLargeIcon(largeIcon)
+                            .setContentText(display).build();
+
+
+           /* mBuilder.setSmallIcon(R.drawable.home_button);
 
 
 
@@ -66,9 +204,9 @@ public class GCMIntentService extends GCMBaseIntentService {
             mBuilder.setColor(getResources().getColor(R.color.notification_icon_background));
             mBuilder.setContentTitle(getString(R.string.app_name));
             mBuilder.getNotification().flags |= Notification.FLAG_AUTO_CANCEL;
-            mBuilder.setAutoCancel(true);
-            String setting_sound;
-            if (intent.hasExtra("setting_sound")) {
+            mBuilder.setAutoCancel(true);*/
+
+            /*if (intent.hasExtra("setting_sound")) {
 
                 setting_sound = intent.getExtras().getString("setting_sound");
                 sharedPrefrences.setSetting_Sound(context, setting_sound);
@@ -85,12 +223,12 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 
             Log.d("RESPONCE", intent.getExtras().toString());
-            String message = "";
+
             try {
                 message = intent.getExtras().getString("message");
                 if (intent.hasExtra("push_type")) {
 
-                    String type = intent.getExtras().getString("push_type");
+                    type = intent.getExtras().getString("push_type");
 
                     assert type != null;
                     if (type.equals("chat")) {
@@ -161,29 +299,12 @@ public class GCMIntentService extends GCMBaseIntentService {
             bigStyle.bigText(message);
             mBuilder.setContentText(message);
             mBuilder.setStyle(bigStyle);
+             mBuilder.setContentIntent(notificationIntent);*/
 
 
-            Intent newsIntent = null;
-            if (conversationid != null && conversationid.length() > 0) {
-                newsIntent = new Intent(context, DoSomethingStatus.class);
-                newsIntent.putExtra("GCM_chat", true);
-                newsIntent.putExtra("conversationid", conversationid);
-                newsIntent.putExtra("senderId", senderId);
-                newsIntent.putExtra("push_type", push_type);
-
-
-            } else {
-                newsIntent = new Intent(context, SplashActivity.class);
-            }
-            /*NOTIFCATION_ID=Integer.parseInt(conversationid);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);*/
-            PendingIntent notificationIntent = PendingIntent.getActivity(this, 0,
-                    newsIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-            mBuilder.setContentIntent(notificationIntent);
             NotificationManager mNotificationManager =
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(NOTIFCATION_ID, mBuilder.build());
+            mNotificationManager.notify(NOTIFCATION_ID, notification);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -250,7 +250,7 @@ FragmentProfile fragmentProfile;
     public void onCreate() {
         super.onCreate();
         MultiDex.install(getBaseContext());
-        Fabric.with(this, new Crashlytics());
+//        Fabric.with(this, new Crashlytics());
         try
         {
             mTracker = this.getDefaultTracker();
