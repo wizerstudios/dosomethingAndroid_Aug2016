@@ -740,7 +740,7 @@ public class DoSomethingChatList extends Fragment implements SwipeRefreshLayout.
                         @Override
                         public void onClick(View view) {
 
-                            sharedPrefrences.setConversationId(getActivity(), String.valueOf(chatBean.getChat_id()));
+                            sharedPrefrences.setFriendUserId(getActivity(), chatBean.getUser_id() + "");
                             new DosomethingDeleteConversation().execute();
                             removeItem(position);
 
@@ -1262,7 +1262,7 @@ public class DoSomethingChatList extends Fragment implements SwipeRefreshLayout.
             try {
                 HashMap<String, Object> paramsBlock = new HashMap<>();
                 paramsBlock.put(TAG_SESSIONID, sharedPrefrences.getSessionid(getActivity()));
-                paramsBlock.put(TAG_FRIENDUSERID, sharedPrefrences.getFriendUserId(getActivity()));
+                paramsBlock.put(TAG_FRIENDUSERID, sharedPrefrences.getFriendUserId(getActivity()).trim());
                 json_string = jsonfunctions.postToURL(deleteConversation_Api_url, paramsBlock);
                 try {
                     json_object = new JSONObject(json_string);

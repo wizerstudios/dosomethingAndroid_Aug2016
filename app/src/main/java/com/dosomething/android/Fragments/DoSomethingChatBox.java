@@ -381,8 +381,14 @@ public class DoSomethingChatBox extends Fragment {
         activity_dosomething_chatbox_messagesent_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage();
-                dosomething_fragment_chat_messages_list.scrollToPosition(messages.size() - 1);
+
+
+                if (dosomething_fragment_chat_messages_textview.getVisibility() == View.GONE) {
+                    sendMessage();
+                    dosomething_fragment_chat_messages_list.scrollToPosition(messages.size() - 1);
+                } else {
+                    dosomething_fragment_chat_messages_textview.setText("Match again to send message");
+                }
 
 
             }
@@ -393,8 +399,13 @@ public class DoSomethingChatBox extends Fragment {
                     switch (keyCode) {
                         case KeyEvent.KEYCODE_DPAD_CENTER:
                         case KeyEvent.KEYCODE_ENTER:
-                            sendMessage();
-                            dosomething_fragment_chat_messages_list.scrollToPosition(messages.size() - 1);
+                            if (dosomething_fragment_chat_messages_textview.getVisibility() == View.GONE) {
+                                sendMessage();
+                                dosomething_fragment_chat_messages_list.scrollToPosition(messages.size() - 1);
+                            } else {
+                                dosomething_fragment_chat_messages_textview.setText("Match again to send message");
+                            }
+
                             return true;
                         default:
                             break;
@@ -670,7 +681,7 @@ public class DoSomethingChatBox extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
