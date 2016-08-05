@@ -767,7 +767,7 @@ public class DoSomethingStatus extends AppCompatActivity {
                 click_action15 = false;
                 click_action12 = false;
                 click_action13 = false;
-                sharedPreferences.setHobbies(context, "Yes");
+                sharedPreferences.setHobbies(context, "");
                 sharedPreferences.setHobbiesId(context, dosomething_activity_hobbies_id_null);
             }
         }
@@ -2928,6 +2928,7 @@ public class DoSomethingStatus extends AppCompatActivity {
     }
 
     public void slideToChat(boolean b) {
+        showHideBottomLayout(true);
         if (b) {
             sharedPreferences.setPushType(context, "");
             ((MyApplication) getApplication()).getListFilterBeans().clear();

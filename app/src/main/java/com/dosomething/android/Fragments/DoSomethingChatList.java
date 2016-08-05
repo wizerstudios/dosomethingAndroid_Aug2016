@@ -956,72 +956,154 @@ public class DoSomethingChatList extends Fragment implements SwipeRefreshLayout.
                         if (json_content.has("converation")) {
                             JSONArray hobbiesArray = json_content.getJSONArray("converation");
 
+
+
                             for (int i = 0; i < hobbiesArray.length(); i++) {
+
                                 JSONObject details = hobbiesArray.getJSONObject(i);
-                                int id = details.getInt("id");
-                                ChatBean chatBeans = null;
-                                boolean isNewChat = false;
-                                if (listChatBeans.containsKey(id + "")) {
-                                    chatBeans = listChatBeans.get(id + "");
 
-                                } else {
-                                    chatBeans = new ChatBean();
+                                String send_request = details.getString("send_request");
 
-                                    listChatBeanIds.add(id + "");
-                                    isNewChat = true;
+
+                                if(send_request.equalsIgnoreCase("no"))
+                                {
+                                    if(i==0)
+                                    {
+                                        int id = details.getInt("id");
+                                        ChatBean chatBeans = null;
+                                        boolean isNewChat = false;
+                                        if (listChatBeans.containsKey(id + "")) {
+                                            chatBeans = listChatBeans.get(id + "");
+
+                                        } else {
+                                            chatBeans = new ChatBean();
+
+                                            listChatBeanIds.add(id + "");
+                                            isNewChat = true;
+                                        }
+                                        chatBeans.setChat_id(id);
+                                        UserId = details.getInt("UserId");
+                                        chatBeans.setUser_id(UserId);
+                                        String Name = details.getString("Name");
+                                        chatBeans.setName(Name);
+                                        String userEmail = details.getString("userEmail");
+                                        chatBeans.setUser_email(userEmail);
+
+
+                                        String image1 = details.getString("image1_thumb");
+                                        if (!isNewChat) {
+                                            String imageOld = chatBeans.getImage1();
+                                            chatBeans.setOldImageUrl(imageOld);
+                                            chatBeans.setImage1(image1);
+                                        } else {
+                                            chatBeans.setImage1(image1);
+                                        }
+
+                                        String image2 = details.getString("image2");
+                                        chatBeans.setImage2(image2);
+                                        String image3 = details.getString("image3");
+                                        chatBeans.setImage3(image3);
+                                        String LastMessage = details.getString("LastMessage");
+                                        chatBeans.setLast_message(LastMessage);
+                                        String LastMessageSentTime = details.getString("LastMessageSentTime");
+
+                                        String unreadmessage = details.getString("unreadmessage");
+                                        chatBeans.setUnreadmessage(unreadmessage);
+                                        String part2 = null;
+                                        String hours = null;
+                                        String min = null;
+                                        String sec;
+                                        if (!LastMessageSentTime.equals("")) {
+                                            String string = LastMessageSentTime;
+                                            String[] parts = string.split(" ");
+                                            String part1 = parts[0];
+                                            part2 = parts[1];
+                                            Log.v("Data1", "" + part1);
+                                            Log.v("Data2", "" + part2);
+                                            String string1 = part2;
+                                            String[] part = string1.split(":");
+                                            hours = part[0];
+                                            min = part[1];
+                                            sec = part[2];
+                                        } else {
+                                            hours = "";
+                                            min = "";
+                                        }
+                                        chatBeans.setLast_message_time(hours + ":" + min);
+                                        listChatBeans.put(id + "", chatBeans);
+                                        Log.d("chat_count", unreadmessage);
+                                        status = "success";
+                                    }
+
+
+
+                                }else
+                                {
+                                    int id = details.getInt("id");
+                                    ChatBean chatBeans = null;
+                                    boolean isNewChat = false;
+                                    if (listChatBeans.containsKey(id + "")) {
+                                        chatBeans = listChatBeans.get(id + "");
+
+                                    } else {
+                                        chatBeans = new ChatBean();
+
+                                        listChatBeanIds.add(id + "");
+                                        isNewChat = true;
+                                    }
+                                    chatBeans.setChat_id(id);
+                                    UserId = details.getInt("UserId");
+                                    chatBeans.setUser_id(UserId);
+                                    String Name = details.getString("Name");
+                                    chatBeans.setName(Name);
+                                    String userEmail = details.getString("userEmail");
+                                    chatBeans.setUser_email(userEmail);
+
+
+                                    String image1 = details.getString("image1_thumb");
+                                    if (!isNewChat) {
+                                        String imageOld = chatBeans.getImage1();
+                                        chatBeans.setOldImageUrl(imageOld);
+                                        chatBeans.setImage1(image1);
+                                    } else {
+                                        chatBeans.setImage1(image1);
+                                    }
+
+                                    String image2 = details.getString("image2");
+                                    chatBeans.setImage2(image2);
+                                    String image3 = details.getString("image3");
+                                    chatBeans.setImage3(image3);
+                                    String LastMessage = details.getString("LastMessage");
+                                    chatBeans.setLast_message(LastMessage);
+                                    String LastMessageSentTime = details.getString("LastMessageSentTime");
+
+                                    String unreadmessage = details.getString("unreadmessage");
+                                    chatBeans.setUnreadmessage(unreadmessage);
+                                    String part2 = null;
+                                    String hours = null;
+                                    String min = null;
+                                    String sec;
+                                    if (!LastMessageSentTime.equals("")) {
+                                        String string = LastMessageSentTime;
+                                        String[] parts = string.split(" ");
+                                        String part1 = parts[0];
+                                        part2 = parts[1];
+                                        Log.v("Data1", "" + part1);
+                                        Log.v("Data2", "" + part2);
+                                        String string1 = part2;
+                                        String[] part = string1.split(":");
+                                        hours = part[0];
+                                        min = part[1];
+                                        sec = part[2];
+                                    } else {
+                                        hours = "";
+                                        min = "";
+                                    }
+                                    chatBeans.setLast_message_time(hours + ":" + min);
+                                    listChatBeans.put(id + "", chatBeans);
+                                    Log.d("chat_count", unreadmessage);
+                                    status = "success";
                                 }
-                                chatBeans.setChat_id(id);
-                                UserId = details.getInt("UserId");
-                                chatBeans.setUser_id(UserId);
-                                String Name = details.getString("Name");
-                                chatBeans.setName(Name);
-                                String userEmail = details.getString("userEmail");
-                                chatBeans.setUser_email(userEmail);
-
-
-                                String image1 = details.getString("image1_thumb");
-                                if (!isNewChat) {
-                                    String imageOld = chatBeans.getImage1();
-                                    chatBeans.setOldImageUrl(imageOld);
-                                    chatBeans.setImage1(image1);
-                                } else {
-                                    chatBeans.setImage1(image1);
-                                }
-
-                                String image2 = details.getString("image2");
-                                chatBeans.setImage2(image2);
-                                String image3 = details.getString("image3");
-                                chatBeans.setImage3(image3);
-                                String LastMessage = details.getString("LastMessage");
-                                chatBeans.setLast_message(LastMessage);
-                                String LastMessageSentTime = details.getString("LastMessageSentTime");
-
-                                String unreadmessage = details.getString("unreadmessage");
-                                chatBeans.setUnreadmessage(unreadmessage);
-                                String part2 = null;
-                                String hours = null;
-                                String min = null;
-                                String sec;
-                                if (!LastMessageSentTime.equals("")) {
-                                    String string = LastMessageSentTime;
-                                    String[] parts = string.split(" ");
-                                    String part1 = parts[0];
-                                    part2 = parts[1];
-                                    Log.v("Data1", "" + part1);
-                                    Log.v("Data2", "" + part2);
-                                    String string1 = part2;
-                                    String[] part = string1.split(":");
-                                    hours = part[0];
-                                    min = part[1];
-                                    sec = part[2];
-                                } else {
-                                    hours = "";
-                                    min = "";
-                                }
-                                chatBeans.setLast_message_time(hours + ":" + min);
-                                listChatBeans.put(id + "", chatBeans);
-                                Log.d("chat_count", unreadmessage);
-                                status = "success";
 
                             }
 

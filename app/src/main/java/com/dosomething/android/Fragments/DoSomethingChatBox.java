@@ -1430,10 +1430,11 @@ public class DoSomethingChatBox extends Fragment {
 //                        ((DoSomethingStatus) getActivity()).clickNearme(true);
 
                         ((MyApplication) getActivity().getApplication()).getListChatBean().clear();
-                        DoSomethingChatList doSomethingChatList = new DoSomethingChatList();
+                        ((DoSomethingStatus) getActivity()).slideToChat(true);
+                      /*  DoSomethingChatList doSomethingChatList = new DoSomethingChatList();
                         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.detail_fragment, doSomethingChatList);
-                        fragmentTransaction.commit();
+                        fragmentTransaction.commit();*/
 
                     }
 

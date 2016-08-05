@@ -396,7 +396,7 @@ public class FragmentProfile extends Fragment {
                         addDots();
                     } else {
                         if (!sharedPrefrences.getUpdateProfilePicture1(getActivity()).equals("")) {
-                            fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage2_Fragment.class.getName()));
+                            fragments.add(android.support.v4.app.Fragment.instantiate(getActivity(), UserProfileImage3_Fragment.class.getName()));
                             mPagerAdapter.notifyDataSetChanged();
                             dots.clear();
                             fragment_viewpager_dots.removeAllViews();
@@ -418,7 +418,7 @@ public class FragmentProfile extends Fragment {
 
 
             hobbies_list = new ArrayList<>();
-            name = new ArrayList<Integer>();
+            name = new ArrayList<>();
             hobbies_list.clear();
             name.clear();
             hobbies_list.addAll(bundle.getIntegerArrayList("array_bundle_hobbies_image"));

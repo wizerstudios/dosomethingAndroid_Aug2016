@@ -290,6 +290,10 @@ if(formattedDate.equals(sharedPrefrences.getDeviceDate(context)))
     /*    new Goodsin_Background().execute();*/
 
         if (((MyApplication) getApplication()).getArts_hobbies().size() > 1) {
+
+
+
+
             final CustomGrid_arts customGrid_arts = new CustomGrid_arts(DoSomethingHobbies.this, ((MyApplication) getApplication()).getArts_hobbies());
             hobbies_page_gridview_hobbies_arts.setChoiceMode(((MyApplication) getApplication()).getArts_hobbies().size());
             hobbies_page_gridview_hobbies_arts.setAdapter(customGrid_arts);
@@ -297,7 +301,40 @@ if(formattedDate.equals(sharedPrefrences.getDeviceDate(context)))
             Log.d("JJJJJJJ", "" + customGrid_arts);
 
 
-        } else {
+            if (!((MyApplication) getApplication()).getArts_hobbies().isEmpty()) {
+                for (Arts_hobbies myClass : ((MyApplication) getApplication()).getArts_hobbies()) {
+                    hobbies_list_arts_id.add(myClass.getImage_id_arts());
+                    hobbies_image_arts_state.add(myClass.getstate());
+                    Log.d("ARTS", "HHHHAAAA1" + hobbies_list_arts + "--" + hobbies_list_arts_name + "--" + hobbies_list_arts_image);
+//                    Toast.makeText(getApplicationContext(),"VALUE",Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), "EMPTYa", Toast.LENGTH_LONG).show();
+            }
+
+            if (hobbies_list.size() >= 1) {
+                for (int i = 0; i < hobbies_list_arts_id.size(); i++) {
+//            Log.d("ARTS", "LISTyyy"+hobbies_array_arts.get(i).getImage_id_arts());
+//            hobbies_list_arts.add(hobbies_array_arts.get(i).getImage_id_arts());
+                    Log.d("ARTS", "LIST" + ((MyApplication) getApplication()).getArts_hobbies());
+//                    Log.d("ARTS","AAAA"+hobbies_list.get(i));
+                    if (hobbies_list.contains(hobbies_list_arts_id.get(i))) {
+                        ((MyApplication) getApplication()).getArts_hobbies().get(i).setstate(true);
+                        Log.d("KKKK", "JJJJJaa" + ((MyApplication) getApplication()).getArts_hobbies().get(i).getstate());
+                    } else {
+                        ((MyApplication) getApplication()).getArts_hobbies().get(i).setstate(false);
+                        Log.d("KKKK", "JJJJJa" + "NM");
+                    }
+                }}
+
+
+
+
+
+
+
+
+            } else {
             new HobbiesArts_ArrayList().execute();
         }
 
@@ -309,6 +346,31 @@ if(formattedDate.equals(sharedPrefrences.getDeviceDate(context)))
             hobbies_page_gridview_hobbies_food.setAdapter(customGrid_food);
             hobbies_page_gridview_hobbies_food.setExpanded(true);
 
+            if (!((MyApplication) getApplication()).getFood_hobbies().isEmpty()) {
+                for (Food_hobbies myClass : ((MyApplication) getApplication()).getFood_hobbies()) {
+                    hobbies_list_food_id.add(myClass.getImage_id_food());
+                    hobbies_image_food_state.add(myClass.getstate());
+                    Log.d("ARTS", "HHHHAAAA2" + hobbies_list_food + "--" + hobbies_list_food_name + "--" + hobbies_list_food_image);
+//                    Toast.makeText(getApplicationContext(),"VALUE",Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), "EMPTYf", Toast.LENGTH_LONG).show();
+            }
+
+            if (hobbies_list.size() >= 1) {
+
+                for (int i = 0; i < hobbies_list_food_id.size(); i++) {
+                    if (hobbies_list.contains(hobbies_list_food_id.get(i))) {
+                        ((MyApplication) getApplication()).getFood_hobbies().get(i).setstate(true);
+                        Log.d("KKKK", "JJJJJff" + ((MyApplication) getApplication()).getFood_hobbies().get(i).getstate());
+                    } else {
+                        ((MyApplication) getApplication()).getFood_hobbies().get(i).setstate(false);
+                        Log.d("KKKK", "JJJJJf" + "NM");
+                    }
+                }
+
+
+            }
 
         } else {
 
@@ -326,6 +388,32 @@ if(formattedDate.equals(sharedPrefrences.getDeviceDate(context)))
             hobbies_page_gridview_hobbies_pets.setChoiceMode(((MyApplication) getApplication()).getPets_hobbies().size());
             hobbies_page_gridview_hobbies_pets.setAdapter(customGrid_pets);
             hobbies_page_gridview_hobbies_pets.setExpanded(true);
+
+            if (!((MyApplication) getApplication()).getPets_hobbies().isEmpty()) {
+                for (Pets_hobbies myClass : ((MyApplication) getApplication()).getPets_hobbies()) {
+                    hobbies_list_pets_id.add(myClass.getImage_id_pets());
+                    hobbies_image_pets_state.add(myClass.getstate());
+                    Log.d("ARTS", "HHHHAAAA3" + hobbies_array_pets + "--" + hobbies_list_pets_name + "--" + hobbies_list_pets_image);
+//                    Toast.makeText(getApplicationContext(),"VALUE",Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), "EMPTYp", Toast.LENGTH_LONG).show();
+            }
+
+            if (hobbies_list.size() >= 1) {
+
+                for (int i = 0; i < hobbies_list_pets_id.size(); i++) {
+                    if (hobbies_list.contains(hobbies_list_pets_id.get(i))) {
+                        ((MyApplication) getApplication()).getPets_hobbies().get(i).setstate(true);
+                        Log.d("KKKK", "JJJJJpp" + ((MyApplication) getApplication()).getPets_hobbies().get(i).getstate());
+                    } else {
+                        ((MyApplication) getApplication()).getPets_hobbies().get(i).setstate(false);
+                        Log.d("KKKK", "JJJJJp" + "NM");
+                    }
+                }
+
+
+            }
         } else {
             new HoobiesPet_Array().execute();
         }
@@ -336,6 +424,30 @@ if(formattedDate.equals(sharedPrefrences.getDeviceDate(context)))
             hobbies_page_gridview_hobbies_recreation.setChoiceMode(((MyApplication) getApplication()).getRecreation_hobbies().size());
             hobbies_page_gridview_hobbies_recreation.setAdapter(customGrid_recreation);
             hobbies_page_gridview_hobbies_recreation.setExpanded(true);
+
+            if (!((MyApplication) getApplication()).getRecreation_hobbies().isEmpty()) {
+                for (Recreation_hobbies myClass : ((MyApplication) getApplication()).getRecreation_hobbies()) {
+                    hobbies_list_recreation_id.add(myClass.getImage_id_recreation());
+                    hobbies_image_recreation_state.add(myClass.getstate());
+                    Log.d("ARTS", "HHHHAAAA3" + hobbies_list_recreation + "--" + hobbies_list_recreation_name + "--" + hobbies_list_recreation_image);
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), "EMPTYr", Toast.LENGTH_LONG).show();
+            }
+            if (hobbies_list.size() >= 1) {
+
+                for (int i = 0; i < hobbies_list_recreation_id.size(); i++) {
+                    if (hobbies_list.contains(hobbies_list_recreation_id.get(i))) {
+                        ((MyApplication) getApplication()).getRecreation_hobbies().get(i).setstate(true);
+                        Log.d("KKKK", "JJJJJrr" + ((MyApplication) getApplication()).getRecreation_hobbies().get(i).getstate());
+                    } else {
+                        ((MyApplication) getApplication()).getRecreation_hobbies().get(i).setstate(false);
+                        Log.d("KKKK", "JJJJJr" + "NM");
+                    }
+                }
+
+            }
+
         } else {
             new HobbiesRecreation().execute();
         }
@@ -344,8 +456,9 @@ if(formattedDate.equals(sharedPrefrences.getDeviceDate(context)))
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 bundle_list.clear();
+                bundle_list.addAll(hobbies_list);
+               /* bundle_list.clear();
 
 
                 for (int i = 0; i < ((MyApplication) getApplication()).getArts_hobbies().size(); i++) {
@@ -373,7 +486,7 @@ if(formattedDate.equals(sharedPrefrences.getDeviceDate(context)))
                     if (((MyApplication) getApplication()).getRecreation_hobbies().get(i).getstate()) {
                         bundle_list.add(((MyApplication) getApplication()).getRecreation_hobbies().get(i).getImage_id_recreation());
                     }
-                }
+                }*/
 
                 if (!sharedPrefrences.getHobbies(context).equalsIgnoreCase("Yes")) {
                     Intent i = new Intent(DoSomethingHobbies.this, DoSomethingprofile.class);
@@ -398,7 +511,6 @@ if(formattedDate.equals(sharedPrefrences.getDeviceDate(context)))
                     finish();
                 } else {
                     Intent i = new Intent(DoSomethingHobbies.this, DoSomethingStatus.class);
-                    FragmentProfile fragmentProfile = new FragmentProfile();
 
                     if (bundle_list.isEmpty()) {
                         Bundle bundle = new Bundle();
