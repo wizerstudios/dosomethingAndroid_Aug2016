@@ -1021,6 +1021,10 @@ public class DoSomeThingCreateAccount extends Activity {
 
                            /* kbv.setVisibility(View.GONE);
                             layout_progress_image.setVisibility(View.GONE);*/
+                                ((MyApplication)getApplication()).getRecreation_hobbies().clear();
+                                ((MyApplication)getApplication()).getPets_hobbies().clear();
+                                ((MyApplication)getApplication()).getFood_hobbies().clear();
+                                ((MyApplication) getApplication()).getArts_hobbies().clear();
                                 progress_bar.dismiss();
                                 splashAnimation.stop();
                                 Intent i = new Intent(DoSomeThingCreateAccount.this, DoSomethingprofile.class);

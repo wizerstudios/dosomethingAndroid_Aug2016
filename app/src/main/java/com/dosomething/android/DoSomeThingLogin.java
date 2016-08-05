@@ -1135,6 +1135,11 @@ public class DoSomeThingLogin extends Activity {
                     try {
                         if (json_object.has("checkuser")) {
                             if (json_content.getString("status").equalsIgnoreCase("success")) {
+
+                                ((MyApplication)getApplication()).getRecreation_hobbies().clear();
+                                ((MyApplication)getApplication()).getPets_hobbies().clear();
+                                ((MyApplication)getApplication()).getFood_hobbies().clear();
+                                ((MyApplication) getApplication()).getArts_hobbies().clear();
                                 sharedPreferences.setWalkThroughProfile(context, "false");
                                 sharedPreferences.setWalkThroughProfilesave(context, "false");
                                 sharedPreferences.setWalkThroughHobbies(context, "false");
@@ -1397,6 +1402,10 @@ public class DoSomeThingLogin extends Activity {
                     if (json_object.has("register")) {
                         if (json_content.getString("status").equalsIgnoreCase("success")) {
                             if (json_content.getString("Message").equalsIgnoreCase("Registred Successfully")) {
+                                ((MyApplication)getApplication()).getRecreation_hobbies().clear();
+                                ((MyApplication)getApplication()).getPets_hobbies().clear();
+                                ((MyApplication)getApplication()).getFood_hobbies().clear();
+                                ((MyApplication) getApplication()).getArts_hobbies().clear();
                                 JSONArray sportsArray = json_content.getJSONArray("userDetails");
                                 JSONObject firstSport = sportsArray.getJSONObject(0);
                                 String SessionId = firstSport.getString("SessionId");
