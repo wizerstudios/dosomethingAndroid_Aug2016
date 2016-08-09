@@ -1327,7 +1327,7 @@ public class DoSomethingChatList extends Fragment implements SwipeRefreshLayout.
 
 
     public class DosomethingDeleteConversation extends AsyncTask<Void, Void, Void> {
-        String blockStatus;
+        String blockStatus="";
         String deleteConversation_Api_url;
 
         @Override
@@ -1375,7 +1375,15 @@ public class DoSomethingChatList extends Fragment implements SwipeRefreshLayout.
                 case "Conversaion has been Cleared":
                     ((MyApplication) getActivity().getApplication()).getListChatBean().clear();
                     ((MyApplication) getActivity().getApplication()).getChatBeanIdsList().clear();
-//                    ((DoSomethingStatus) getActivity()).clickNearme(true);
+
+                    if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
+                        new ChatHistory().execute();
+
+                    }
+                    break;
+                case "":
+                    ((MyApplication) getActivity().getApplication()).getListChatBean().clear();
+                    ((MyApplication) getActivity().getApplication()).getChatBeanIdsList().clear();
                     if (NetworkCheck.isWifiAvailable(getActivity()) || NetworkCheck.isNetworkAvailable(getActivity())) {
                         new ChatHistory().execute();
 
